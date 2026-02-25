@@ -6,13 +6,24 @@ This is an Obsidian vault managed by Your Name. AI agents working in this repo s
 
 Custom Cursor skills live in `.cursor/skills/`. Each has a `SKILL.md` with usage, workflow, and conventions.
 
-| Skill | Slash command | What it does |
-|-------|--------------|--------------|
-| [meeting](.cursor/skills/meeting/SKILL.md) | `/meeting`, `/meeting wrap` | Create meeting notes (manual / Google Calendar) or wrap up (cache → participants → todos → commit) |
-| [cache-notes](.cursor/skills/cache-notes/SKILL.md) | `/cache-notes` | Fetch external AI transcripts (Gemini, Otter) and cache as Obsidian callouts. Prompts for URLs if `Notes:` is empty |
-| [fill-participants](.cursor/skills/fill-participants/SKILL.md) | `/fill-participants` | Resolve and fill `Participants:` frontmatter from Google Docs / filename / context |
-| [followup-todos](.cursor/skills/followup-todos/SKILL.md) | `/followup-todos` | Extract action items from notes & AI transcripts into Obsidian Tasks checkboxes |
-| [commit](.cursor/skills/commit/SKILL.md) | `/commit` | Shared final step — stage modified files and commit with user confirmation. Supports sequence mode |
+| Skill | What it does | Arguments |
+|-------|--------------|-----------|
+| [meeting](.cursor/skills/meeting/SKILL.md) | Create a meeting note | |
+| ├ `/meeting {title}` | Manual creation with today's date | `folder={subfolder}` |
+| ├ `/meeting` | Pick from today's Google Calendar events | |
+| └ `/meeting wrap <path>` | Wrap up: cache → participants → todos → commit | |
+| [cache-notes](.cursor/skills/cache-notes/SKILL.md) | Fetch & embed AI transcripts as Obsidian callouts | |
+| ├ `/cache-notes <path>` | Cache a specific meeting file (prompts for URLs if empty) | |
+| ├ `/cache-notes all` | Batch-cache all uncached meetings | |
+| └ `/cache-notes refresh <path>` | Re-fetch and overwrite existing cache | |
+| [fill-participants](.cursor/skills/fill-participants/SKILL.md) | Resolve and fill `Participants:` frontmatter | |
+| ├ `/fill-participants <path>` | Fill for a specific meeting note | |
+| └ `/fill-participants all` | Scan and fill all meetings missing participants | |
+| [followup-todos](.cursor/skills/followup-todos/SKILL.md) | Extract action items as Obsidian Tasks checkboxes | |
+| ├ `/followup-todos <path>` | Extract from a specific meeting note | |
+| └ `/followup-todos` | Pick from recent meetings | |
+| [commit](.cursor/skills/commit/SKILL.md) | Stage modified files and commit with confirmation | |
+| └ *(sequence mode)* | Deferred commit — used by `/meeting wrap` | |
 
 ## Rules
 
