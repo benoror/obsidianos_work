@@ -97,9 +97,36 @@ For meetings where participants genuinely can't be determined:
 - Use **`—`** (em-dash) as the universal "intentionally left blank" marker for true unknowns.
 - Never leave the field absent — every meeting should end up with a Participants value.
 
+## Step 7: Offer to commit changes
+
+After all edits are applied, ask the user if they'd like to commit the changes.
+
+- Only stage files that were actually modified (meeting notes with new Participants, new/updated People files).
+- Do NOT stage unrelated files that may have changed via iCloud sync.
+- Use `git add` with explicit file paths — never `git add .` or `git add -A`.
+- Default commit message: `update: /fill-participants <argument>` where `<argument>` is `all` or the specific meeting path.
+- Present the list of files that will be staged and the commit message. Wait for user confirmation before committing.
+- If the user declines, skip the commit silently.
+
+Example flow:
+
+```
+I've updated 35 meeting files and 3 People files. Want me to commit these changes?
+
+Files to stage:
+  - Meetings/PAM/Scrum/2026-02-09.md (+ 14 more)
+  - Teams/People/@Thomas Barrett.md (new)
+  - Teams/People/@Courtney.md (updated)
+
+Commit message: "update: /fill-participants all"
+
+[Yes / No]
+```
+
 ## Important Notes
 
 - Always read a file before editing it — frontmatter may have been modified by Obsidian sync.
 - The `modified:` timestamp in frontmatter changes frequently via iCloud sync; use other properties as unique anchors for StrReplace.
 - Batch edits where possible to minimize round-trips, but never edit a file without reading it first.
 - Interview notes use the **co-interviewer** (not the candidate) as Participants. If it was a solo interview, use `[[@Me]]`.
+- This workspace may not be a git repo. If `git status` fails, skip the commit step entirely without error.
