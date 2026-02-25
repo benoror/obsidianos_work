@@ -106,6 +106,10 @@ Case-insensitive matching. If no shorthand matches and the folder doesn't exist,
 6. **Create the file** following the same steps as Mode A (steps 3-6).
 7. **Pre-fill Participants** from calendar attendees by matching against `Teams/People/` files. Use `[[@Name]]` wikilink format. Flag any unmatched attendees.
 
+## Offer to Commit
+
+See [/commit](../commit/SKILL.md).
+
 ## Important Notes
 
 - Always use the Write tool to create new files — never shell commands.

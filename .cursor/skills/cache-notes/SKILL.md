@@ -136,6 +136,10 @@ Use grep to find candidates:
 - Re-fetch all providers and re-build the section.
 - Update `NotesCached:` timestamp.
 
+## Offer to Commit
+
+See [/commit](../commit/SKILL.md).
+
 ## Important Notes
 
 - Always read a file before editing — frontmatter may have changed via iCloud sync.
