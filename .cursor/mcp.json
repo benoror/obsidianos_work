@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "qmd": {
-      "command": "qmd",
-      "args": ["mcp"]
+      "command": "npx",
+      "args": ["qmd", "mcp"]
     },
     "google-workspace": {
       "command": "uvx",

@@ -1,3 +1,4 @@
 **/.DS_Store
 .trash/
 .obsidian/workspace.json
+node_modules/
