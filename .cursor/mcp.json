@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "qmd": {
+      "command": "qmd",
+      "args": ["mcp"]
+    },
     "google-workspace": {
       "command": "uvx",
       "args": [
