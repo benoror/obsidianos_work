@@ -11,7 +11,8 @@ Custom Cursor skills live in `.cursor/skills/`. Each has a `SKILL.md` with usage
 | [meeting](.cursor/skills/meeting/SKILL.md) | Create a meeting note | |
 | ├ `/meeting {title}` | Manual creation with today's date | `folder={subfolder}` |
 | ├ `/meeting` | Pick from today's Google Calendar events | |
-| └ `/meeting wrap <path>` | Wrap up: cache → participants → todos → commit | |
+| ├ `/meeting wrap <path>` | Wrap up: cache → participants → todos → commit | |
+| └ `/meeting wrap pending [dates]` | Find & wrap all pending meetings | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |
 | [cache-notes](.cursor/skills/cache-notes/SKILL.md) | Fetch & embed AI transcripts as Obsidian callouts | |
 | ├ `/cache-notes <path>` | Cache a specific meeting file (prompts for URLs if empty) | |
 | ├ `/cache-notes all` | Batch-cache all uncached meetings | |

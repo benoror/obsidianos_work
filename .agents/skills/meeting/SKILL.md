@@ -11,6 +11,7 @@ description: Creates a new Obsidian meeting note or wraps up an existing one. Su
 - `/meeting {title} folder={subfolder}` — Create in a specific subfolder under `Meetings/`.
 - `/meeting` (no args) — List today's Google Calendar events and let the user pick one. *(Requires Google Calendar MCP — see Setup below.)*
 - `/meeting wrap <path>` — Wrap up an existing meeting by running `/cache-notes`, `/fill-participants`, and `/followup-todos` in sequence, with a single commit at the end.
+- `/meeting wrap pending [<dates>]` — Find meetings missing any wrap step and wrap them in sequence. Optional date filter (see Mode D).
 
 ## Workspace Layout
 
@@ -124,9 +125,69 @@ This is a **sequenced workflow** — sub-skills skip their individual commit ste
 
 Between each sub-skill, re-read the file to pick up changes from the previous step.
 
+## Mode D: Wrap Pending (`/meeting wrap pending`)
+
+**Input**: `/meeting wrap pending [<dates>]`
+
+Finds all meetings under `Meetings/` that haven't been fully wrapped and runs the wrap sequence (Mode C) on each.
+
+### Pending Detection
+
+A meeting is **pending** when it is missing any of these frontmatter properties:
+
+| Property | Set by |
+|----------|--------|
+| `Notes:` with URLs (not empty/absent) | User or `/cache-notes` prompt |
+| `NotesCached:` | `/cache-notes` |
+| `Participants:` | `/fill-participants` |
+| `TodosExtracted:` | `/followup-todos` |
+
+For each pending file, show which steps are missing so the user knows what to expect.
+
+### Date Filtering
+
+When `<dates>` is provided, only consider meetings whose date matches. The date is extracted from the filename (`YYYY-MM-DD` pattern — either `{Title} - YYYY-MM-DD.md` or `YYYY-MM-DD.md` for scrum dailies).
+
+| Input | Matches |
+|-------|---------|
+| *(omitted)* | All pending meetings |
+| `today` | Today's date |
+| `yesterday` | Yesterday's date |
+| `this week` | Monday through today (current week) |
+| `last week` | Previous Monday through Sunday |
+| `2026-02-25` | Specific date |
+| `2026-01-01..2026-02-03` | Inclusive date range |
+
+Literals are case-insensitive.
+
+### Workflow
+
+1. **Scan** all `.md` files under `Meetings/` recursively.
+2. **Read frontmatter** of each file. Check for the four properties above.
+3. **Filter by date** if `<dates>` was provided.
+4. **Present the pending list** to the user as a table:
+
+```
+| # | File | Missing | Date |
+|---|------|---------|------|
+| 1 | Meetings/PAM/Some Meeting - 2026-02-20.md | Notes URLs, Cache, Todos | 2026-02-20 |
+| 2 | Meetings/Eng/Sync - 2026-02-22.md | Participants, Todos | 2026-02-22 |
+| 3 | Meetings/PAM/Scrum/2026-02-25.md | Cache, Todos | 2026-02-25 |
+```
+
+5. **Ask the user** which meetings to wrap (e.g. "all", "1,3", "none").
+6. **For each selected meeting**, run the Mode C wrap sequence (`/cache-notes` → `/fill-participants` → `/followup-todos`). Pause between meetings for user input (URLs, todo confirmation, etc.).
+7. **Commit once** at the end — stage all files modified across all wrapped meetings. Commit message: `update: /meeting wrap pending — N meetings`.
+
+### Batch Behavior
+
+- Process meetings **oldest first** (by date from filename).
+- Between each meeting, print a separator with the current file and progress (e.g. `[2/5] Wrapping: Meetings/PAM/...`).
+- If a meeting fails mid-wrap (e.g. Google Docs API error), report the error, skip it, and continue with the next.
+
 ## Offer to Commit
 
-See [/commit](../commit/SKILL.md). Applies to Mode A and Mode B only — Mode C handles its own commit at the end of the sequence.
+See [/commit](../commit/SKILL.md). Applies to Mode A and Mode B only — Modes C and D handle their own commits at the end of the sequence.
 
 ## Important Notes
 

@@ -101,9 +101,9 @@ Insert the confirmed todos into the note body:
 - Use `StrReplace` targeting `## AI Transcripts` as the anchor.
 - Group by owner if multiple people are involved.
 
-### Step 5: Offer to mark as processed
+### Step 5: Mark as processed
 
-After inserting, optionally add a `TodosExtracted: YYYY-MM-DDTHH:MM:SS-06:00` frontmatter property to prevent re-processing.
+After inserting, add a `TodosExtracted: YYYY-MM-DDTHH:MM:SS-06:00` frontmatter property to prevent re-processing. This is required — `/meeting wrap pending` relies on it to detect unprocessed meetings.
 
 ### Step 6: Offer to commit
 
