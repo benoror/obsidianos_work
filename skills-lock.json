@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "qmd": {
+      "source": "tobi/qmd",
+      "sourceType": "github",
+      "computedHash": "4944d0c1ce8695f6dd6a5582c05dc50baaa9ff93ac5a1964a2ed46d21c7a0283"
+    }
+  }
+}
