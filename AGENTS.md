@@ -27,6 +27,9 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [followup-todos](.agents/skills/followup-todos/SKILL.md)       | Extract action items as Obsidian Tasks checkboxes          |                                                             |
 | ├ `/followup-todos <path>`                                     | Extract from a specific meeting note                       |                                                             |
 | └ `/followup-todos`                                            | Pick from recent meetings                                  |                                                             |
+| [recap](.agents/skills/recap/SKILL.md)                         | Produce a recap from emails, Slack, Jira, and vault notes  |                                                             |
+| ├ `/recap`                                                     | Recap current week (Monday through today)                  |                                                             |
+| └ `/recap [dates]`                                             | Recap a specific date range                                | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |
 | [commit](.agents/skills/commit/SKILL.md)                       | Stage and commit with inferred or explicit message         |                                                             |
 | ├ `/commit`                                                    | Infer message from diff (staged or unstaged)               |                                                             |
 | ├ `/commit <description>`                                      | Craft message from user-provided intent                    |                                                             |

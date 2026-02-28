@@ -84,9 +84,16 @@ Use tab indentation:
 
 ## Workflow
 
-### Step 1: Read the meeting note
+### Step 1: Read the meeting note and gather context
 
-Read the entire file. Extract action items from **all** content sources, skipping only existing `- [ ]` / `- [x]` todo lines:
+See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
+
+Read the entire file. Also read `Tracker.md` to cross-reference Jira tickets and current task status — this helps:
+- **Set priority**: A ticket already marked `🔺` in the Tracker should keep that priority.
+- **Avoid duplicates**: If a todo already exists in the Tracker for the same Jira ticket, flag it in the proposal table (Step 3) rather than creating a duplicate.
+- **Add context**: If the meeting references a Jira ticket ID (e.g. `PAMENG-1456`), pull its current status and assignee from the Tracker.
+
+Extract action items from **all** content sources, skipping only existing `- [ ]` / `- [x]` todo lines:
 
 1. **Manual notes** (between frontmatter `---` and `## AI Transcripts`): The user may have jotted down action items, commitments, or follow-ups during the meeting as free text (e.g. "- Talk to Chris about X", "Need to review Y"). These are first-class sources. Skip lines that are already checkboxes (`- [*]` — any single character between brackets).
 2. **`[!gemini_todos]` callout**: Gemini's "Suggested Next Steps" — explicit action items.

@@ -47,9 +47,11 @@ Team links use `[[+TeamName]]` matching filenames in `Teams/` (without the `.md`
 
 ### Step 1: Identify targets
 
+See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
+
 **Mode A (`all`):**
-1. List all `.md` files under `Meetings/`.
-2. Grep for files that have `^Participants:` — these already have it.
+1. Discover meeting files using QMD: `qmd-multi_get` with glob `Meetings/**/*.md` to list all meetings (any naming format).
+2. For each file, read frontmatter and check if `Participants:` exists — files that have it are already done.
 3. The difference is the set of files missing Participants.
 
 **Mode B (specific file):**
@@ -69,6 +71,8 @@ For each meeting missing Participants, determine attendees using this priority:
 4. **Folder conventions** — Files under `Meetings/PAM/Scrum/` are typically `[[+PAM]]` meetings (daily standups, sprint planning, retros, grooming).
 
 5. **Similar meetings** — Check if a recurring meeting (same name, different date) already has Participants set, and reuse that pattern.
+
+6. **Tracker.md** — Read `Tracker.md` and scan for `[[@Name]]` wikilinks associated with Jira tickets mentioned in the meeting note. This helps resolve ambiguous names (e.g. Gemini's "someone in [location]") when a ticket assignee matches the context.
 
 ### Step 3: Match names to People.base
 

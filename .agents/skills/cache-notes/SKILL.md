@@ -117,7 +117,7 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 
 ### Mode: All (`/cache-notes all`)
 
-1. Find all `.md` files under `Meetings/` that have `Notes:` with a Google Docs URL but no `NotesCached:`.
+1. Discover uncached files using QMD (see [Detecting Uncached Files](#detecting-uncached-files)).
 2. Present the list to the user with count. Ask for confirmation before proceeding.
 3. Process each file per the specific-file workflow above.
 4. Report results: successes, failures, skipped (Otter-only).
@@ -174,14 +174,17 @@ Verification is skipped for:
 
 ## Detecting Uncached Files
 
+See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
+
 A file needs caching when:
 - Frontmatter has `Notes:` containing a `docs.google.com` URL
 - Frontmatter does NOT have `NotesCached:`
 
-Use grep to find candidates:
-- Has Google Docs link: `grep -rl 'docs.google.com/document' Meetings/`
-- Already cached: `grep -rl '^NotesCached:' Meetings/`
-- Difference = files needing caching
+Use QMD to discover candidates:
+1. `qmd-search` with query `docs.google.com/document` to find files containing Google Docs links under `Meetings/`.
+2. For each candidate, read its frontmatter and check for `NotesCached:` — if present, skip it.
+
+Grep (`Grep` tool) is still appropriate for the frontmatter-presence check (`NotesCached:`) since that's an exact-string lookup on already-identified files.
 
 ## Refresh Mode
 

@@ -162,9 +162,11 @@ Literals are case-insensitive.
 
 ### Workflow
 
-1. **Scan** all `.md` files under `Meetings/` recursively.
-2. **Read frontmatter** of each file. Check for the four properties above.
-3. **Filter by date** if `<dates>` was provided.
+See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
+
+1. **Discover** meeting files using QMD: `qmd-search` for files under `Meetings/` (any naming format). For date-filtered runs, search by date strings (`YYYY-MM-DD`) in the range. For unfiltered runs, use `qmd-multi_get` with glob `Meetings/**/*.md` to get all files.
+2. **Read frontmatter** of each discovered file. Check for the four properties above.
+3. **Filter by date** if `<dates>` was provided. Extract the date from the filename (`YYYY-MM-DD` pattern — files use varying formats, don't assume a specific naming convention).
 4. **Present the pending list** to the user as a table:
 
 ```
