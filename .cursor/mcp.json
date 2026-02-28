@@ -8,10 +8,24 @@
       "command": "sh",
       "args": [
         "-c",
-        ". ./.env && exec uvx workspace-mcp --tools docs drive calendar gmail"
+        "set -a && . \"$WORKSPACE_DIR/.env\" && set +a && exec uvx --from 'git+https://github.com/taylorwilsdon/google_workspace_mcp.git' workspace-mcp --tools docs drive calendar"
       ],
       "env": {
-        "OAUTHLIB_INSECURE_TRANSPORT": "1"
+        "OAUTHLIB_INSECURE_TRANSPORT": "1",
+        "WORKSPACE_MCP_PORT": "8000",
+        "WORKSPACE_DIR": "<ABSOLUTE_PATH_TO_THIS_REPO>"
+      }
+    },
+    "google-gmail-readonly": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "set -a && . \"$WORKSPACE_DIR/.env\" && set +a && exec uvx --from 'git+https://github.com/taylorwilsdon/google_workspace_mcp.git' workspace-mcp --tools gmail --read-only"
+      ],
+      "env": {
+        "OAUTHLIB_INSECURE_TRANSPORT": "1",
+        "WORKSPACE_MCP_PORT": "8001",
+        "WORKSPACE_DIR": "<ABSOLUTE_PATH_TO_THIS_REPO>"
       }
     }
   }
