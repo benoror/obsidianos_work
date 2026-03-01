@@ -8,7 +8,7 @@ description: "Extract action items as Obsidian Tasks checkboxes (with confirmati
 ## Usage
 
 - `/followup-todos <path>` — Extract and propose todos from a specific meeting note.
-- `/followup-todos` (no args) — Let the user pick a recent meeting.
+- `/followup-todos` (no args) — Run [/note-status pending --step=todos](../note-status/SKILL.md#pending-mode) to show meetings missing todo extraction. The user picks one (or more) to process.
 
 ## Prerequisites
 

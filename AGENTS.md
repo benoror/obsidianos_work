@@ -32,7 +32,8 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [note-status](.agents/skills/note-status/SKILL.md)             | Verify meeting notes are fully processed                   |                                                             |
 | ├ `/note-status <path>`                                        | Check a specific note                                      |                                                             |
 | ├ `/note-status [dates]`                                       | Check notes in a date range                                | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |
-| └ `/note-status all`                                           | Check every meeting note                                   |                                                             |
+| ├ `/note-status all`                                           | Check every meeting note                                   |                                                             |
+| └ `/note-status pending [dates]`                               | Filter to pending, prompt selection                        | `--step=notes\|cache\|participants\|todos`                  |
 | [commit](.agents/skills/commit/SKILL.md)                       | Stage and commit with flexible intent parsing              |                                                             |
 | ├ `/commit`                                                    | Staged files, or infer related changes                     |                                                             |
 | ├ `/commit <file or folder>`                                   | Scope commit to a specific path                            |                                                             |

@@ -33,12 +33,9 @@ Participants: "[[+PAM]]"
 
 ### Step 1: Identify targets
 
-See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
-
 **Mode A (`all`):**
-1. Discover meeting files using QMD: `qmd-multi_get` with glob `Meetings/**/*.md` to list all meetings (any naming format).
-2. For each file, read frontmatter and check if `Participants:` exists — files that have it are already done.
-3. The difference is the set of files missing Participants.
+
+Run [/note-status pending --step=participants](../note-status/SKILL.md#pending-mode) to discover notes missing `Participants:`, present them, and let the user select which to process.
 
 **Mode B (specific file):**
 1. Read the specified file.

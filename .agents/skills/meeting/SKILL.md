@@ -113,24 +113,21 @@ Between each sub-skill, re-read the file to pick up changes from the previous st
 
 Finds all meetings under `Meetings/` that haven't been fully wrapped and runs the wrap sequence (Mode C) on each.
 
-### Pending Detection
+### Pending Detection & Selection
 
-Delegate to [/note-status](../note-status/SKILL.md). Run `/note-status [<dates>]` (or `/note-status all` when no dates given) to get the list of pending meetings and their per-step status. See that skill for the full processing checklist and detection rules.
+Delegate to [/note-status pending](../note-status/SKILL.md#pending-mode). This handles discovery, frontmatter checks, filtering, presentation, and user selection in one step.
 
 ### Date Filtering
 
 See [date-filter](../_shared/date-filter.md) for the full syntax and date parsing rules.
 
-When `<dates>` is provided, pass it through to `/note-status`. Default (omitted): all pending meetings (`/note-status all`).
+When `<dates>` is provided, pass it through to `/note-status pending`. Default (omitted): all pending meetings (`/note-status pending`).
 
 ### Workflow
 
-1. **Run `/note-status`** with the appropriate date filter (or `all`). This discovers meeting files, reads frontmatter, and returns the status of each note.
-2. **Filter to pending** — keep only notes where at least one step is missing.
-3. **Present the pending list** to the user using the table from `/note-status` output, filtered to pending notes only.
-4. **Ask the user** which meetings to wrap (e.g. "all", "1,3", "none").
-5. **For each selected meeting**, run the Mode C wrap sequence (`/cache-notes` → `/fill-participants` → `/followup-todos`). Pause between meetings for user input (URLs, todo confirmation, etc.).
-6. **Commit once** at the end — stage all files modified across all wrapped meetings. Commit message: `update: /meeting wrap pending — N meetings`.
+1. **Run `/note-status pending [<dates>]`**. This discovers meeting files, filters to notes with any missing step, presents the status table, and prompts the user to select which meetings to wrap. Returns the selected file paths.
+2. **For each selected meeting**, run the Mode C wrap sequence (`/cache-notes` → `/fill-participants` → `/followup-todos`). Pause between meetings for user input (URLs, todo confirmation, etc.).
+3. **Commit once** at the end — stage all files modified across all wrapped meetings. Commit message: `update: /meeting wrap pending — N meetings`.
 
 ### Batch Behavior
 

@@ -117,10 +117,9 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 
 ### Mode: All (`/cache-notes all`)
 
-1. Discover uncached files using QMD (see [Detecting Uncached Files](#detecting-uncached-files)).
-2. Present the list to the user with count. Ask for confirmation before proceeding.
-3. Process each file per the specific-file workflow above.
-4. Report results: successes, failures, skipped (Otter-only).
+1. Run [/note-status pending --step=cache](../note-status/SKILL.md#pending-mode) to discover notes that have cacheable URLs but no `NotesCached:` yet, present them, and let the user select which to process.
+2. Process each selected file per the specific-file workflow above.
+3. Report results: successes, failures, skipped (Otter-only).
 
 ## URL Verification
 
@@ -161,17 +160,7 @@ Verification is skipped for:
 
 ## Detecting Uncached Files
 
-See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
-
-A file needs caching when:
-- Frontmatter has `Notes:` containing a `docs.google.com` URL
-- Frontmatter does NOT have `NotesCached:`
-
-Use QMD to discover candidates:
-1. `qmd-search` with query `docs.google.com/document` to find files containing Google Docs links under `Meetings/`.
-2. For each candidate, read its frontmatter and check for `NotesCached:` — if present, skip it.
-
-Grep (`Grep` tool) is still appropriate for the frontmatter-presence check (`NotesCached:`) since that's an exact-string lookup on already-identified files.
+Delegate to [/note-status pending --step=cache](../note-status/SKILL.md#pending-mode). That skill handles discovery, frontmatter checks, and the dependency chain (only notes with `Notes:` containing a supported provider URL are considered actionable for caching). See [/note-status § Dependency Chain](../note-status/SKILL.md#dependency-chain) for the full rules.
 
 ## Refresh Mode
 
