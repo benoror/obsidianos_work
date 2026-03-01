@@ -26,9 +26,14 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [recap](.agents/skills/recap/SKILL.md)                         | Produce a recap from emails, Slack, Jira, and vault notes  |                                                             |
 | ├ `/recap`                                                     | Recap current week (Monday through today)                  |                                                             |
 | └ `/recap [dates]`                                             | Recap a specific date range                                | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |
-| [commit](.agents/skills/commit/SKILL.md)                       | Stage and commit with inferred or explicit message         |                                                             |
-| ├ `/commit`                                                    | Infer message from diff (staged or unstaged)               |                                                             |
-| ├ `/commit <description>`                                      | Craft message from user-provided intent                    |                                                             |
+| [sync-upstream-obsidianos](.agents/skills/sync-upstream-obsidianos/SKILL.md) | Pull structural updates from upstream ObsidianOS |                                                             |
+| ├ `/sync-upstream-obsidianos`                                  | Preview and merge upstream updates                         |                                                             |
+| └ `/sync-upstream-obsidianos preview`                          | Show what's new without merging                            |                                                             |
+| [commit](.agents/skills/commit/SKILL.md)                       | Stage and commit with flexible intent parsing              |                                                             |
+| ├ `/commit`                                                    | Staged files, or infer related changes                     |                                                             |
+| ├ `/commit <file or folder>`                                   | Scope commit to a specific path                            |                                                             |
+| ├ `/commit <description>`                                      | Infer scope from free-text intent                          |                                                             |
+| ├ `/commit amend [scope/description]`                          | Amend last commit (with optional scope or new message)     |                                                             |
 | └ *(sequence mode)*                                            | Deferred — sub-skills skip, caller commits once at the end |                                                             |
 
 ## Rules
