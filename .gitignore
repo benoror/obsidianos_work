@@ -1,5 +1,7 @@
 .env
 **/.DS_Store
 .trash/
-.obsidian
 node_modules/
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspaces.json
