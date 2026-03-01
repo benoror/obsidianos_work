@@ -18,7 +18,7 @@ Never duplicate these workflows — always delegate.
 
 Skills live in `.agents/skills/{skill-name}/SKILL.md`. Follow the existing pattern:
 
-1. YAML frontmatter with `name` and `description`
+1. YAML frontmatter with `name`, `description`, `license: MIT`, and optionally `compatibility` (MCP server dependencies)
 2. `## Usage` — slash-command syntax
 3. `## Workflow` — numbered steps
 4. Commit step (see above) — before Important Notes

@@ -9,11 +9,11 @@ const SKILLS_DIR = join(ROOT, ".agents/skills");
 // Dirs under .agents/skills/ that are not skills
 const SKIP_DIRS = new Set(["_shared"]);
 
-// Skills with 'license' in frontmatter are third-party/bundled.
+// Skills with 'metadata' in frontmatter are third-party/bundled (e.g. qmd).
 // They get structure checks but are excluded from registry sync.
 function isThirdParty(skill) {
   const content = readFile(join(SKILLS_DIR, skill, "SKILL.md"));
-  return /^license:/m.test(content.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "");
+  return /^metadata:/m.test(content.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "");
 }
 
 // ---------------------------------------------------------------------------
@@ -107,6 +107,22 @@ function extractLinks(content) {
   return links;
 }
 
+// Known MCP servers referenced in compatibility fields
+const KNOWN_MCP_SERVERS = new Set(["google-workspace", "qmd"]);
+
+/**
+ * Check if a skill's body references MCP tools/servers but lacks a
+ * compatibility field. Returns the server names found in the body.
+ */
+function detectMcpUsage(content) {
+  const found = new Set();
+  if (/google-workspace|get_doc_content|get_doc_as_markdown|Google Calendar MCP|Google Docs API/i.test(content))
+    found.add("google-workspace");
+  if (/\bqmd[_-](?:search|vector_search|get|multi_get|deep_search)\b|QMD.*discovery|Use QMD/i.test(content))
+    found.add("qmd");
+  return found;
+}
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -131,6 +147,13 @@ describe("Skill structure", () => {
         );
       });
 
+      it("has 'license' in frontmatter", () => {
+        assert.ok(
+          fm.license,
+          `${skill}/SKILL.md missing frontmatter 'license'`
+        );
+      });
+
       it("has ## Usage section", { skip: isThirdParty(skill) }, () => {
         assert.ok(
           /^## Usage/m.test(content),
@@ -146,6 +169,45 @@ describe("Skill structure", () => {
         );
       });
     });
+  }
+});
+
+describe("Compatibility", () => {
+  for (const skill of skills) {
+    const path = join(SKILLS_DIR, skill, "SKILL.md");
+    const content = readFile(path);
+    const fm = parseFrontmatter(content);
+    const mcpUsed = detectMcpUsage(content);
+
+    if (mcpUsed.size > 0) {
+      it(`${skill} references MCP servers and declares compatibility`, () => {
+        assert.ok(
+          fm.compatibility,
+          `${skill}/SKILL.md uses ${[...mcpUsed].join(", ")} but has no 'compatibility' field`
+        );
+      });
+
+      it(`${skill} compatibility mentions all used MCP servers`, () => {
+        for (const server of mcpUsed) {
+          assert.ok(
+            fm.compatibility.includes(server),
+            `${skill}/SKILL.md uses '${server}' but compatibility doesn't mention it: '${fm.compatibility}'`
+          );
+        }
+      });
+    }
+
+    if (fm.compatibility) {
+      it(`${skill} compatibility references known MCP servers`, () => {
+        const mentioned = [...KNOWN_MCP_SERVERS].filter((s) =>
+          fm.compatibility.includes(s)
+        );
+        assert.ok(
+          mentioned.length > 0,
+          `${skill}/SKILL.md has compatibility '${fm.compatibility}' but doesn't reference any known MCP server`
+        );
+      });
+    }
   }
 });
 

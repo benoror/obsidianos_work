@@ -1,6 +1,7 @@
 ---
 name: people-resolver
 description: "Shared convention for resolving names to [[@Name]] wikilinks using Teams/People/ files. Covers name dictionary, matching rules, and user identity."
+license: MIT
 ---
 
 # People Resolver — Shared Convention

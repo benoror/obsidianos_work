@@ -1,6 +1,7 @@
 ---
 name: date-filter
 description: "Shared convention for date filtering syntax and multi-format date parsing. Referenced by skills that accept [dates] arguments or parse dates from filenames/content."
+license: MIT
 ---
 
 # Date Filter — Shared Convention

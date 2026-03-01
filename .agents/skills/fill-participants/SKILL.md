@@ -1,6 +1,8 @@
 ---
 name: fill-participants
 description: "Resolve and fill Participants frontmatter + link unlinked names in body. Args: <path>, all."
+license: MIT
+compatibility: google-workspace MCP (Docs, optional — enhances name resolution from Gemini notes)
 ---
 
 # Fill Participants

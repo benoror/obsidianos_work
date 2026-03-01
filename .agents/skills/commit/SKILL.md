@@ -1,6 +1,7 @@
 ---
 name: commit
 description: "Stage and commit with flexible intent parsing. Accepts file/folder scope, free-text description, amend, or any combination."
+license: MIT
 ---
 
 # Commit

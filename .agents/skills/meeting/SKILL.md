@@ -1,6 +1,8 @@
 ---
 name: meeting
 description: "Create or wrap meeting notes. Args: {title} [folder=X], wrap <path>, wrap pending [today|this week|dates]. No args = pick from Google Calendar."
+license: MIT
+compatibility: google-workspace MCP (Calendar, optional — only for calendar mode)
 ---
 
 # Meeting

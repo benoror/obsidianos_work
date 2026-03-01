@@ -1,6 +1,7 @@
 ---
 name: vault-context
 description: "Shared convention for gathering vault context via QMD. Referenced by skills that need to search meeting notes, tracker, or other vault content."
+license: MIT
 ---
 
 # Vault Context — Shared Convention

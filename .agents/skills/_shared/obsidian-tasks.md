@@ -1,6 +1,7 @@
 ---
 name: obsidian-tasks
 description: "Shared convention for Obsidian Tasks plugin syntax: checkbox states, task components, priorities, date inference, and nesting."
+license: MIT
 ---
 
 # Obsidian Tasks — Shared Convention

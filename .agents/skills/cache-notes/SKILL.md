@@ -1,6 +1,8 @@
 ---
 name: cache-notes
 description: "Fetch & embed AI transcripts as Obsidian callouts. Args: <path>, all, refresh <path>. Prompts for URLs if empty."
+license: MIT
+compatibility: Requires google-workspace MCP (Docs)
 ---
 
 # Cache Notes

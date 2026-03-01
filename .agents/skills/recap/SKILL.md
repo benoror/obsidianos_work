@@ -1,6 +1,8 @@
 ---
 name: recap
 description: "Produce a weekly/date-range recap from emails, Slack, Jira/Confluence, and vault notes. Args: [dates]. Default = this week."
+license: MIT
+compatibility: qmd MCP + google-workspace MCP (Calendar, Gmail). Degrades gracefully when unavailable.
 ---
 
 # Recap

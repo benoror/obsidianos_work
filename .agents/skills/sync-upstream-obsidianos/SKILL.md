@@ -1,6 +1,7 @@
 ---
 name: sync-upstream-obsidianos
 description: "Pull structural updates from upstream ObsidianOS into the local vault."
+license: MIT
 ---
 
 # Sync Upstream ObsidianOS

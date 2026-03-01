@@ -1,6 +1,7 @@
 ---
 name: followup-todos
 description: "Extract action items as Obsidian Tasks checkboxes (with confirmation). Args: <path>. No args = pick from recent meetings."
+license: MIT
 ---
 
 # Follow-up Todos
