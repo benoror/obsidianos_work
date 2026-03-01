@@ -1,0 +1,11 @@
+# Paths to exclude after merging from upstream.
+# These are example/generic files from the public repo that shouldn't
+# exist in a populated private vault. One glob pattern per line.
+# Lines starting with # are comments. Blank lines are ignored.
+
+# Example vault content from upstream
+Meetings/Example Meeting*
+Teams/+Engineering.md
+Teams/People/@Jane Doe.md
+
+# Add your own excludes below:

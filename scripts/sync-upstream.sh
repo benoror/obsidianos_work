@@ -114,23 +114,65 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
   exit 0
 fi
 
-# --- Merge ---
+# --- Merge (no auto-commit so we can clean up excluded files) ---
 echo ""
 echo "Merging $UPSTREAM..."
 
-if git merge "$UPSTREAM" --no-ff -m "sync: pull structural updates from $REMOTE"; then
+MERGE_OK=true
+if ! git merge "$UPSTREAM" --no-ff --no-commit; then
+  MERGE_OK=false
+  echo ""
+
+  CONFLICTS=$(git diff --name-only --diff-filter=U)
+  if [[ -n "$CONFLICTS" ]]; then
+    echo "Merge has conflicts. Resolve them, then run this script again or commit manually."
+    echo ""
+    echo "Files with conflicts:"
+    echo "$CONFLICTS"
+    echo ""
+    echo "Remember: files listed in .gitattributes should auto-keep your local version."
+    echo "If a protected file has conflicts, something may be wrong with the merge driver setup."
+    exit 1
+  fi
+fi
+
+# --- Remove excluded files (.sync-exclude) ---
+EXCLUDE_FILE=".sync-exclude"
+EXCLUDED_COUNT=0
+
+if [[ -f "$EXCLUDE_FILE" ]]; then
+  while IFS= read -r pattern || [[ -n "$pattern" ]]; do
+    # Skip comments and blank lines
+    [[ -z "$pattern" || "$pattern" == \#* ]] && continue
+
+    # Find staged files matching the glob pattern and remove them
+    while IFS= read -r file; do
+      [[ -z "$file" ]] && continue
+      git rm -f --quiet "$file" 2>/dev/null && {
+        echo "  Excluded: $file"
+        ((EXCLUDED_COUNT++))
+      }
+    done < <(git diff --staged --name-only --diff-filter=A | grep -E "^$(echo "$pattern" | sed 's/\*/.*/')\$" 2>/dev/null || true)
+  done < "$EXCLUDE_FILE"
+
+  if [[ $EXCLUDED_COUNT -gt 0 ]]; then
+    echo ""
+    echo "Removed $EXCLUDED_COUNT excluded file(s) from .sync-exclude."
+  fi
+fi
+
+# --- Commit ---
+echo ""
+
+if git diff --staged --quiet; then
+  echo "No changes to commit after exclusions."
+  git merge --abort 2>/dev/null || true
+else
+  echo "Staged changes:"
+  git diff --staged --stat
+  echo ""
+  git commit -m "sync: pull structural updates from $REMOTE"
   echo ""
   echo "Merge complete."
   git log -1 --oneline
-else
-  echo ""
-  echo "Merge has conflicts. Resolve them, then:"
-  echo "  git add <resolved-files>"
-  echo "  git commit"
-  echo ""
-  echo "Files with conflicts:"
-  git diff --name-only --diff-filter=U
-  echo ""
-  echo "Remember: files listed in .gitattributes should auto-keep your local version."
-  echo "If a protected file has conflicts, something may be wrong with the merge driver setup."
 fi
