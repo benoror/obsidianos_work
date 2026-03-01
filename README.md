@@ -2,9 +2,29 @@
   <img src=".assets/ObsidianOS-logo.png" alt="ObsidianOS" width="480" />
 </p>
 
-# ObsidianOS - Work
+# ObsidianOS: Work
 
-An Obsidian vault wired with AI agent skills. Agents can create meeting notes from Google Calendar, cache AI transcripts, resolve participants, extract follow-up todos, produce weekly recaps, and commit changes — all via slash commands.
+An Obsidian vault wired with AI agent skills — an **Agentic Operating System for Thinkers**.
+
+## Sneak Peek
+
+Slash commands that run inside your vault, powered by any AI agent:
+
+```
+/meeting                  → Create notes from Google Calendar
+/cache-notes              → Embed AI meeting transcripts
+/fill-participants        → Resolve names to [[@Person]] wikilinks
+/followup-todos           → Extract action items as checkboxes
+/recap                    → Weekly summary from email, Slack, Jira & vault
+/commit                   → Stage & commit with inferred intent
+/sync-upstream-obsidianos → Pull updates from upstream ObsidianOS
+```
+
+Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [OpenCode](https://github.com/opencode-ai/opencode), or any MCP-compatible client. Clone it, fill in `USER.md`, and go.
+
+<p align="center">
+  <a href=".assets/demo.png"><img src=".assets/demo.png" alt="Demo screenshot" width="720" /></a>
+</p>
 
 ## Compatible agents
 
