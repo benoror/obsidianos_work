@@ -83,7 +83,7 @@ Insert the confirmed todos into the note body. Placement depends on the note's t
 
 #### Daily Standup notes (`Meetings/*/Scrum/YYYY-MM-DD.md`)
 
-These follow the [Daily Standup template](../../Templates/Daily%20Standup.md):
+These follow the [Daily Standup template](../../../Templates/Daily%20Standup.md):
 
 ```
 Yesterday
