@@ -33,12 +33,21 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 
 ## Rules
 
-Cursor rules in `.cursor/rules/` are auto-injected based on glob patterns.
+Shared rules live in `.agents/rules/` and are the single source of truth. Agent-specific wrappers point to them.
 
-| Rule                                                     | Applies to                  | Purpose                                                                                  |
-| -------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------- |
-| [skill-conventions](.cursor/rules/skill-conventions.mdc) | `.agents/skills/**`         | Enforces skill structure, commit step, Obsidian Tasks priorities, and project context    |
-| [skill-registry](.cursor/rules/skill-registry.mdc)       | `.agents/skills/*/SKILL.md` | Keeps skill tables in `skill-conventions.mdc` and `AGENTS.md` in sync when skills change |
+| Rule | Purpose |
+| --- | --- |
+| [qmd-search](.agents/rules/qmd-search.md) | Prefer QMD over grep for vault search (always apply) |
+| [skill-conventions](.agents/rules/skill-conventions.md) | Skill structure, shared conventions, project context |
+| [skill-registry](.agents/rules/skill-registry.md) | Keep skill tables in sync when skills change |
+
+### Agent wrappers
+
+| Agent | Instruction files | How rules are loaded |
+| --- | --- | --- |
+| Cursor | `.cursor/rules/*.mdc` | Auto-injected by glob; each `.mdc` points to `.agents/rules/` |
+| Claude Code | `CLAUDE.md`, `.agents/skills/CLAUDE.md` | Read on startup; point to `.agents/rules/` |
+| OpenCode / Crush | `OpenCode.md` | Read on startup; points to `.agents/rules/` |
 
 ## Vault Layout
 

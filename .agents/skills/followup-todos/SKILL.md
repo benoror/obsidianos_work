@@ -118,7 +118,7 @@ See [/commit](../commit/SKILL.md). Skip when called as part of a sequence (e.g. 
 
 ## Important Notes
 
-- Always read the file before editing — frontmatter may have changed via iCloud sync.
+- Always read the file before editing — frontmatter may have changed since last read.
 - Do NOT duplicate todos that already exist in the note body (compare by description similarity).
 - When in doubt about relevance, include it as `⬜` and let the user decide.
 - If the meeting is old (>2 weeks), flag items that may already be completed and suggest skipping them.

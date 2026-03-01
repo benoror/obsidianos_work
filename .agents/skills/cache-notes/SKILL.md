@@ -186,7 +186,7 @@ See [/commit](../commit/SKILL.md). Skip when called as part of a sequence (e.g. 
 
 ## Important Notes
 
-- Always read a file before editing — frontmatter may have changed via iCloud sync.
+- Always read a file before editing — frontmatter may have changed since last read.
 - Use `StrReplace` for edits, targeting the closing `---` of frontmatter as the anchor.
 - The `Notes:` URLs should NOT be modified — they remain as the canonical source links.
 - `NotesCached:` is the single indicator that caching was done. No other markers.

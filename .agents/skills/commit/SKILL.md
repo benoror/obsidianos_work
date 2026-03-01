@@ -51,7 +51,7 @@ The user provides intent; craft the message from it.
 ### Workflow
 
 1. **Offer to commit**: After all edits are applied, ask the user if they'd like to commit the changes.
-2. **Stage only modified files**: Only stage files that were actually modified by the current skill invocation (or the full sequence). Do NOT stage unrelated files that may have changed via iCloud sync or Obsidian plugins. Use `git add` with **explicit file paths**.
+2. **Stage only modified files**: Only stage files that were actually modified by the current skill invocation (or the full sequence). Do NOT stage unrelated files that may have changed externally or via Obsidian plugins. Use `git add` with **explicit file paths**.
 3. **Commit message**:
    - **Standalone**: `update: /{skill-name} {argument}`
    - **Sequence**: `update: /{workflow-name} {argument}` (e.g. `update: /meeting wrap Meetings/PAM/Some Meeting.md`)

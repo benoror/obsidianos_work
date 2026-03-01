@@ -1,24 +1,6 @@
 ---
-description: When a skill is created, renamed, or deleted, update the skill registry in both skill-conventions.mdc and AGENTS.md
-globs: .cursor/skills/*/SKILL.md
+description: When a skill is created, renamed, or deleted, update the skill registry
+globs: .agents/skills/*/SKILL.md
 ---
 
-# Skill Registry — Keep in Sync
-
-Whenever a skill's `SKILL.md` is **created, updated, or removed**, you MUST also update these two files before finishing:
-
-1. **`.cursor/rules/skill-conventions.mdc`** — update the `## Existing Skills` table.
-2. **`AGENTS.md`** (repo root) — update the `## Skills` table.
-
-Both tables must list every skill in `.cursor/skills/` with its slash command and a short description. Keep them consistent with each other.
-
-## When to trigger
-
-- A new `SKILL.md` is written → add a row to both tables.
-- A skill is renamed or its description changes → update the row in both tables.
-- A skill directory is deleted → remove the row from both tables.
-- A new `.cursor/rules/*.mdc` rule is added or changed → update the `## Rules` table in `AGENTS.md`.
-
-## How to verify
-
-After editing, confirm both tables match the current contents of `.cursor/skills/` and `.cursor/rules/`.
+Read and follow [.agents/rules/skill-registry.md](../../.agents/rules/skill-registry.md).

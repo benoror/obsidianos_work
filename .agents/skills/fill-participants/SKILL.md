@@ -124,7 +124,7 @@ See [/commit](../commit/SKILL.md). Skip when called as part of a sequence (e.g. 
 ## Important Notes
 
 - Always read a file before editing it — frontmatter may have been modified by Obsidian sync.
-- The `modified:` timestamp in frontmatter changes frequently via iCloud sync; use other properties as unique anchors for StrReplace.
+- The `modified:` timestamp in frontmatter changes frequently; use other properties as unique anchors for StrReplace.
 - Batch edits where possible to minimize round-trips, but never edit a file without reading it first.
 - Interview notes use the **co-interviewer** (not the candidate) as Participants. If it was a solo interview, use `[[@Me]]`.
 - This workspace may not be a git repo. If `git status` fails, skip the commit step entirely without error.

@@ -8,8 +8,9 @@ An Obsidian vault wired with AI agent skills. Agents can create meeting notes fr
 |---|---|---|
 | [Cursor](https://cursor.com) IDE | Full | Loads `.cursor/rules/` and `.cursor/mcp.json` automatically |
 | [Cursor CLI](https://docs.cursor.com/cli) (`cursor`) | Full | Same engine in background/headless mode |
-| [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) | Partial | Reads `AGENTS.md` natively; MCP servers need manual config |
-| Other MCP-compatible clients | Partial | Can use the MCP servers; `.cursor/rules/` won't auto-load |
+| [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) | Full | Reads `AGENTS.md` + `CLAUDE.md` natively; see [CLAUDE.md](CLAUDE.md) for MCP setup |
+| [OpenCode](https://github.com/opencode-ai/opencode) / [Crush](https://github.com/charmbracelet/crush) | Full | Reads `OpenCode.md`; see [OpenCode.md](OpenCode.md) for MCP setup |
+| Other MCP-compatible clients | Partial | Can use the MCP servers; agent instructions won't auto-load |
 
 ## Skills
 
