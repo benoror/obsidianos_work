@@ -29,6 +29,10 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [sync-upstream-obsidianos](.agents/skills/sync-upstream-obsidianos/SKILL.md) | Pull structural updates from upstream ObsidianOS |                                                             |
 | ├ `/sync-upstream-obsidianos`                                  | Preview and merge upstream updates                         |                                                             |
 | └ `/sync-upstream-obsidianos preview`                          | Show what's new without merging                            |                                                             |
+| [note-status](.agents/skills/note-status/SKILL.md)             | Verify meeting notes are fully processed                   |                                                             |
+| ├ `/note-status <path>`                                        | Check a specific note                                      |                                                             |
+| ├ `/note-status [dates]`                                       | Check notes in a date range                                | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |
+| └ `/note-status all`                                           | Check every meeting note                                   |                                                             |
 | [commit](.agents/skills/commit/SKILL.md)                       | Stage and commit with flexible intent parsing              |                                                             |
 | ├ `/commit`                                                    | Staged files, or infer related changes                     |                                                             |
 | ├ `/commit <file or folder>`                                   | Scope commit to a specific path                            |                                                             |

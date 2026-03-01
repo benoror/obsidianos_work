@@ -115,43 +115,22 @@ Finds all meetings under `Meetings/` that haven't been fully wrapped and runs th
 
 ### Pending Detection
 
-A meeting is **pending** when it is missing any of these frontmatter properties:
-
-| Property | Set by |
-|----------|--------|
-| `Notes:` with URLs (not empty/absent) | User or `/cache-notes` prompt |
-| `NotesCached:` | `/cache-notes` |
-| `Participants:` | `/fill-participants` |
-| `TodosExtracted:` | `/followup-todos` |
-
-For each pending file, show which steps are missing so the user knows what to expect.
+Delegate to [/note-status](../note-status/SKILL.md). Run `/note-status [<dates>]` (or `/note-status all` when no dates given) to get the list of pending meetings and their per-step status. See that skill for the full processing checklist and detection rules.
 
 ### Date Filtering
 
 See [date-filter](../_shared/date-filter.md) for the full syntax and date parsing rules.
 
-When `<dates>` is provided, only consider meetings whose date matches. Default (omitted): all pending meetings.
+When `<dates>` is provided, pass it through to `/note-status`. Default (omitted): all pending meetings (`/note-status all`).
 
 ### Workflow
 
-See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
-
-1. **Discover** meeting files using QMD: `qmd-search` for files under `Meetings/` (any naming format). For date-filtered runs, search by date strings (`YYYY-MM-DD`) in the range. For unfiltered runs, use `qmd-multi_get` with glob `Meetings/**/*.md` to get all files.
-2. **Read frontmatter** of each discovered file. Check for the four properties above.
-3. **Filter by date** if `<dates>` was provided. Extract the date from the filename (`YYYY-MM-DD` pattern — files use varying formats, don't assume a specific naming convention).
-4. **Present the pending list** to the user as a table:
-
-```
-| # | File | Missing | Date |
-|---|------|---------|------|
-| 1 | Meetings/PAM/Some Meeting - 2026-02-20.md | Notes URLs, Cache, Todos | 2026-02-20 |
-| 2 | Meetings/Eng/Sync - 2026-02-22.md | Participants, Todos | 2026-02-22 |
-| 3 | Meetings/PAM/Scrum/2026-02-25.md | Cache, Todos | 2026-02-25 |
-```
-
-5. **Ask the user** which meetings to wrap (e.g. "all", "1,3", "none").
-6. **For each selected meeting**, run the Mode C wrap sequence (`/cache-notes` → `/fill-participants` → `/followup-todos`). Pause between meetings for user input (URLs, todo confirmation, etc.).
-7. **Commit once** at the end — stage all files modified across all wrapped meetings. Commit message: `update: /meeting wrap pending — N meetings`.
+1. **Run `/note-status`** with the appropriate date filter (or `all`). This discovers meeting files, reads frontmatter, and returns the status of each note.
+2. **Filter to pending** — keep only notes where at least one step is missing.
+3. **Present the pending list** to the user using the table from `/note-status` output, filtered to pending notes only.
+4. **Ask the user** which meetings to wrap (e.g. "all", "1,3", "none").
+5. **For each selected meeting**, run the Mode C wrap sequence (`/cache-notes` → `/fill-participants` → `/followup-todos`). Pause between meetings for user input (URLs, todo confirmation, etc.).
+6. **Commit once** at the end — stage all files modified across all wrapped meetings. Commit message: `update: /meeting wrap pending — N meetings`.
 
 ### Batch Behavior
 

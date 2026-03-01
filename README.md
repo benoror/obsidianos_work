@@ -15,6 +15,7 @@ Slash commands that run inside your vault, powered by any AI agent:
 /cache-notes              → Embed AI meeting transcripts
 /fill-participants        → Resolve names to [[@Person]] wikilinks
 /followup-todos           → Extract action items as checkboxes
+/note-status              → Verify notes are fully processed
 /recap                    → Weekly summary from email, Slack, Jira & vault
 /commit                   → Stage & commit with inferred intent
 /sync-upstream-obsidianos → Pull updates from upstream ObsidianOS
@@ -48,6 +49,7 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | `/fill-participants` | Resolve names in notes to `[[@Person]]` wikilinks |
 | `/followup-todos` | Extract action items as Obsidian Tasks checkboxes |
 | `/recap` | Weekly recap from emails, Slack, Jira, and vault notes |
+| `/note-status` | Verify meeting notes are fully processed (Notes, Cache, Participants, Todos) |
 | `/commit` | Stage and commit — accepts file/folder scope, free-text intent, or `amend` |
 | `/sync-upstream-obsidianos` | Pull structural updates from upstream ObsidianOS |
 

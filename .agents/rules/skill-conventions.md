@@ -50,5 +50,6 @@ Reference these for patterns and to avoid duplication:
 | `/fill-participants` | Resolve and fill Participants frontmatter |
 | `/followup-todos` | Extract action items as Obsidian Tasks checkboxes |
 | `/recap` | Produce a weekly/date-range recap from emails, Slack, Jira/Confluence, and vault notes |
+| `/note-status` | Verify meeting notes are fully processed — shows which wrap steps are complete or missing |
 | `/sync-upstream-obsidianos` | Pull structural updates from upstream ObsidianOS into the local vault |
 | `/commit` | Stage and commit with flexible intent — accepts file/folder scope, free-text description, `amend`, or any combination; supports sequence mode |
