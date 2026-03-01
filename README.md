@@ -173,15 +173,20 @@ git remote add upstream <url-to-this-repo>
 ./.scripts/sync-upstream.sh --preview
 ```
 
+You can also run `/sync-upstream-obsidianos` from any supported agent — it wraps the same script with an interactive preview and merge flow.
+
 Personal paths are protected during merges via `.gitattributes` — your `USER.md`, `Tracker.md`, `.env`, `.cursor/mcp.json`, `Meetings/`, `Teams/`, `Templates/`, and `Recaps/` are always kept as-is. Edit `.gitattributes` to add or remove protected paths.
 
 ## Project structure
 
 ```
 .agents/skills/       Skill definitions (SKILL.md + supporting scripts)
-.cursor/rules/        Cursor rules (auto-injected by glob pattern)
+.agents/rules/        Shared rules (single source of truth for all agents)
+.cursor/rules/        Cursor rules (auto-injected by glob; point to .agents/rules/)
 .cursor/mcp.json      MCP server configuration
 AGENTS.md             Agent reference: skills, conventions, vault layout
+CLAUDE.md             Claude Code instructions + MCP setup
+OpenCode.md           OpenCode / Crush instructions + MCP setup
 USER.md               Vault owner identity (fill in after cloning)
 Templates/            Obsidian note templates
 ```
