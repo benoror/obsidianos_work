@@ -1,0 +1,51 @@
+properties:
+  note.Team:
+    displayName: Team(s)
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - file.name.startsWith("@")
+        - file.folder == "Teams/People"
+    order:
+      - file.name
+      - FullName
+      - Team
+      - Location
+      - Office
+      - file.tags
+      - file.ctime
+    sort:
+      - property: file.name
+        direction: DESC
+      - property: file.ctime
+        direction: DESC
+      - property: Team
+        direction: ASC
+      - property: Location
+        direction: ASC
+      - property: Office
+        direction: ASC
+      - property: formula.Untitled
+        direction: DESC
+      - property: formula.Team
+        direction: ASC
+    columnSize:
+      note.Team: 223
+  - type: list
+    name: View
+  - type: cards
+    name: View 2
+    groupBy:
+      property: Team
+      direction: ASC
+    order:
+      - file.name
+      - FullName
+      - Location
+      - Office
+      - Team
+    sort:
+      - property: Team
+        direction: DESC

@@ -1,0 +1,37 @@
+formulas:
+  last_folder: file.asLink(file.folder.split('/').reverse()[0])
+  NotesCount: if(Notes.isType("list"), Notes.length, if(Notes.length > 0, 1, 0))
+properties:
+  file.name:
+    displayName: title
+  formula.last_folder:
+    displayName: folder
+  note.:
+    displayName: ssss
+views:
+  - type: table
+    name: Table
+    filters:
+      or:
+        - file.folder.contains("Meetings/")
+    order:
+      - file.ctime
+      - formula.last_folder
+      - file.name
+      - Participants
+      - Recording
+    sort:
+      - property: file.ctime
+        direction: DESC
+      - property: Participants
+        direction: ASC
+      - property: formula.last_folder
+        direction: ASC
+      - property: formula.NotesCount
+        direction: ASC
+      - property: Notes
+        direction: DESC
+    summaries: {}
+    columnSize:
+      file.ctime: 166
+      note.Participants: 448
