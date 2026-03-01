@@ -140,6 +140,8 @@ The vault works with vanilla Obsidian, but these community plugins power specifi
 |---|---|---|
 | [Natural Language Dates](https://github.com/argentinaos/nldates-obsidian) | `nldates-obsidian` | Type `@today` or `@next Monday` to insert date links — handy for task due dates |
 | [Calendar](https://github.com/liamcain/obsidian-calendar-plugin) | `calendar` | Sidebar calendar widget for navigating daily/meeting notes by date |
+| [Dataview](https://github.com/blacksmithgu/obsidian-dataview) | `dataview` | Query engine for vault data — tables, lists, and tasks from frontmatter and inline fields |
+| [Open Tab Settings](https://github.com/jessycormier/obsidian-open-tab-settings) | `open-tab-settings` | Tab deduplication and placement control — prevents the same note from opening twice |
 
 ### Optional (cosmetic / workflow)
 
@@ -150,6 +152,9 @@ These are not required by any skill but improve the day-to-day experience:
 | [Obsidian Git](https://github.com/Vinzent03/obsidian-git) | `obsidian-git` | Auto-backup vault to git on a schedule (alternative to `/commit`) |
 | [Auto Card Link](https://github.com/nekoshita/obsidian-auto-card-link) | `auto-card-link` | Paste a URL and get a rich preview card |
 | [File Explorer Note Count](https://github.com/ozntel/file-explorer-note-count) | `file-explorer-note-count` | Shows note count badges on folders |
+| [Icon Folder](https://github.com/FlorianWoworte/obsidian-iconize) | `obsidian-icon-folder` | Custom icons on folders and files in the explorer |
+| [Custom File Explorer Sorting](https://github.com/SebastianMC/obsidian-custom-sort) | `custom-sort` | Manual sorting rules for files and folders in the explorer |
+| [Cycle Through Panes](https://github.com/phibr0/cycle-through-panes) | `cycle-through-panes` | Ctrl/Cmd+Tab to cycle through open tabs like a browser |
 
 ## Updates
 
