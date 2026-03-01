@@ -13,17 +13,16 @@ An Obsidian vault wired with AI agent skills. Agents can create meeting notes fr
 
 ## Skills
 
-| Command | What it does |
+| Skill | What it does |
 |---|---|
-| `/meeting` | Create a meeting note (from Google Calendar or manual) |
-| `/meeting wrap <path>` | Cache transcripts → fill participants → extract todos → commit |
-| `/cache-notes <path>` | Fetch & embed AI meeting transcripts as Obsidian callouts |
-| `/fill-participants <path>` | Resolve names in notes to `[[@Person]]` wikilinks |
-| `/followup-todos <path>` | Extract action items as Obsidian Tasks checkboxes |
+| `/meeting` | Create or wrap up meeting notes (from Google Calendar or manual) |
+| `/cache-notes` | Fetch & embed AI meeting transcripts as Obsidian callouts |
+| `/fill-participants` | Resolve names in notes to `[[@Person]]` wikilinks |
+| `/followup-todos` | Extract action items as Obsidian Tasks checkboxes |
 | `/recap` | Weekly recap from emails, Slack, Jira, and vault notes |
 | `/commit` | Stage and commit with an auto-inferred message |
 
-See [AGENTS.md](AGENTS.md) for the full skill reference, vault conventions, and rules.
+Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGENTS.md) for the full reference.
 
 ## Prerequisites
 
