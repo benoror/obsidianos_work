@@ -121,6 +121,23 @@ These are not required by any skill but improve the day-to-day experience:
 | [Auto Card Link](https://github.com/nekoshita/obsidian-auto-card-link) | `auto-card-link` | Paste a URL and get a rich preview card |
 | [File Explorer Note Count](https://github.com/ozntel/file-explorer-note-count) | `file-explorer-note-count` | Shows note count badges on folders |
 
+## Updates
+
+If you forked or cloned this repo into a private vault, you can pull structural updates (skills, rules, shared conventions) without overwriting your personal data.
+
+```bash
+# First time — add the upstream remote
+git remote add upstream <url-to-this-repo>
+
+# Pull updates (auto-configures merge driver on first run)
+./scripts/sync-upstream.sh
+
+# Preview what's new without merging
+./scripts/sync-upstream.sh --preview
+```
+
+Personal paths are protected during merges via `.gitattributes` — your `USER.md`, `Tracker.md`, `.env`, `.cursor/mcp.json`, `Meetings/`, `Teams/`, `Templates/`, and `Recaps/` are always kept as-is. Edit `.gitattributes` to add or remove protected paths.
+
 ## Project structure
 
 ```
