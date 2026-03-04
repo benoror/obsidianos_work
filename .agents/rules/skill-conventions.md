@@ -9,6 +9,7 @@ Skills that share common patterns MUST reference the shared convention instead o
 | Commit | `See [/commit](../skills/commit/SKILL.md).` | Every skill that modifies files — final step |
 | Vault Context | `See [vault-context](../skills/_shared/vault-context.md).` | Any skill that searches or reads vault content (meetings, tracker, notes) |
 | Date Filter | `See [date-filter](../skills/_shared/date-filter.md).` | Any skill that accepts `[dates]` arguments or parses dates from filenames/content |
+| Date Verification | `See [Date Verification](#date-verification) below` | Any skill/prompt involving dates, timestamps, or calendar operations |
 | Obsidian Tasks | `See [obsidian-tasks](../skills/_shared/obsidian-tasks.md).` | Any skill that creates or reads task checkboxes |
 | People Resolver | `See [people-resolver](../skills/_shared/people-resolver.md).` | Any skill that resolves names to `[[@Name]]` wikilinks |
 
@@ -32,6 +33,26 @@ Skills live in `.agents/skills/{skill-name}/SKILL.md`. Follow the existing patte
 - Team files: `Teams/+TeamName.md`
 - Meeting notes: `Meetings/{subfolder}/`
 - Frontmatter `modified:` is managed by Obsidian — never set it manually
+
+## Date Verification
+
+When a skill or prompt involves dates, timestamps, or calendar operations, **always verify the current system date** using a Unix command rather than relying on potentially stale `<user_info>`:
+
+```bash
+# Preferred - ISO 8601 format with timezone
+date -u +"%Y-%m-%dT%H:%M:%S%z"
+
+# Alternative - human readable
+date
+```
+
+**Apply this rule when:**
+- Creating meeting notes with today's date
+- Filtering meetings by date ranges (`today`, `yesterday`, `last week`)
+- Generating recaps for date periods
+- Any operation where `YYYY-MM-DD` is derived from "today"
+
+**Rationale:** The `<user_info>` block shows a snapshot at conversation start. Long-running sessions or system clock drift can cause date mismatches. Always fetch fresh system time before date-dependent operations.
 
 ## Obsidian Tasks Priorities
 
