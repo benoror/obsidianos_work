@@ -2,6 +2,10 @@
 
 Read [AGENTS.md](AGENTS.md) for the full skill reference, conventions, and vault layout.
 
+## Skills
+
+Project skills are symlinked for Claude Code discovery: [`.claude/skills`](.claude/skills) → [`.agents/skills/`](.agents/skills/). Edit files under `.agents/skills/` only.
+
 ## Rules
 
 Read and follow these shared rules:
