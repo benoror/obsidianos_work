@@ -38,6 +38,7 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | [Cursor CLI](https://docs.cursor.com/cli) (`cursor`) | Full | Same engine in background/headless mode |
 | [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) | Full | Reads `AGENTS.md` + `CLAUDE.md` natively; see [CLAUDE.md](CLAUDE.md) for MCP setup |
 | [OpenCode](https://github.com/opencode-ai/opencode) / [Crush](https://github.com/charmbracelet/crush) | Full | Reads `OpenCode.md`; see [OpenCode.md](OpenCode.md) for MCP setup |
+| [OpenClaw](https://docs.openclaw.ai/) | Full | Workspace skills in `skills/` (symlink to `.agents/skills/`); config in `~/.openclaw/openclaw.json` |
 | Other MCP-compatible clients | Partial | Can use the MCP servers; agent instructions won't auto-load |
 
 ## Skills
@@ -52,8 +53,13 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | `/note-status` | Verify meeting notes are fully processed (Notes, Cache, Participants, Todos) |
 | `/commit` | Stage and commit — accepts file/folder scope, free-text intent, or `amend` |
 | `/sync-upstream-obsidianos` | Pull structural updates from upstream ObsidianOS |
+| `defuddle` | Clean markdown from URLs via Defuddle CLI |
+| `json-canvas` | JSON Canvas (`.canvas`) authoring |
+| `obsidian-bases` | Obsidian Bases (`.base`) views, filters, formulas |
+| `obsidian-cli` | Vault operations via the `obsidian` CLI (Obsidian must be running) |
+| `obsidian-markdown` | Obsidian Flavored Markdown conventions |
 
-Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGENTS.md) for the full reference.
+Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGENTS.md) for the full reference. **Skill proxies:** `.cursor/skills`, `.claude/skills`, `.opencode/skills`, and repo-root `skills/` are symlinks to `.agents/skills/` so Cursor, Claude Code, OpenCode, and OpenClaw share one canonical tree.
 
 ## Prerequisites
 
@@ -158,6 +164,19 @@ These are not required by any skill but improve the day-to-day experience:
 | [Custom File Explorer Sorting](https://github.com/SebastianMC/obsidian-custom-sort) | `custom-sort` | Manual sorting rules for files and folders in the explorer |
 | [Cycle Through Panes](https://github.com/phibr0/cycle-through-panes) | `cycle-through-panes` | Ctrl/Cmd+Tab to cycle through open tabs like a browser |
 
+### Optional (agent skills: Obsidian CLI stack)
+
+These line up with the bundled [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) agent skills (`obsidian-cli`, `json-canvas`, `obsidian-bases`, `obsidian-markdown`). None are extra Community plugins unless noted — turn on the features you use, and keep **Obsidian running** when an agent drives the vault via the [Obsidian CLI](https://help.obsidian.md/cli).
+
+| Feature | ID / setup | Agent skill |
+|---|---|---|
+| [Obsidian CLI](https://help.obsidian.md/cli) | Install/update from the [Obsidian download](https://obsidian.md/download) page; enable CLI support per help | `obsidian-cli` |
+| [Canvas](https://help.obsidian.md/canvas) | Core | `json-canvas` |
+| [Bases](https://help.obsidian.md/bases) | Core | `obsidian-bases` |
+| [Obsidian Flavored Markdown](https://help.obsidian.md/syntax) | Core | `obsidian-markdown` |
+
+The `defuddle` skill uses the [Defuddle](https://www.npmjs.com/package/defuddle) CLI (`npm install -g defuddle`), not an Obsidian plugin.
+
 ## Updates
 
 If you forked or cloned this repo into a private vault, you can pull structural updates (skills, rules, shared conventions) without overwriting your personal data.
@@ -182,8 +201,12 @@ Personal paths are protected during merges via `.gitattributes` — your `USER.m
 ```
 .agents/skills/       Skill definitions (SKILL.md + supporting scripts)
 .agents/rules/        Shared rules (single source of truth for all agents)
+.claude/skills/       Symlink → .agents/skills (Claude Code discovery)
 .cursor/rules/        Cursor rules (auto-injected by glob; point to .agents/rules/)
 .cursor/mcp.json      MCP server configuration
+.cursor/skills/       Symlink → .agents/skills (Cursor)
+.opencode/skills/     Symlink → .agents/skills (OpenCode)
+skills/               Symlink → .agents/skills (OpenClaw workspace skills)
 AGENTS.md             Agent reference: skills, conventions, vault layout
 CLAUDE.md             Claude Code instructions + MCP setup
 OpenCode.md           OpenCode / Crush instructions + MCP setup
