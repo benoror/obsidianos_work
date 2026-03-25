@@ -74,3 +74,8 @@ Reference these for patterns and to avoid duplication:
 | `/note-status` | Verify meeting notes are fully processed — shows which wrap steps are complete or missing |
 | `/sync-upstream-obsidianos` | Pull structural updates from upstream ObsidianOS into the local vault |
 | `/commit` | Stage and commit with flexible intent — accepts file/folder scope, free-text description, `amend`, or any combination; supports sequence mode |
+| `defuddle` | Extract clean markdown from web pages with Defuddle CLI |
+| `json-canvas` | Create and edit JSON Canvas (`.canvas`) files |
+| `obsidian-bases` | Create and edit Obsidian Bases (`.base` files) |
+| `obsidian-cli` | Use the `obsidian` CLI against a running Obsidian instance |
+| `obsidian-markdown` | Obsidian Flavored Markdown (wikilinks, embeds, callouts, properties) |
