@@ -14,7 +14,7 @@ Slash commands that run inside your vault, powered by any AI agent:
 /meeting                  → Create notes from Google Calendar
 /cache-notes              → Embed AI meeting transcripts
 /fill-participants        → Resolve names to [[@Person]] wikilinks
-/followup-todos           → Extract action items as checkboxes
+/followup-todos           → Extract action items as plain markdown bullets (no Tasks checkboxes)
 /note-status              → Verify notes are fully processed
 /recap                    → Weekly summary from email, Slack, Jira & vault
 /commit                   → Stage & commit with inferred intent
@@ -47,7 +47,7 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | `/meeting` | Create or wrap up meeting notes (from Google Calendar or manual) |
 | `/cache-notes` | Fetch & embed AI meeting transcripts as Obsidian callouts |
 | `/fill-participants` | Resolve names in notes to `[[@Person]]` wikilinks |
-| `/followup-todos` | Extract action items as Obsidian Tasks checkboxes |
+| `/followup-todos` | Extract action items as plain markdown bullets (no Tasks checkboxes) |
 | `/recap` | Weekly recap from emails, Slack, Jira, and vault notes |
 | `/note-status` | Verify meeting notes are fully processed (Notes, Cache, Participants, Todos) |
 | `/commit` | Stage and commit — accepts file/folder scope, free-text intent, or `amend` |
@@ -133,7 +133,7 @@ The vault works with vanilla Obsidian, but these community plugins power specifi
 
 | Plugin | ID | Used by |
 |---|---|---|
-| [Tasks](https://publish.obsidian.md/tasks/) | `obsidian-tasks-plugin` | `ToDo's.md` queries, `/followup-todos` checkbox syntax, task priorities |
+| [Tasks](https://publish.obsidian.md/tasks/) | `obsidian-tasks-plugin` | `ToDo's.md` queries, task checkboxes & priorities elsewhere in the vault |
 | [Update modified date](https://github.com/alangrainger/obsidian-frontmatter-modified-date) | `frontmatter-modified-date` | Auto-updates `modified:` in YAML frontmatter when you edit a note |
 
 ### Recommended

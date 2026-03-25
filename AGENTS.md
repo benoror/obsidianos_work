@@ -20,9 +20,9 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [fill-participants](.agents/skills/fill-participants/SKILL.md) | Resolve and fill `Participants:` frontmatter               |                                                             |
 | ├ `/fill-participants <path>`                                  | Fill for a specific meeting note                           |                                                             |
 | └ `/fill-participants all`                                     | Scan and fill all meetings missing participants            |                                                             |
-| [followup-todos](.agents/skills/followup-todos/SKILL.md)       | Extract action items as Obsidian Tasks checkboxes          |                                                             |
+| [followup-todos](.agents/skills/followup-todos/SKILL.md)       | Extract action items as plain markdown bullets               |                                                             |
 | ├ `/followup-todos <path>`                                     | Extract from a specific meeting note                       |                                                             |
-| └ `/followup-todos`                                            | Pick from recent meetings                                  |                                                             |
+| └ `/followup-todos`                                            | `/note-status pending --step=todos`                        |                                                             |
 | [recap](.agents/skills/recap/SKILL.md)                         | Produce a recap from emails, Slack, Jira, and vault notes  |                                                             |
 | ├ `/recap`                                                     | Recap current week (Monday through today)                  |                                                             |
 | └ `/recap [dates]`                                             | Recap a specific date range                                | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |

@@ -104,7 +104,7 @@ This is a **sequenced workflow** — sub-skills skip their individual commit ste
 
 1. **`/cache-notes <path>`** — If `Notes:` frontmatter is empty, prompt the user to paste external resource URLs first. Then fetch and cache AI transcripts.
 2. **`/fill-participants <path>`** — Resolve and fill the `Participants:` frontmatter if missing. If already filled, skip silently.
-3. **`/followup-todos <path>`** — Extract action items and propose todos from the now-cached content and manual notes.
+3. **`/followup-todos <path>`** — Extract action items and propose **plain bullet** follow-ups (no Tasks checkboxes) from the now-cached content and manual notes.
 4. **Commit** — See [/commit](../commit/SKILL.md). Stage all files modified across the three sub-skills. Commit message: `update: /meeting wrap <path>`.
 
 Between each sub-skill, re-read the file to pick up changes from the previous step.
