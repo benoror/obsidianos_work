@@ -40,6 +40,24 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | ├ `/commit <description>`                                      | Infer scope from free-text intent                          |                                                             |
 | ├ `/commit amend [scope/description]`                          | Amend last commit (with optional scope or new message)     |                                                             |
 | └ *(sequence mode)*                                            | Deferred — sub-skills skip, caller commits once at the end |                                                             |
+| [defuddle](.agents/skills/defuddle/SKILL.md)                   | Extract clean markdown from web pages with Defuddle CLI (prefer over raw fetch for articles & docs) | |
+| [json-canvas](.agents/skills/json-canvas/SKILL.md)             | Create and edit Obsidian JSON Canvas (`.canvas`) files     |                                                             |
+| [obsidian-bases](.agents/skills/obsidian-bases/SKILL.md)       | Create and edit Obsidian Bases (`.base`) — views, filters, formulas |                                                     |
+| [obsidian-cli](.agents/skills/obsidian-cli/SKILL.md)           | Drive a running Obsidian app via the `obsidian` CLI (read/write/search, dev helpers) | |
+| [obsidian-markdown](.agents/skills/obsidian-markdown/SKILL.md) | Obsidian Flavored Markdown — wikilinks, embeds, callouts, properties | |
+
+### Skill proxies (symlinks to `.agents/skills/`)
+
+The canonical skill tree is **`.agents/skills/`**. These paths are symlinks to the same directory so each agent discovers the same skills:
+
+| Path | Used by |
+| --- | --- |
+| [`.cursor/skills`](.cursor/skills) | Cursor |
+| [`.claude/skills`](.claude/skills) | Claude Code |
+| [`.opencode/skills`](.opencode/skills) | OpenCode |
+| [`skills/`](skills) | OpenClaw ([workspace `skills`](https://docs.openclaw.ai/skills/)) |
+
+OpenCode also discovers `.agents/skills/` directly; the `.opencode/skills` link matches the Cursor / Claude layout.
 
 ## Rules
 
@@ -58,6 +76,7 @@ Shared rules live in `.agents/rules/` and are the single source of truth. Agent-
 | Cursor | `.cursor/rules/*.mdc` | Auto-injected by glob; each `.mdc` points to `.agents/rules/` |
 | Claude Code | `CLAUDE.md`, `.agents/skills/CLAUDE.md` | Read on startup; point to `.agents/rules/` |
 | OpenCode / Crush | `OpenCode.md` | Read on startup; points to `.agents/rules/` |
+| OpenClaw | `AGENTS.md` (and your gateway config) | Rules live in `.agents/rules/`; skills via repo `skills/` → `.agents/skills/` |
 
 ## Vault Layout
 
