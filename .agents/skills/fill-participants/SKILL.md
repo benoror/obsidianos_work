@@ -49,7 +49,7 @@ For each meeting missing Participants, determine attendees using the resolution 
 
 1. **External transcript sources** — Use the source linked in `Notes:` frontmatter:
    - **Google Docs**: Extract document ID from `Notes:`, fetch content with **`gws`** (`gws docs documents get` or `gws drive files export` to plain text — see [google-workspace-cli](../_shared/google-workspace-cli.md)); Gemini summaries name participants explicitly.
-   - **Otter.ai**: When available, use the [otter-fetch](../otter-fetch/SKILL.md) skill; until then skip per cache-notes Otter policy.
+   - **Otter.ai**: When an Otter transcript fetch workflow is available, use it; until then skip per [cache-notes](../cache-notes/SKILL.md) Otter policy.
 2. **File name** — `X x Y` patterns.
 3. **File content** — Existing `[[@Name]]` references.
 4. **Folder conventions** — e.g. `Meetings/PAM/Scrum/` → `[[+PAM]]`.

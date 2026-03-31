@@ -47,7 +47,8 @@ export function parseSkillConventions() {
     join(ROOT, ".agents/rules/skill-conventions.md")
   );
   const names = new Set();
-  for (const m of content.matchAll(/\|\s*`\/([\w-]+)`\s*\|/g)) {
+  // `/meeting` style and `defuddle` style (no leading slash)
+  for (const m of content.matchAll(/\|\s*`(?:\/)?([\w-]+)`\s*\|/g)) {
     names.add(m[1]);
   }
   return names;
@@ -59,7 +60,7 @@ export function parseReadme() {
   const section = content.match(/## Skills\n\n([\s\S]*?)(?=\n## |\n$)/);
   if (!section) return new Set();
   const names = new Set();
-  for (const m of section[1].matchAll(/\|\s*`\/([\w-]+)`\s*\|/g)) {
+  for (const m of section[1].matchAll(/\|\s*`(?:\/)?([\w-]+)`\s*\|/g)) {
     names.add(m[1]);
   }
   return names;

@@ -1,9 +1,14 @@
 ---
 name: obsidian-markdown
 description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.
+license: MIT
 ---
 
 # Obsidian Flavored Markdown Skill
+
+## Usage
+
+Use when editing vault `.md` notes and the user needs wikilinks, embeds, callouts, frontmatter/properties, tags, or other Obsidian-specific Markdown.
 
 Create and edit valid Obsidian Flavored Markdown. Obsidian extends CommonMark and GFM with wikilinks, embeds, callouts, properties, comments, and other syntax. This skill covers only Obsidian-specific extensions -- standard Markdown (headings, bold, italic, lists, quotes, code blocks, tables) is assumed knowledge.
 
@@ -16,7 +21,7 @@ Create and edit valid Obsidian Flavored Markdown. Obsidian extends CommonMark an
 5. **Add callouts** for highlighted information using `> [!type]` syntax. See [CALLOUTS.md](references/CALLOUTS.md) for all callout types.
 6. **Verify** the note renders correctly in Obsidian's reading view.
 
-> When choosing between wikilinks and Markdown links: use `[[wikilinks]]` for notes within the vault (Obsidian tracks renames automatically) and `[text](url)` for external URLs only.
+> When choosing between wikilinks and Markdown links: use `[[wikilinks]]` for notes within the vault (Obsidian tracks renames automatically) and standard Markdown links with an `https://` URL for external pages only.
 
 ## Internal Links (Wikilinks)
 
