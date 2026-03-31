@@ -19,15 +19,10 @@ When working in `.agents/skills/`:
 
 ## MCP Setup
 
-Claude Code does not read `.cursor/mcp.json`. Add the MCP servers manually:
+Claude Code does not read `.cursor/mcp.json`. Add the QMD MCP server manually:
 
 ```bash
-# QMD vault search
 claude mcp add qmd -- npx qmd mcp
-
-# Google Workspace (requires .env with OAuth credentials)
-claude mcp add google-workspace -- sh -c 'set -a && . "$PWD/.env" && set +a && exec uvx --from "git+https://github.com/taylorwilsdon/google_workspace_mcp.git" workspace-mcp --tools docs drive calendar'
-
-# Gmail (read-only)
-claude mcp add google-gmail-readonly -- sh -c 'set -a && . "$PWD/.env" && set +a && exec uvx --from "git+https://github.com/taylorwilsdon/google_workspace_mcp.git" workspace-mcp --tools gmail --read-only'
 ```
+
+**Google Workspace** (Docs, Drive, Calendar, Gmail) is accessed via the **`gws` CLI** in the terminal — not via MCP. Install and authenticate per [README.md](README.md) § Google Workspace CLI.

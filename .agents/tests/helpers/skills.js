@@ -4,7 +4,8 @@ import { SKILLS_DIR, ROOT, readFile, parseFrontmatter } from "./parse.js";
 
 const SKIP_DIRS = new Set(["_shared"]);
 
-export const KNOWN_MCP_SERVERS = new Set(["google-workspace", "qmd"]);
+/** Declared in skill frontmatter `compatibility:` — includes QMD and Google Workspace CLI (`gws`). */
+export const KNOWN_MCP_SERVERS = new Set(["gws", "qmd"]);
 
 /** List skill directories (those containing SKILL.md, minus non-skill dirs). */
 export function discoverSkills() {
@@ -64,15 +65,15 @@ export function parseReadme() {
   return names;
 }
 
-/** Detect which MCP servers a skill body references. */
+/** Detect which external tools a skill body references (QMD, `gws`). */
 export function detectMcpUsage(content) {
   const found = new Set();
   if (
-    /google-workspace|get_doc_content|get_doc_as_markdown|Google Calendar MCP|Google Docs API/i.test(
+    /\bgws\b|Google Workspace CLI|googleworkspace\/cli|gmail users messages|calendar \+agenda|calendar events list|docs documents get|drive files export/i.test(
       content
     )
   )
-    found.add("google-workspace");
+    found.add("gws");
   if (
     /\bqmd[_-](?:search|vector_search|get|multi_get|deep_search)\b|QMD.*discovery|Use QMD/i.test(
       content

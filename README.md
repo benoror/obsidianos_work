@@ -36,10 +36,10 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 |---|---|---|
 | [Cursor](https://cursor.com) IDE | Full | Loads `.cursor/rules/` and `.cursor/mcp.json` automatically |
 | [Cursor CLI](https://docs.cursor.com/cli) (`cursor`) | Full | Same engine in background/headless mode |
-| [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) | Full | Reads `AGENTS.md` + `CLAUDE.md` natively; see [CLAUDE.md](CLAUDE.md) for MCP setup |
-| [OpenCode](https://github.com/opencode-ai/opencode) / [Crush](https://github.com/charmbracelet/crush) | Full | Reads `OpenCode.md`; see [OpenCode.md](OpenCode.md) for MCP setup |
+| [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) | Full | Reads `AGENTS.md` + `CLAUDE.md` natively; see [CLAUDE.md](CLAUDE.md) for QMD MCP setup |
+| [OpenCode](https://github.com/opencode-ai/opencode) / [Crush](https://github.com/charmbracelet/crush) | Full | Reads `OpenCode.md`; see [OpenCode.md](OpenCode.md) for QMD MCP setup |
 | [OpenClaw](https://docs.openclaw.ai/) | Full | Workspace skills in `skills/` (symlink to `.agents/skills/`); config in `~/.openclaw/openclaw.json` |
-| Other MCP-compatible clients | Partial | Can use the MCP servers; agent instructions won't auto-load |
+| Other MCP-compatible clients | Partial | Can use the QMD MCP server; agent instructions won't auto-load |
 
 ## Skills
 
@@ -66,7 +66,7 @@ Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGEN
 - [Cursor](https://cursor.com) IDE or [CLI](https://docs.cursor.com/cli) (or any agent that supports MCP — see [Compatible agents](#compatible-agents))
 - [Node.js](https://nodejs.org/) v20+
 - [Obsidian](https://obsidian.md/) (see [Obsidian plugins](#obsidian-plugins) below)
-- [uvx](https://docs.astral.sh/uv/) (Python) — runs the Google Workspace MCP server
+- [**Google Workspace CLI**](https://github.com/googleworkspace/cli) (`gws`) — optional; required for `/meeting` (Calendar), `/cache-notes` / `/fill-participants` (Docs/Drive), and `/recap` (Gmail/Calendar). Install per **§ 3** in [Setup](#setup) below.
 
 ## Setup
 
@@ -82,24 +82,26 @@ npm install
 
 Edit [`USER.md`](USER.md) with your name, email, timezone, and aliases. This is the single source of truth that all skills reference — no other file needs your personal info.
 
-### 3. Google Workspace MCP (optional)
+### 3. Google Workspace CLI (optional)
 
-Required for `/meeting` (Calendar), `/cache-notes` (Docs), and `/recap` (Gmail).
+Required for **`/meeting`** (list today’s Calendar events), **`/cache-notes`** / **`/fill-participants`** (read Gemini Google Docs), and **`/recap`** (Gmail + Calendar). All of these workflows are **read-only**; use OAuth scopes limited to what you need (e.g. Drive/Docs/Calendar/Gmail readonly).
 
-1. Create OAuth credentials in the [Google Cloud Console](https://console.cloud.google.com/apis/credentials) (Desktop app type).
-2. Enable the **Google Docs**, **Google Drive**, **Google Calendar**, and **Gmail** APIs.
-3. Copy the example env and fill in your credentials:
+1. Install **`gws`** — pick one:
+   - [GitHub Releases](https://github.com/googleworkspace/cli/releases) (pre-built binary)
+   - `brew install googleworkspace-cli`
+   - `npm install -g @googleworkspace/cli`
+2. Authenticate (browser flow):
 
 ```bash
-cp .env.example .env
-# Edit .env with your GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, and USER_GOOGLE_EMAIL
+gws auth login
 ```
 
-On first use, the MCP server will open a browser for OAuth consent. Approve once and credentials are cached at `~/.google_workspace_mcp/`.
+Use a scope preset or `--scopes` that includes **readonly** access for the APIs you use. Credentials are stored under `~/.config/gws/` by default. Optional env vars: see [.env.example](.env.example) and the upstream [README](https://github.com/googleworkspace/cli/blob/main/README.md).
 
-> [!INFO] Running it the first time will likely prompt your agent to walk you through the confiaguration step by step
+3. Command examples for agents are in [.agents/skills/_shared/google-workspace-cli.md](.agents/skills/_shared/google-workspace-cli.md).
 
-See the [google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp) repo for detailed setup.
+> [!NOTE]
+> Google Workspace is **not** exposed via MCP in this vault — agents run `gws` in the **terminal**. [Cursor](https://cursor.com) still loads **QMD** from `.cursor/mcp.json` only.
 
 ### 4. QMD vault search (optional)
 
@@ -127,7 +129,7 @@ A default [`Teams/People/@Me.md`](Teams/People/@Me.md) is included as the vault 
 
 ### 6. Open in Obsidian + Cursor
 
-Open the vault folder in both Obsidian (for viewing/editing notes) and Cursor (for running agent skills). Cursor will auto-load the MCP servers from `.cursor/mcp.json` and the rules from `.cursor/rules/`.
+Open the vault folder in both Obsidian (for viewing/editing notes) and Cursor (for running agent skills). Cursor will auto-load MCP servers from `.cursor/mcp.json` (this repo ships **QMD** only) and the rules from `.cursor/rules/`. Install and log in to **`gws`** separately for Google Workspace features.
 
 In Obsidian, hide non-vault folders from the file explorer: go to **Settings → Files & Links → Excluded files** and add `node_modules`.
 
@@ -203,7 +205,7 @@ Personal paths are protected during merges via `.gitattributes` — your `USER.m
 .agents/rules/        Shared rules (single source of truth for all agents)
 .claude/skills/       Symlink → .agents/skills (Claude Code discovery)
 .cursor/rules/        Cursor rules (auto-injected by glob; point to .agents/rules/)
-.cursor/mcp.json      MCP server configuration
+.cursor/mcp.json      MCP configuration (QMD vault search)
 .cursor/skills/       Symlink → .agents/skills (Cursor)
 .opencode/skills/     Symlink → .agents/skills (OpenCode)
 skills/               Symlink → .agents/skills (OpenClaw workspace skills)

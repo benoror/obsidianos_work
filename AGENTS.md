@@ -97,9 +97,10 @@ Tracker.md             Project tracker
 - **AI Transcripts**: Cached under `## 🤖 AI Notes` with provider subheadings and collapsible callouts (`[!gemini_notes]-`, `[!gemini_todos]-`, `[!gemini_transcript]-`).
 - **Tasks priorities**: 🔺 highest, ⏫ high, 🔼 medium, 🔽 low.
 
-## MCP Servers
+## MCP & external tools
 
-Configured in [.cursor/mcp.json](.cursor/mcp.json). Provides Google Workspace tools (Docs, Drive, Calendar).
+- **QMD** — Configured in [.cursor/mcp.json](.cursor/mcp.json) for vault search (MCP server `npx qmd mcp`).
+- **Google Workspace** — Use the **`gws` CLI** ([Google Workspace CLI](https://github.com/googleworkspace/cli)) for Docs, Drive, Calendar, and Gmail in read-only workflows. See [README.md](README.md) § Google Workspace CLI and [.agents/skills/_shared/google-workspace-cli.md](.agents/skills/_shared/google-workspace-cli.md).
 
 ## Syncing from Upstream
 

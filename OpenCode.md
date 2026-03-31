@@ -16,7 +16,7 @@ Read and follow these shared rules:
 
 ## MCP Setup
 
-OpenCode does not read `.cursor/mcp.json`. Add MCP servers to your `.opencode.json`:
+OpenCode does not read `.cursor/mcp.json`. Add the QMD MCP server to your `.opencode.json`:
 
 ```json
 {
@@ -25,17 +25,9 @@ OpenCode does not read `.cursor/mcp.json`. Add MCP servers to your `.opencode.js
       "type": "stdio",
       "command": "npx",
       "args": ["qmd", "mcp"]
-    },
-    "google-workspace": {
-      "type": "stdio",
-      "command": "sh",
-      "args": ["-c", "set -a && . \"$PWD/.env\" && set +a && exec uvx --from 'git+https://github.com/taylorwilsdon/google_workspace_mcp.git' workspace-mcp --tools docs drive calendar"]
-    },
-    "google-gmail-readonly": {
-      "type": "stdio",
-      "command": "sh",
-      "args": ["-c", "set -a && . \"$PWD/.env\" && set +a && exec uvx --from 'git+https://github.com/taylorwilsdon/google_workspace_mcp.git' workspace-mcp --tools gmail --read-only"]
     }
   }
 }
 ```
+
+**Google Workspace** (Docs, Drive, Calendar, Gmail) is accessed via the **`gws` CLI** in the terminal — not via MCP. See [README.md](README.md) § Google Workspace CLI.

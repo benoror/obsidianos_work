@@ -2,7 +2,7 @@
 name: cache-notes
 description: "Fetch & embed AI transcripts as Obsidian callouts. Args: <path>, all, refresh <path>. Prompts for URLs if empty."
 license: MIT
-compatibility: Requires google-workspace MCP (Docs)
+compatibility: Requires qmd (CLI or MCP) and gws CLI for Google Docs/Drive (read-only). See [google-workspace-cli](../_shared/google-workspace-cli.md).
 ---
 
 # Cache Notes
@@ -43,8 +43,8 @@ NotesCached: 2026-02-25T15:00:00-06:00
 ### Fetching
 
 1. Extract document ID from the Google Docs URL in `Notes:`.
-2. Call `google-workspace-get_doc_content` with the document ID.
-3. The API returns content organized by tabs (`--- TAB: Notes ---`, `--- TAB: Transcript ---`).
+2. Run **`gws`** in the terminal to fetch the document (read-only). See [google-workspace-cli](../_shared/google-workspace-cli.md) for exact commands.
+3. Prefer `gws docs documents get` with `includeTabsContent: true` and parse the JSON into text (optionally inserting `--- TAB: … ---` separators from tab titles), **or** `gws drive files export` with `mimeType: text/plain` for a simpler single stream. Parsed content should mirror the old tab layout where needed: `--- TAB: Notes ---`, `--- TAB: Transcript ---`.
 
 ### Parsing the Notes Tab
 
@@ -109,12 +109,11 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 2. If `Notes:` is empty or absent, **prompt the user** to paste the external resource URL(s). Add them to the `Notes:` frontmatter property using `StrReplace`, then continue.
 3. If `NotesCached:` exists and this is not a `refresh`, inform the user and stop.
 4. **Verify each URL** before caching (see URL Verification below).
-5. For each verified Google Docs URL in `Notes:`:
-   a. Extract the document ID.
-   b. Fetch via `google-workspace-get_doc_content`.
-   c. Parse into sections.
-6. Build the callout blocks.
-7. If the file already has callout blocks (refresh mode), replace them. Otherwise append after frontmatter `---`.
+5. **For each URL in `Notes:`**, fetch and parse by provider:
+   - **Google Docs**: Extract document ID, fetch via **`gws`** (see [google-workspace-cli](../_shared/google-workspace-cli.md)), parse into sections per [Provider: Gemini](#provider-gemini-google-docs).
+   - **Otter.ai**: Per [Provider: Otter.ai](#provider-otterai) — skip silently until API integration is available.
+6. Build the callout blocks from all fetched content (Docs only until Otter is supported).
+7. If the file already has callout blocks (refresh mode), replace them. Otherwise append under `## 🤖 AI Notes` after frontmatter `---` (see [Output Format](#output-format)).
 8. Set `NotesCached:` in frontmatter to current timestamp.
 
 ### Mode: All (`/cache-notes all`)
@@ -132,7 +131,7 @@ Before caching, verify that each external resource actually corresponds to the m
 1. **Extract the meeting date** from the note. Try these sources in order until one yields a date:
    - Filename date pattern (any format — see Date Parsing below)
    - `created:` frontmatter timestamp
-2. **Fetch the document title** from the Google Docs API response (the `File:` line returned by `get_doc_content`, e.g. `"Daily Standup - 2026/02/24 09:43 EST - Notes by Gemini"`).
+2. **Fetch the document title** from Drive metadata via `gws drive files get` (`name` field), e.g. `"Daily Standup - 2026/02/24 09:43 EST - Notes by Gemini"` — same string you would have seen in older MCP `File:` lines.
 3. **Extract the date from the doc title** (any format — see Date Parsing below).
 4. **Compare**: normalize both dates to `YYYY-MM-DD` and check equality.
    - If the dates match, proceed silently.

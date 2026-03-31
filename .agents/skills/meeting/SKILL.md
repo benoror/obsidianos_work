@@ -2,7 +2,7 @@
 name: meeting
 description: "Create or wrap meeting notes. Args: {title} [folder=X], wrap <path>, wrap pending [today|this week|dates]. No args = pick from Google Calendar."
 license: MIT
-compatibility: google-workspace MCP (Calendar, optional — only for calendar mode)
+compatibility: Requires qmd (CLI or MCP) and gws CLI for Calendar (read-only) in Mode B. See [google-workspace-cli](../_shared/google-workspace-cli.md).
 ---
 
 # Meeting
@@ -11,7 +11,7 @@ compatibility: google-workspace MCP (Calendar, optional — only for calendar mo
 
 - `/meeting {title}` — Create a meeting note with the given title and today's date.
 - `/meeting {title} folder={subfolder}` — Create in a specific subfolder under `Meetings/`.
-- `/meeting` (no args) — List today's Google Calendar events and let the user pick one. *(Requires Google Calendar MCP — see Setup below.)*
+- `/meeting` (no args) — List today's Google Calendar events and let the user pick one. *(Requires `gws` + Calendar — see [SETUP.md](SETUP.md) and [google-workspace-cli](../_shared/google-workspace-cli.md).)*
 - `/meeting wrap <path>` — Wrap up an existing meeting by running `/cache-notes`, `/fill-participants`, and `/followup-todos` in sequence, with a single commit at the end.
 - `/meeting wrap pending [<dates>]` — Find meetings missing any wrap step and wrap them in sequence. Optional date filter (see Mode D).
 
@@ -75,13 +75,13 @@ Case-insensitive matching. If no shorthand matches and the folder doesn't exist,
 
 ## Mode B: Google Calendar Selection
 
-> **Requires**: Google Calendar MCP server. See [SETUP.md](SETUP.md) for installation.
+> **Requires**: [Google Workspace CLI](https://github.com/googleworkspace/cli) (`gws`) with Calendar access (read-only). See [SETUP.md](SETUP.md) and [google-workspace-cli](../_shared/google-workspace-cli.md).
 
 **Input**: `/meeting` (no arguments)
 
 ### Workflow
 
-1. **Fetch today's events** from Google Calendar using the MCP tool.
+1. **Fetch today's events** from Google Calendar by running **`gws`** in the terminal (e.g. `gws calendar +agenda --today --format json`). See [google-workspace-cli](../_shared/google-workspace-cli.md).
 2. **Present a numbered list** of today's meetings (title, time, attendees).
 3. **User picks one** (or types a number).
 4. **Derive the title** from the calendar event name.

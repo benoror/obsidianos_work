@@ -2,7 +2,7 @@
 name: recap
 description: "Produce a weekly/date-range recap from emails, Slack, Jira/Confluence, and vault notes. Args: [dates]. Default = this week."
 license: MIT
-compatibility: qmd MCP + google-workspace MCP (Calendar, Gmail). Degrades gracefully when unavailable.
+compatibility: Requires qmd (CLI or MCP) and gws CLI for Gmail and Calendar (read-only). Degrades gracefully when unavailable. See [google-workspace-cli](../_shared/google-workspace-cli.md).
 ---
 
 # Recap
@@ -20,18 +20,18 @@ Default (omitted): Monday through today (current week).
 
 ## Data Sources
 
-The recap pulls from all **available** MCP sources. Unavailable sources are skipped gracefully with a note in the output.
+The recap pulls from all **available** sources. Unavailable sources are skipped gracefully with a note in the output.
 
-| Source | MCP Server | Status | What to gather |
-|--------|-----------|--------|----------------|
-| Gmail | `google-gmail-readonly` | ✅ Available | Emails sent/received in the date range |
-| Vault notes | `qmd` | ✅ Available | Meeting notes, daily notes, any `.md` file dated within range |
-| Google Calendar | `google-workspace` | ✅ Available | Events in the date range (for context) |
-| Slack | `slack` | ⏳ Pending setup | Channel messages, DMs, threads |
-| Jira | `atlassian` | ⏳ Pending setup | Issues assigned/updated/commented, sprint activity |
-| Confluence | `atlassian` | ⏳ Pending setup | Pages created/updated, comments |
+| Source | Tool | Status | What to gather |
+|--------|------|--------|----------------|
+| Gmail | `gws` (Gmail API) | ✅ When `gws` is authenticated | Emails sent/received in the date range |
+| Vault notes | QMD (CLI or MCP) | ✅ When QMD index exists | Meeting notes, daily notes, any `.md` file dated within range |
+| Google Calendar | `gws` (Calendar API) | ✅ When `gws` is authenticated | Events in the date range (for context) |
+| Slack | `slack` MCP (optional) | ⏳ Pending setup | Channel messages, DMs, threads |
+| Jira | `atlassian` MCP (optional) | ⏳ Pending setup | Issues assigned/updated/commented, sprint activity |
+| Confluence | `atlassian` MCP (optional) | ⏳ Pending setup | Pages created/updated, comments |
 
-When a source is unavailable (MCP server not configured or not responding), log it under a `### ⏳ Unavailable Sources` section in the output and proceed with the remaining sources.
+When a source is unavailable (`gws` / QMD / optional MCP not installed, not authenticated, or errors), log it under a `### ⏳ Unavailable Sources` section in the output and proceed with the remaining sources.
 
 ## Workflow
 
@@ -51,10 +51,10 @@ Gather vault context for the date range: meeting notes from `Meetings/**/*` (any
 
 #### 2b. Gmail
 
-Search for emails in the date range:
+Search for emails in the date range using **`gws`** (see [google-workspace-cli](../_shared/google-workspace-cli.md)):
 
-1. `search_gmail_messages` with query: `after:YYYY/MM/DD before:YYYY/MM/DD` (use day after end_date for the `before` bound).
-2. Fetch message content for the top results (batch via `get_gmail_messages_content_batch`, metadata first to triage, full content for important threads).
+1. `gws gmail users messages list` with `--params` including `"userId":"me"`, `"q":"after:YYYY/MM/DD before:YYYY/MM/DD"` (use the day after `end_date` for the `before` bound), and `maxResults` (e.g. 50).
+2. For each selected `id`, run `gws gmail users messages get` with `"format":"full"`. Triage from headers/snippet first; fetch full bodies for important threads only.
 3. Focus on:
    - Emails **from** the user (decisions communicated, requests made)
    - Emails **to** the user that are actionable (requests, reviews, approvals)
@@ -63,7 +63,7 @@ Search for emails in the date range:
 
 #### 2c. Google Calendar
 
-Fetch events in the date range via `get_events` with `time_min` / `time_max`. Use as structural context: what meetings happened, who attended, what the agenda was. Cross-reference with vault meeting notes from Step 2a.
+Fetch events in the date range via **`gws calendar events list`** with RFC3339 `timeMin` / `timeMax` on `calendarId: primary` (and `singleEvents`, `orderBy: startTime` as needed). See [google-workspace-cli](../_shared/google-workspace-cli.md). Use as structural context: what meetings happened, who attended, what the agenda was. Cross-reference with vault meeting notes from Step 2a.
 
 #### 2d. Slack (when available)
 
@@ -166,7 +166,7 @@ Use sub-bullets for supporting detail.
 ## ⏳ Unavailable Sources
 
 > [!warning] Skipped sources
-> List any sources that were unavailable and why (MCP not configured, auth error, etc.)
+> List any sources that were unavailable and why (`gws` / QMD / MCP not configured, auth error, etc.)
 > Remove this section entirely if all sources were available.
 ````
 
@@ -188,6 +188,6 @@ See [/commit](../commit/SKILL.md).
 
 - **Privacy**: Email and Slack content may contain sensitive information. The recap stays local in the vault — never push to a shared repo without user consent.
 - **Volume control**: For busy weeks, prioritize depth over breadth. Summarize high-volume sources (e.g. 200 emails) rather than listing every item.
-- **Gmail query limits**: The Gmail MCP returns paginated results. Fetch up to 50 messages per search; if more exist, note the total count and focus on the most relevant.
+- **Gmail query limits**: `gws gmail users messages list` returns paginated results. Fetch up to 50 messages per search; if more exist, note the total count and focus on the most relevant.
 - **Graceful degradation**: The skill must work with just Gmail + vault notes. Slack and Atlassian are additive — their absence should not block the recap.
 - **Timezone**: All dates use `-06:00` (CST). See `skill-conventions.mdc` Project Context.

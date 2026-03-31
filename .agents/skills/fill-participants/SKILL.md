@@ -2,7 +2,7 @@
 name: fill-participants
 description: "Resolve and fill Participants frontmatter + link unlinked names in body. Args: <path>, all."
 license: MIT
-compatibility: google-workspace MCP (Docs, optional — enhances name resolution from Gemini notes)
+compatibility: Requires qmd (CLI or MCP) and gws CLI when resolving names from Google Docs (read-only). See [google-workspace-cli](../_shared/google-workspace-cli.md).
 ---
 
 # Fill Participants
@@ -47,7 +47,9 @@ Run [/note-status pending --step=participants](../note-status/SKILL.md#pending-m
 
 For each meeting missing Participants, determine attendees using the resolution priority defined in [people-resolver](../_shared/people-resolver.md). In summary:
 
-1. **Google Docs Notes** — Gemini summaries name participants explicitly. Extract doc ID from `Notes:` frontmatter and call `google-workspace-get_doc_as_markdown`.
+1. **External transcript sources** — Use the source linked in `Notes:` frontmatter:
+   - **Google Docs**: Extract document ID from `Notes:`, fetch content with **`gws`** (`gws docs documents get` or `gws drive files export` to plain text — see [google-workspace-cli](../_shared/google-workspace-cli.md)); Gemini summaries name participants explicitly.
+   - **Otter.ai**: When available, use the [otter-fetch](../otter-fetch/SKILL.md) skill; until then skip per cache-notes Otter policy.
 2. **File name** — `X x Y` patterns.
 3. **File content** — Existing `[[@Name]]` references.
 4. **Folder conventions** — e.g. `Meetings/PAM/Scrum/` → `[[+PAM]]`.
@@ -56,7 +58,7 @@ For each meeting missing Participants, determine attendees using the resolution 
 
 ### Step 3: Match names to People files
 
-Build a name dictionary per [people-resolver](../_shared/people-resolver.md). Match names from Google Docs against the dictionary. Flag any unmatched names for user confirmation.
+Build a name dictionary per [people-resolver](../_shared/people-resolver.md). Match names from the transcript source (Google Docs, Otter when enabled, etc.) against the dictionary. Flag any unmatched names for user confirmation.
 
 ### Step 4: Present findings and ask for confirmation
 

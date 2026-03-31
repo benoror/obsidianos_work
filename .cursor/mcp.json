@@ -3,28 +3,6 @@
     "qmd": {
       "command": "npx",
       "args": ["qmd", "mcp"]
-    },
-    "google-workspace": {
-      "command": "sh",
-      "args": [
-        "-c",
-        "set -a && . \"$PWD/.env\" && set +a && exec uvx --from 'git+https://github.com/taylorwilsdon/google_workspace_mcp.git' workspace-mcp --tools docs drive calendar"
-      ],
-      "env": {
-        "OAUTHLIB_INSECURE_TRANSPORT": "1",
-        "WORKSPACE_MCP_PORT": "8000"
-      }
-    },
-    "google-gmail-readonly": {
-      "command": "sh",
-      "args": [
-        "-c",
-        "set -a && . \"$PWD/.env\" && set +a && exec uvx --from 'git+https://github.com/taylorwilsdon/google_workspace_mcp.git' workspace-mcp --tools gmail --read-only"
-      ],
-      "env": {
-        "OAUTHLIB_INSECURE_TRANSPORT": "1",
-        "WORKSPACE_MCP_PORT": "8001"
-      }
     }
   }
 }
