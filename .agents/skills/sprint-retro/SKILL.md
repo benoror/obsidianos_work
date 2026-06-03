@@ -26,7 +26,7 @@ Mirror [followup-todos](../followup-todos/SKILL.md) — the retro is a **bullet 
 - **Never** insert Obsidian **Tasks** / checkbox lines: no `- [ ]`, `- [x]`, `- [-]`, `- [?]` — including in the **Action items** section.
 - **Never** append Tasks date tokens (`📅`, `🛫`, `⏳`). Write dates inline in prose / ISO (e.g. "by **2026-06-01**").
 - A single trailing **priority emoji** (`🔺` `⏫` `🔼` `🔽`) as **plain text** is fine when it reads naturally.
-- **Always** use plain list items: `- Description…`. Wikilinks (`[[@Name]]`, `[[Recap …]]`), `[PROJ-123](url)` links, and **bold** are encouraged.
+- **Always** use plain list items: `- Description…`. Wikilinks (`[[@Name]]`, `[[Recap …]]`), `[PROJ-123](https://…)` links, and **bold** are encouraged.
 
 ## File naming convention (mandatory)
 
