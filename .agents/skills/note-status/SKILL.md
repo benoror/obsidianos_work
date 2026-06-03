@@ -61,12 +61,21 @@ See [vault-context](../_shared/vault-context.md) for vault discovery conventions
 ### Step 1: Discover meeting files
 
 - **Specific file** (`<path>`): Read that file directly.
-- **Date-filtered** (`[dates]`): Use QMD — `qmd-search` for `YYYY-MM-DD` date strings in the range under `Meetings/`. For ranges longer than 7 days, search by `YYYY-MM` prefix.
-- **All**: Use `qmd-multi_get` with glob `Meetings/**/*.md`.
+- **`pending`** (no other args): query the live Base view — `obsidian base:query path=Meetings.base view=Pending format=paths`. Returns only files missing one or more of the four wrap properties. Use this in preference to a vault-wide scan.
+- **`pending [dates]`**: same Base query, then post-filter by date from the filename pattern.
+- **Date-filtered** (`[dates]`, no `pending`): Use QMD — `qmd-search` for `YYYY-MM-DD` date strings in the range under `Meetings/`. For ranges longer than 7 days, search by `YYYY-MM` prefix.
+- **All**: Use `qmd-multi_get` with glob `Meetings/**/*.md` (or `obsidian files path=Meetings`).
 
-### Step 2: Read frontmatter
+### Step 2: Check the four properties — batch, don't read full files
 
-For each discovered file, read its YAML frontmatter and check for the four properties in the Processing Checklist.
+For each discovered file, you only need to know whether each of the four properties is *present and non-empty*. Don't read the full file body.
+
+Two efficient options:
+
+- **Per-property via Obsidian CLI**: `obsidian property:read name=NotesCached path="<file>"` (and similarly for `Participants`, `TodosExtracted`, `Notes`) — returns empty string when absent. Cheaper than reading the entire file.
+- **Frontmatter-only via `obsidian properties`**: `obsidian properties path="<file>" format=json` returns the full property map in one call per file.
+
+Prefer the second option when checking all four properties at once on the same file (one call instead of four).
 
 ### Step 3: Filter by date
 
