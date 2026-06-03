@@ -28,9 +28,25 @@ Build a lookup from `Teams/People/` at the start of any name resolution task:
 | `FullName` frontmatter property | `Rob Klock` | Yes |
 | First name (from FullName) | `Rob` | Yes |
 | First name (from filename) | `Rob` | Yes |
-| Common nicknames | — | Only if explicitly listed in person file |
+| `aliases:` frontmatter list (Obsidian's native alias property) | `["Robert", "Rob K"]` | Yes |
 
 Also match names preceded by `@` that aren't already wikilinks (e.g. `@Rob` but not `[[@Rob]]`).
+
+### Declarative aliases
+
+For nicknames, transcription variants (e.g. Gemini hearing "Bob" for `@Rob`), or alternate spellings (e.g. accented letters), declare them in the person file's frontmatter using Obsidian's native `aliases:` property:
+
+```yaml
+---
+aliases:
+  - Robert
+  - Bob
+Team: "[[+Engineering]]"
+FullName: Rob Klock
+---
+```
+
+Read aliases at dictionary-build time via `obsidian aliases file=@Rob format=json` — no hardcoded alias map in the resolver, no skill update needed when a new variant shows up.
 
 ## Matching Rules
 

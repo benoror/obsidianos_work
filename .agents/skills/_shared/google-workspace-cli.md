@@ -89,6 +89,12 @@ gws gmail users messages get --params '{"userId":"me","id":"<MESSAGE_ID>","forma
 
 Use `--page-all` where the skill needs full pagination; cap volume in the skill (e.g. top 50) to avoid noise.
 
+**Mark a message read** (remove the `UNREAD` label — requires modify scope, used by [mail-transcripts](../mail-transcripts/SKILL.md)):
+
+```bash
+gws gmail users messages modify --params '{"userId":"me","id":"<MESSAGE_ID>"}' --json '{"removeLabelIds":["UNREAD"]}'
+```
+
 ## Drive
 
 Use `gws drive files list`, `gws drive files get`, etc., with `--params` JSON as needed. Prefer **read-only** scopes; do not use write helpers (`+upload`, etc.) from these vault skills unless the user explicitly asks.
