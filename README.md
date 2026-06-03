@@ -58,6 +58,16 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | `obsidian-bases` | Obsidian Bases (`.base`) views, filters, formulas |
 | `obsidian-cli` | Vault operations via the `obsidian` CLI (Obsidian must be running) |
 | `obsidian-markdown` | Obsidian Flavored Markdown conventions |
+| `/mail-transcripts` | Drain Gmail AI-transcript notifications into meeting `Notes:` |
+| `/organize-meetings` | Triage `Meetings/_inbox/` into the right subfolder (qmd + memory) |
+| `otter-fetch` | Otter.ai transcript sub-skill (used by cache-notes / fill-participants) |
+| `/people-stubs` | Batch-create `@Name.md` stubs from unresolved `[[@*]]` links |
+| `/onboard-person` | Create/enrich a `@Name.md` from external sources (ATS / profile) |
+| `/last-1on1` | Flag overdue 1:1s by recency |
+| `/vault-health` | Audit unresolved links, orphans, dead-ends, and sync conflicts |
+| `/migrate-tags` | Migrate body `#hashtags` to frontmatter `tags:` lists |
+| `/workspace-mode` | Switch between named Obsidian Workspace layouts |
+| `/sprint-retro` | Synthesize a Sprint Retro draft from vault sources |
 
 Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGENTS.md) for the full reference. **Skill proxies:** `.cursor/skills`, `.claude/skills`, `.opencode/skills`, and repo-root `skills/` are symlinks to `.agents/skills/` so Cursor, Claude Code, OpenCode, and OpenClaw share one canonical tree.
 
