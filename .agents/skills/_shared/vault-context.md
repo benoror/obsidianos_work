@@ -16,7 +16,18 @@ See [vault-context](../_shared/vault-context.md) for how to gather vault notes.
 
 ## Core Rule
 
-**Always use QMD** (`qmd-search`, `qmd-vector_search`, `qmd-get`, `qmd-multi_get`) for vault discovery. Never use `grep`, `find`, `Glob`, or `Grep` to discover vault content by topic or date — those tools are only for exact-string frontmatter lookups (e.g. checking if `NotesCached:` exists).
+**Always use QMD or Obsidian Bases for vault discovery.** Never use `grep`, `find`, `Glob`, or `Grep` to discover vault content by topic or date.
+
+Pick the right tool for the lookup shape:
+
+| Need | Tool | Why |
+|------|------|-----|
+| Saved/recurring query a skill runs every invocation | `obsidian base:query path=<X>.base view=<view>` | Obsidian indexes Bases on file change — instant, no reindex lag. See `Meetings.base` (Pending, Inbox, CachePending, etc.) and `People.base` (Active, per-team, etc.). |
+| Semantic / "what's like this" search | `qmd-vector_search` | Embedding-based — handles paraphrasing, synonyms, novel wording. |
+| Known string + surrounding lines | `obsidian search:context query=<str> lines=2` | Faster than vector search for exact-string lookups. Returns line context. |
+| Known string, paths only | `obsidian search query=<str>` or `qmd-search` | Either works; `obsidian search` is faster for live data. |
+| Read multiple files at once | `qmd-multi_get` (glob) or `obsidian files path=<dir>` | Avoid one-at-a-time reads. |
+| Exact-string frontmatter check on already-identified files | `obsidian property:read` or `grep` | OK to use grep here — it's a known-file lookup, not vault discovery. |
 
 ## Key Vault Sources
 
