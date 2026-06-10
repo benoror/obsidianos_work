@@ -22,43 +22,43 @@ See [USER.md](../../../USER.md) for the vault owner's full name, aliases, and AI
 
 Build a lookup from `Teams/People/` at the start of any name resolution task:
 
-| Source | Example | Matches `@Rob.md` |
-|--------|---------|-------------------|
-| Filename (without `@` and `.md`) | `Rob` | Yes |
-| `FullName` frontmatter property | `Rob Klock` | Yes |
-| First name (from FullName) | `Rob` | Yes |
-| First name (from filename) | `Rob` | Yes |
-| `aliases:` frontmatter list (Obsidian's native alias property) | `["Robert", "Rob K"]` | Yes |
+| Source | Example | Matches `@Jane Doe.md` |
+|--------|---------|------------------------|
+| Filename (without `@` and `.md`) | `Jane Doe` | Yes |
+| `FullName` frontmatter property | `Jane Doe` | Yes |
+| First name (from FullName) | `Jane` | Yes |
+| First name (from filename) | `Jane` | Yes |
+| `aliases:` frontmatter list (Obsidian's native alias property) | `["Janie", "JD"]` | Yes |
 
-Also match names preceded by `@` that aren't already wikilinks (e.g. `@Rob` but not `[[@Rob]]`).
+Also match names preceded by `@` that aren't already wikilinks (e.g. `@Jane` but not `[[@Jane Doe]]`).
 
 ### Declarative aliases
 
-For nicknames, transcription variants (e.g. Gemini hearing "Bob" for `@Rob`), or alternate spellings (e.g. accented letters), declare them in the person file's frontmatter using Obsidian's native `aliases:` property:
+For nicknames, transcription variants (e.g. Gemini hearing "Janie" for `@Jane Doe`), or alternate spellings (e.g. accented letters), declare them in the person file's frontmatter using Obsidian's native `aliases:` property:
 
 ```yaml
 ---
 aliases:
-  - Robert
-  - Bob
+  - Janie
+  - JD
 Team: "[[+Engineering]]"
-FullName: Rob Klock
+FullName: Jane Doe
 ---
 ```
 
-Read aliases at dictionary-build time via `obsidian aliases file=@Rob format=json` — no hardcoded alias map in the resolver, no skill update needed when a new variant shows up.
+Read aliases at dictionary-build time via `obsidian aliases file="@Jane Doe" format=json` — no hardcoded alias map in the resolver, no skill update needed when a new variant shows up.
 
 ## Matching Rules
 
-1. **Full name match** (e.g. "Rob Klock" → `[[@Rob]]`) — high confidence.
-2. **Filename match** (e.g. "Rob" → `[[@Rob]]`) — high confidence if unambiguous.
-3. **First name only** (e.g. "Robert" for `@Rob`) — low confidence, requires confirmation.
+1. **Full name match** (e.g. "Jane Doe" → `[[@Jane Doe]]`) — high confidence.
+2. **Filename match** (e.g. "Jane Doe" → `[[@Jane Doe]]`) — high confidence if unambiguous.
+3. **First name only** (e.g. "Jane" for `@Jane Doe`) — low confidence, requires confirmation.
 4. **Gemini anonymization** (e.g. "someone in [location]") — cross-reference with meeting Participants and Tracker.md assignees to resolve.
 
 ### Word Boundary Matching
 
 When scanning text for name mentions:
-- Use word boundary matching — "Rob" should not match inside "Robert" or "Problem".
+- Use word boundary matching — "Jane" should not match inside "Janet" or "Janeiro".
 - Skip matches inside `[[@...]]` wikilinks (already linked).
 - Skip matches inside frontmatter `---` fences.
 - Skip matches inside URLs or code blocks.

@@ -123,7 +123,7 @@ Prefer a dedicated section heading if missing, e.g. `## Follow-ups`, placed afte
 
 ### Step 5: Mark as processed
 
-After inserting, add a `TodosExtracted: YYYY-MM-DDTHH:MM:SS-06:00` frontmatter property to prevent re-processing. This is required — `/meeting wrap pending` relies on it to detect unprocessed meetings.
+After inserting, add a `TodosExtracted: YYYY-MM-DDTHH:MM:SS±HH:MM` frontmatter property to prevent re-processing. This is required — `/meeting wrap pending` relies on it to detect unprocessed meetings.
 
 ### Step 6: Offer to commit
 

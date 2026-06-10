@@ -70,7 +70,7 @@ gws calendar +agenda --today --format json
 **Events in a range** (RFC3339 `timeMin` / `timeMax`, exclusive end):
 
 ```bash
-gws calendar events list --params '{"calendarId":"primary","timeMin":"2026-03-31T00:00:00-06:00","timeMax":"2026-04-01T00:00:00-06:00","singleEvents":true,"orderBy":"startTime"}'
+gws calendar events list --params '{"calendarId":"primary","timeMin":"2026-03-31T00:00:00+00:00","timeMax":"2026-04-01T00:00:00+00:00","singleEvents":true,"orderBy":"startTime"}'
 ```
 
 ## Gmail

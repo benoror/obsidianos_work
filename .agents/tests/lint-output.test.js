@@ -68,16 +68,16 @@ describe("Output contracts — invalid fixtures catch violations", () => {
       `Expected at least 2 participant violations, got ${r.participants.length}: ${r.participants}`
     );
     assert.ok(
-      r.participants.some((e) => /Zak/.test(e)),
-      "Should flag 'Zak' (missing wikilink brackets)"
+      r.participants.some((e) => /Jane/.test(e)),
+      "Should flag 'Jane' (missing wikilink brackets)"
     );
     assert.ok(
-      r.participants.some((e) => /@Carlos/.test(e)),
-      "Should flag '@Carlos' (missing wikilink brackets)"
+      r.participants.some((e) => /@Alex/.test(e)),
+      "Should flag '@Alex' (missing wikilink brackets)"
     );
     assert.ok(
-      !r.participants.some((e) => /Valid/.test(e)),
-      "'[[@Valid]]' should pass"
+      !r.participants.some((e) => /\[\[@Jane Doe\]\]/.test(e)),
+      "'[[@Jane Doe]]' should pass"
     );
   });
 

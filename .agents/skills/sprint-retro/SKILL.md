@@ -79,7 +79,7 @@ Base structure on [Templates/Sprint Retro.md](../../../Templates/Sprint%20Retro.
 ````markdown
 ---
 Notes:
-created: YYYY-MM-DDTHH:MM:SS-06:00
+created: YYYY-MM-DDTHH:MM:SS±HH:MM
 Participants: "[[+Engineering]]"
 ---
 
@@ -144,4 +144,4 @@ See [/commit](../commit/SKILL.md).
 - **Cadence is a heuristic** — biweekly same-weekday is the norm, but planning/retro days drift; always cross-check the derived window against the actual scrum dailies and planning-note date.
 - **Naming consistency** — if you touch sibling planning/retro files with non-canonical names, normalize them via `git mv` and fix referencing wikilinks (see the convention section).
 - **No checkboxes** — this is a discussion artifact; keep it bullets-only per the output rules, matching `/followup-todos`.
-- **Timezone** — dates use the vault owner's offset (e.g. `-06:00`). See [skill-conventions](../../rules/skill-conventions.md) Project Context.
+- **Timezone** — use the vault owner's offset from [USER.md](../../../USER.md). See [skill-conventions](../../rules/skill-conventions.md) Project Context.

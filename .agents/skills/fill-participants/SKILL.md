@@ -91,10 +91,10 @@ Display a numbered table of proposed replacements:
 ```
 | # | Replace? | Found text | → Link | Context (surrounding text) |
 |---|----------|------------|--------|---------------------------|
-| 1 | ✅ | Rob Klock | [[@Rob]] | "...assigned Rob Klock a bug ticket..." |
+| 1 | ✅ | Jane Doe | [[@Jane Doe]] | "...assigned Jane Doe a bug ticket..." |
 | 2 | ✅ | @Jane | [[@Jane Doe]] | "...recent changes made by @Jane..." |
-| 3 | ⬜ | Victor | [[@Victor]] | "...Victor confirmed they have been..." |
-| 4 | ⬜ | Alex | — (skip, it's the user) | "...Alex Smith and Alex agreed..." |
+| 3 | ⬜ | Alex Kim | [[@Alex Kim]] | "...Alex Kim confirmed they have been..." |
+| 4 | ⬜ | Alex | — (skip, it's the user) | "...Alex Rivera and Alex agreed..." |
 ```
 
 - Default `✅` for full-name matches (high confidence).
