@@ -10,8 +10,8 @@ import {
   parseAgentsMd,
   parseSkillConventions,
   parseReadme,
-  detectMcpUsage,
-  KNOWN_MCP_SERVERS,
+  detectExternalToolUsage,
+  KNOWN_EXTERNAL_TOOLS,
 } from "./helpers/skills.js";
 
 const skills = discoverSkills();
@@ -59,20 +59,24 @@ describe("Compatibility", () => {
     const path = join(SKILLS_DIR, skill, "SKILL.md");
     const content = readFile(path);
     const fm = parseFrontmatter(content);
-    const mcpUsed = detectMcpUsage(content);
+    const toolsUsed = detectExternalToolUsage(content);
+    const declaredTools = [...toolsUsed].filter(
+      (t) => t === "gws" || t === "qmd"
+    );
 
-    if (mcpUsed.size > 0) {
-      it(`${skill} references MCP servers and declares compatibility`, () => {
+    if (declaredTools.length > 0) {
+      it(`${skill} references external tools and declares compatibility`, () => {
         assert.ok(
           fm.compatibility,
-          `${skill}/SKILL.md uses ${[...mcpUsed].join(", ")} but has no 'compatibility' field`
+          `${skill}/SKILL.md uses ${declaredTools.join(", ")} but has no 'compatibility' field`
         );
       });
 
-      it(`${skill} compatibility mentions all used MCP servers`, () => {
-        for (const server of mcpUsed) {
+      it(`${skill} compatibility mentions all used gws/qmd tools`, () => {
+        const compat = fm.compatibility.toLowerCase();
+        for (const server of declaredTools) {
           assert.ok(
-            fm.compatibility.includes(server),
+            compat.includes(server),
             `${skill}/SKILL.md uses '${server}' but compatibility doesn't mention it: '${fm.compatibility}'`
           );
         }
@@ -80,11 +84,13 @@ describe("Compatibility", () => {
     }
 
     if (fm.compatibility) {
-      it(`${skill} compatibility references known MCP servers`, () => {
-        const mentioned = [...KNOWN_MCP_SERVERS].filter((s) => fm.compatibility.includes(s));
+      it(`${skill} compatibility references known external tools`, () => {
+        const mentioned = [...KNOWN_EXTERNAL_TOOLS].filter((s) =>
+          fm.compatibility.includes(s)
+        );
         assert.ok(
           mentioned.length > 0,
-          `${skill}/SKILL.md has compatibility '${fm.compatibility}' but doesn't reference any known MCP server`
+          `${skill}/SKILL.md has compatibility '${fm.compatibility}' but doesn't reference any known external tool`
         );
       });
     }

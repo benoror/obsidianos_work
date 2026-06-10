@@ -4,8 +4,11 @@ import { SKILLS_DIR, ROOT, readFile, parseFrontmatter } from "./parse.js";
 
 const SKIP_DIRS = new Set(["_shared"]);
 
-/** Declared in skill frontmatter `compatibility:` — includes QMD and Google Workspace CLI (`gws`). */
-export const KNOWN_MCP_SERVERS = new Set(["gws", "qmd"]);
+/** Declared in skill frontmatter `compatibility:` — external tools agents invoke. */
+export const KNOWN_EXTERNAL_TOOLS = new Set(["gws", "qmd", "Obsidian CLI"]);
+
+/** @deprecated alias */
+export const KNOWN_MCP_SERVERS = KNOWN_EXTERNAL_TOOLS;
 
 /** List skill directories (those containing SKILL.md, minus non-skill dirs). */
 export function discoverSkills() {
@@ -16,6 +19,35 @@ export function discoverSkills() {
       return statSync(dir).isDirectory() && existsSync(join(dir, "SKILL.md"));
     })
     .sort();
+}
+
+/** Detect which external tools a skill body references (QMD, `gws`, Obsidian CLI). */
+export function detectExternalToolUsage(content) {
+  const found = new Set();
+  if (
+    /\bgws\b|Google Workspace CLI|googleworkspace\/cli|gmail users messages|calendar \+agenda|calendar events list|docs documents get|drive files export/i.test(
+      content
+    )
+  )
+    found.add("gws");
+  if (
+    /\bqmd[_-](?:search|vector_search|get|multi_get|deep_search)\b|QMD.*discovery|Use QMD/i.test(
+      content
+    )
+  )
+    found.add("qmd");
+  if (
+    /\bobsidian (?:base:query|property:|properties|outline|files|create)\b|Obsidian CLI/i.test(
+      content
+    )
+  )
+    found.add("Obsidian CLI");
+  return found;
+}
+
+/** @deprecated alias */
+export function detectMcpUsage(content) {
+  return detectExternalToolUsage(content);
 }
 
 /**
@@ -66,20 +98,4 @@ export function parseReadme() {
   return names;
 }
 
-/** Detect which external tools a skill body references (QMD, `gws`). */
-export function detectMcpUsage(content) {
-  const found = new Set();
-  if (
-    /\bgws\b|Google Workspace CLI|googleworkspace\/cli|gmail users messages|calendar \+agenda|calendar events list|docs documents get|drive files export/i.test(
-      content
-    )
-  )
-    found.add("gws");
-  if (
-    /\bqmd[_-](?:search|vector_search|get|multi_get|deep_search)\b|QMD.*discovery|Use QMD/i.test(
-      content
-    )
-  )
-    found.add("qmd");
-  return found;
-}
+export { parseFrontmatter };

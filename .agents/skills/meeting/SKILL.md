@@ -2,7 +2,7 @@
 name: meeting
 description: "Create or wrap meeting notes. Args: {title} [folder=X], wrap <path>, wrap pending [today|this week|dates]. No args = pick from Google Calendar."
 license: MIT
-compatibility: Requires qmd (CLI or MCP) and gws CLI for Calendar (read-only) in Mode B. See [google-workspace-cli](../_shared/google-workspace-cli.md).
+compatibility: Requires qmd (CLI or MCP), gws CLI for Calendar (read-only) in Mode B, and Obsidian CLI when running wrap modes (sub-skills). See [google-workspace-cli](../_shared/google-workspace-cli.md).
 ---
 
 # Meeting
