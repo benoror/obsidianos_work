@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "node --test .agents/tests/"
+    "test": "node --test .agents/tests/ && python3 .scripts/test_gmail_ai_transcripts.py"
   },
   "keywords": [],
   "author": "",

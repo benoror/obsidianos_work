@@ -1,0 +1,19 @@
+{
+  "speech": {
+    "summary": "Roadmap review, API migration",
+    "speakers": [{ "id": 1, "speaker_name": "Jane Doe" }],
+    "speech_outline": [
+      {
+        "text": "Overview",
+        "segments": [{ "text": "Discussed Q1 priorities." }]
+      }
+    ],
+    "transcripts": [
+      {
+        "speaker_id": 1,
+        "transcript": "Let's review the roadmap.",
+        "start_offset": 0
+      }
+    ]
+  }
+}
