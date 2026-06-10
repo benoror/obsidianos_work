@@ -99,7 +99,7 @@ Generate a **well-structured markdown document**. Use headings, sub-headings, bu
 
 ````markdown
 ---
-created: YYYY-MM-DDTHH:MM:SS-06:00
+created: YYYY-MM-DDTHH:MM:SS±HH:MM
 period: YYYY-MM-DD..YYYY-MM-DD
 sources:
   - gmail
@@ -190,4 +190,4 @@ See [/commit](../commit/SKILL.md).
 - **Volume control**: For busy weeks, prioritize depth over breadth. Summarize high-volume sources (e.g. 200 emails) rather than listing every item.
 - **Gmail query limits**: `gws gmail users messages list` returns paginated results. Fetch up to 50 messages per search; if more exist, note the total count and focus on the most relevant.
 - **Graceful degradation**: The skill must work with just Gmail + vault notes. Slack and Atlassian are additive — their absence should not block the recap.
-- **Timezone**: All dates use `-06:00` (CST). See `skill-conventions.mdc` Project Context.
+- **Timezone**: Use the vault owner's offset from [USER.md](../../../USER.md) (ISO 8601 `±HH:MM`).

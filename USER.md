@@ -14,7 +14,7 @@ The vault owner's person file is [`[[@Me]]`](Teams/People/@Me.md).
 ## Location & Timezone
 
 - **Location**: `<City, Country>`
-- **Timezone**: `<UTC offset>` (e.g. `-06:00` CST)
+- **Timezone**: `<UTC offset>` (e.g. `-05:00`, `+01:00`)
 - **ISO format**: `YYYY-MM-DDTHH:MM:SS<offset>`
 
 ## AI Transcript Anonymization

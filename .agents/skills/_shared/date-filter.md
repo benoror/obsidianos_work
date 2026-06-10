@@ -43,7 +43,7 @@ Dates appear in many formats across filenames, frontmatter, and external documen
 | `Month DD, YYYY` | `February 24, 2026` | Long form |
 | `Mon DD, YYYY` | `Feb 24, 2026` | Short form |
 | `DD Month YYYY` | `24 February 2026` | Intl long form |
-| ISO 8601 | `2026-02-24T09:43:00-06:00` | Frontmatter timestamps |
+| ISO 8601 | `2026-02-24T09:43:00+00:00` | Frontmatter timestamps |
 
 ### Ambiguity
 

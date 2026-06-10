@@ -22,13 +22,13 @@ import json
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 
 VAULT = Path(__file__).resolve().parents[1]
 MEETINGS = VAULT / "Meetings"
-# Set to your local timezone offset (used for created: timestamps).
-LOCAL_TZ = timezone(timedelta(hours=-6))
+# Set to your local timezone offset (used for created: timestamps). Default: UTC.
+LOCAL_TZ = timezone.utc
 GMAIL_Q = "label:🤖-ai-transcripts in:inbox"
 
 SUBJ_NOTES = re.compile(

@@ -35,7 +35,7 @@ After caching:
 Notes:
   - https://docs.google.com/document/d/{id}/edit?tab=t.{tab}
   - https://otter.ai/u/{id}
-NotesCached: 2026-02-25T15:00:00-06:00
+NotesCached: 2026-02-25T15:00:00+00:00
 ```
 
 ## Provider: Gemini (Google Docs)
