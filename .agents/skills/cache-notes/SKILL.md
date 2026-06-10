@@ -13,11 +13,11 @@ compatibility: Requires qmd (CLI or MCP) and gws CLI for Google Docs/Drive (read
 - `/cache-notes <path>` — Cache notes for a specific meeting file.
 - `/cache-notes refresh <path>` — Re-fetch and overwrite existing cached content for a file.
 
-If the target file has an **empty `Notes:` property** (no URLs yet), prompt the user to paste the external resource URLs (Google Docs, Otter.ai, etc.). Add them to the `Notes:` frontmatter, then proceed with fetching and caching as normal.
+If the target file has an **empty `Notes:` property** (no URLs yet), run **`/mail-transcripts`** first when doing a full wrap (see [meeting](../meeting/SKILL.md) Mode C) — it may populate `Notes:` from the Gemini inbox mail. If still empty, prompt the user to paste the external resource URLs (Google Docs, Otter.ai, etc.). Add them to the `Notes:` frontmatter, then proceed with fetching and caching as normal.
 
 ## How It Works
 
-External meeting resources (Google Docs, Otter.ai) linked in frontmatter `Notes:` are fetched, parsed by provider, and embedded as **collapsible Obsidian callouts** directly in the meeting note. A `NotesCached:` frontmatter timestamp marks the file as cached.
+Supported **external transcript providers** are **Google Docs** (Gemini notes) and **Otter.ai**. When a URL from either provider appears in frontmatter `Notes:`, the agent fetches the transcript using that provider's instructions and embeds it as **collapsible Obsidian callouts** in the meeting note. A `NotesCached:` frontmatter timestamp marks the file as cached.
 
 ## Frontmatter Convention
 
@@ -98,29 +98,35 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 
 ## Provider: Otter.ai
 
-> **Status**: TBD — Otter.ai has no API/MCP integration. For now, skip Otter links silently.
-> When available, the structure will mirror Gemini with `[!otter_notes]-`, `[!otter_todos]-`, `[!otter_transcript]-`.
+Otter.ai is a supported **external transcript provider** (same as Google Docs). Whenever an Otter.ai URL is present in `Notes:`, follow this provider's instructions to fetch the transcript and embed it. The cached output uses the same structure as other providers: a **subsection** under `## 🤖 AI Notes` with collapsible callouts. Expected callout types:
+
+- `[!otter_notes]-` — Summary and details
+- `[!otter_todos]-` — Suggested next steps / key topics
+- `[!otter_transcript]-` — Full transcript (if available)
+
+**Implementation**: Use the [otter-fetch](../otter-fetch/SKILL.md) skill — ask the user to paste the JSON from `GET .../speech?otid=...`, then run `parse_otter.js` (or parse inline) to produce the callouts above and append them.
 
 ## Workflow
 
 ### Mode: Specific file (`/cache-notes <path>`)
 
-1. **Read the file**. Check frontmatter for `Notes:` links and `NotesCached:`.
-2. If `Notes:` is empty or absent, **prompt the user** to paste the external resource URL(s). Add them to the `Notes:` frontmatter property using `StrReplace`, then continue.
+1. **Read frontmatter only**. Check `Notes:` and `NotesCached:` via `obsidian property:read` (see [frontmatter-mutations](../_shared/frontmatter-mutations.md)). To check whether the body already has an `## 🤖 AI Notes` section without reading the whole file, run `obsidian outline path="<file>" format=json` and look for that heading — much cheaper than a full `Read` on large transcript files.
+2. If `Notes:` is empty or absent, **prompt the user** to paste the external resource URL(s). Set them via `obsidian property:set name=Notes value='["<url1>","<url2>"]' type=list path="<file>"`, then continue.
 3. If `NotesCached:` exists and this is not a `refresh`, inform the user and stop.
 4. **Verify each URL** before caching (see URL Verification below).
 5. **For each URL in `Notes:`**, fetch and parse by provider:
    - **Google Docs**: Extract document ID, fetch via **`gws`** (see [google-workspace-cli](../_shared/google-workspace-cli.md)), parse into sections per [Provider: Gemini](#provider-gemini-google-docs).
-   - **Otter.ai**: Per [Provider: Otter.ai](#provider-otterai) — skip silently until API integration is available.
-6. Build the callout blocks from all fetched content (Docs only until Otter is supported).
+   - **Otter.ai**: Use [otter-fetch](../otter-fetch/SKILL.md) (user pastes JSON from `GET .../speech?otid=...`; run `otter-fetch/parse_otter.js` or parse inline), then append the resulting callout block.
+6. Build the callout blocks from all fetched content.
 7. If the file already has callout blocks (refresh mode), replace them. Otherwise append under `## 🤖 AI Notes` after frontmatter `---` (see [Output Format](#output-format)).
-8. Set `NotesCached:` in frontmatter to current timestamp.
+8. Set `NotesCached:` timestamp: `obsidian property:set name=NotesCached value="$(date +%FT%T%z)" type=datetime path="<file>"`. See [frontmatter-mutations](../_shared/frontmatter-mutations.md).
 
 ### Mode: All (`/cache-notes all`)
 
-1. Run [/note-status pending --step=cache](../note-status/SKILL.md#pending-mode) to discover notes that have cacheable URLs but no `NotesCached:` yet, present them, and let the user select which to process.
-2. Process each selected file per the specific-file workflow above.
-3. Report results: successes, failures, skipped (Otter-only).
+1. Discover uncached files via the live Base view: `obsidian base:query path=Meetings.base view=CachePending format=paths`. Returns only files with `Notes` populated but no `NotesCached:` — exactly the work queue. (The `/note-status pending --step=cache` delegation in [Detecting Uncached Files](#detecting-uncached-files) is the fallback when `Meetings.base` is unavailable.)
+2. Present the list to the user with count. Ask for confirmation before proceeding.
+3. Process each file per the specific-file workflow above.
+4. Report results: successes, failures, and any skipped (e.g. provider not yet implemented).
 
 ## URL Verification
 
@@ -138,7 +144,7 @@ Before caching, verify that each external resource actually corresponds to the m
    - If the dates **don't match**, warn the user:
 
 ```
-⚠️ Date mismatch for Meetings/PAM/Scrum/2026-02-24.md:
+⚠️ Date mismatch for Meetings/Engineering/Scrum/2026-02-24.md:
    Note date:     2026-02-24
    Doc title:     "Daily Standup - 2026/02/26 09:41 EST - Notes by Gemini"
    Doc date:      2026-02-26
@@ -176,8 +182,7 @@ See [/commit](../commit/SKILL.md). Skip when called as part of a sequence (e.g. 
 
 ## Important Notes
 
-- Always read a file before editing — frontmatter may have changed since last read.
-- Use `StrReplace` for edits, targeting the closing `---` of frontmatter as the anchor.
+- Use `obsidian property:set` for frontmatter writes (`Notes:`, `NotesCached:`) — see [frontmatter-mutations](../_shared/frontmatter-mutations.md); never hand-roll `StrReplace` against frontmatter anchors. Body content (the callout blocks) is still appended/replaced with `Edit`/`Write`.
 - The `Notes:` URLs should NOT be modified — they remain as the canonical source links.
 - `NotesCached:` is the single indicator that caching was done. No other markers.
 - For `all` mode, process in batches and report progress to the user.
