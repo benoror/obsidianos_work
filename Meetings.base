@@ -1,37 +1,130 @@
 formulas:
   last_folder: file.asLink(file.folder.split('/').reverse()[0])
   NotesCount: if(Notes.isType("list"), Notes.length, if(Notes.length > 0, 1, 0))
+  is_pending: 'if(Notes.isEmpty() || NotesCached.isEmpty() || Participants.isEmpty() || TodosExtracted.isEmpty(), "pending", "done")'
 properties:
   file.name:
     displayName: title
   formula.last_folder:
     displayName: folder
-  note.:
-    displayName: ssss
+  formula.NotesCount:
+    displayName: "# notes"
+  formula.is_pending:
+    displayName: wrap status
 views:
   - type: table
     name: Table
     filters:
-      or:
+      and:
         - file.folder.contains("Meetings/")
+        - file.ext == "md"
     order:
       - file.ctime
       - formula.last_folder
       - file.name
       - Participants
-      - Recording
+      - formula.NotesCount
+      - NotesCached
+      - TodosExtracted
     sort:
       - property: file.ctime
-        direction: DESC
-      - property: Participants
-        direction: ASC
-      - property: formula.last_folder
-        direction: ASC
-      - property: formula.NotesCount
-        direction: ASC
-      - property: Notes
         direction: DESC
     summaries: {}
     columnSize:
       file.ctime: 166
       note.Participants: 448
+  - type: table
+    name: Pending
+    filters:
+      and:
+        - file.folder.contains("Meetings/")
+        - file.ext == "md"
+        - or:
+            - Notes.isEmpty()
+            - NotesCached.isEmpty()
+            - Participants.isEmpty()
+            - TodosExtracted.isEmpty()
+    order:
+      - file.name
+      - formula.last_folder
+      - Notes
+      - NotesCached
+      - Participants
+      - TodosExtracted
+      - file.ctime
+    sort:
+      - property: file.ctime
+        direction: ASC
+  - type: table
+    name: CachePending
+    filters:
+      and:
+        - file.folder.contains("Meetings/")
+        - file.ext == "md"
+        - NotesCached.isEmpty()
+        - not:
+            - Notes.isEmpty()
+    order:
+      - file.name
+      - formula.last_folder
+      - Notes
+      - file.ctime
+    sort:
+      - property: file.ctime
+        direction: ASC
+  - type: table
+    name: Inbox
+    filters:
+      and:
+        - file.folder.contains("Meetings/_inbox")
+        - file.ext == "md"
+    order:
+      - file.name
+      - file.ctime
+      - Notes
+    sort:
+      - property: file.ctime
+        direction: DESC
+  - type: table
+    name: OneOnOnes
+    filters:
+      and:
+        - file.ext == "md"
+        - or:
+            - file.folder.contains("Meetings/One-on-ones")
+            - file.folder.contains("Meetings/Tech Syncs")
+    order:
+      - file.name
+      - Participants
+      - file.ctime
+    sort:
+      - property: file.ctime
+        direction: DESC
+  - type: table
+    name: Interviews
+    filters:
+      and:
+        - file.folder.contains("Meetings/Interviews")
+        - file.ext == "md"
+    order:
+      - file.name
+      - Participants
+      - file.ctime
+    sort:
+      - property: file.ctime
+        direction: DESC
+  - type: table
+    name: ThisWeek
+    filters:
+      and:
+        - file.folder.contains("Meetings/")
+        - file.ext == "md"
+        - (today() - file.ctime).days <= 7
+    order:
+      - file.name
+      - formula.last_folder
+      - Participants
+      - file.ctime
+    sort:
+      - property: file.ctime
+        direction: DESC
