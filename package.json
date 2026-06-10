@@ -5,10 +5,10 @@
   "scripts": {
     "test": "node --test .agents/tests/ && python3 .scripts/test_gmail_ai_transcripts.py"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["obsidian", "agents", "skills", "vault", "ai", "bases"],
+  "author": "ObsidianOS contributors",
+  "license": "MIT",
+  "description": "Obsidian vault template with agent skills — meeting wrap pipeline, Bases views, and QMD search",
   "dependencies": {
     "@tobilu/qmd": "^0.9.0"
   }
