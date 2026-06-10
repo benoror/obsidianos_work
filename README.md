@@ -11,14 +11,15 @@ An Obsidian vault wired with AI agent skills — an **Agentic Operating System f
 Slash commands that run inside your vault, powered by any AI agent:
 
 ```
-/meeting                  → Create notes from Google Calendar
+/meeting wrap pending     → Gmail → triage → cache → participants → todos
+/mail-transcripts         → Drain Gemini transcript emails into Notes:
+/organize-meetings        → Triage Meetings/_inbox/ into the right folder
 /cache-notes              → Embed AI meeting transcripts
 /fill-participants        → Resolve names to [[@Person]] wikilinks
-/followup-todos           → Extract action items as plain markdown bullets (no Tasks checkboxes)
+/followup-todos           → Extract action items as plain markdown bullets
 /note-status              → Verify notes are fully processed
-/recap                    → Weekly summary from email, Slack, Jira & vault
+/vault-health             → Audit unresolved links and orphans
 /commit                   → Stage & commit with inferred intent
-/sync-upstream-obsidianos → Pull updates from upstream ObsidianOS
 ```
 
 Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [OpenCode](https://github.com/opencode-ai/opencode), or any MCP-compatible client. Clone it, fill in `USER.md`, and go.
@@ -71,20 +72,63 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 
 Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGENTS.md) for the full reference. **Skill proxies:** `.cursor/skills`, `.claude/skills`, `.opencode/skills`, and repo-root `skills/` are symlinks to `.agents/skills/` so Cursor, Claude Code, OpenCode, and OpenClaw share one canonical tree.
 
+### Core pipeline vs optional modules
+
+| Tier | Skills | When you need them |
+|------|--------|-------------------|
+| **Core — meeting wrap** | `/meeting`, `/mail-transcripts`, `/organize-meetings`, `/cache-notes`, `/fill-participants`, `/followup-todos`, `/note-status`, `/commit` | Processing Gemini (or Otter) meeting transcripts end-to-end |
+| **Vault maintenance** | `/people-stubs`, `/vault-health`, `/migrate-tags` | Growing vault hygiene |
+| **People & teams** | `/onboard-person`, `/last-1on1` | HR-style people files and 1:1 tracking |
+| **Integrations** | `/recap`, `otter-fetch` | Weekly recaps; Otter.ai (manual JSON workflow) |
+| **Workflow modules** | `/sprint-retro`, `/workspace-mode` | Scrum teams; saved Obsidian Workspace layouts |
+| **Authoring / tools** | `defuddle`, `json-canvas`, `obsidian-bases`, `obsidian-cli`, `obsidian-markdown` | Building notes, canvases, and bases |
+| **Upstream sync** | `/sync-upstream-obsidianos` | Pulling template updates into a fork |
+
+## Meeting wrap pipeline
+
+The main workflow chains skills in sequence. **`/meeting wrap pending`** runs the full batch; **`/meeting wrap <path>`** runs a single note.
+
+```
+/mail-transcripts          → link Gemini Docs from Gmail into Notes:
+/organize-meetings         → move _inbox/ stubs to the right Meetings/ subfolder
+/note-status pending       → discover notes missing a wrap step (Meetings.base Pending view)
+/cache-notes               → fetch Docs/Otter → embed ## 🤖 AI Notes callouts
+/fill-participants         → resolve Participants: frontmatter
+/followup-todos            → propose plain-bullet follow-ups (user confirms)
+/commit                    → one commit for the batch
+```
+
+### Dependency matrix (core pipeline)
+
+| Capability | Required for | Setup |
+|------------|--------------|-------|
+| **[Obsidian](https://obsidian.md/)** running | Bases queries, `obsidian property:*`, batch pending discovery | Open the vault; enable **Bases** (core) |
+| **[Obsidian CLI](https://help.obsidian.md/cli)** | `note-status`, `cache-notes`, `organize-meetings`, `last-1on1` | Install from Obsidian download; verify `obsidian` is on `PATH` |
+| **`Meetings.base` / `People.base`** | Pending, CachePending, Inbox, OneOnOnes views | Shipped in repo — open in Obsidian to index |
+| **[Google Workspace CLI](https://github.com/googleworkspace/cli)** (`gws`) | Calendar, Docs, Gmail transcript drain | § 3 below — **Gmail modify** scope for `/mail-transcripts` |
+| **Python 3** | `.scripts/gmail_ai_transcripts_to_meetings.py` | System `python3` (no extra packages) |
+| **[QMD](https://github.com/tobi/qmd)** | `/recap`, `/organize-meetings` similarity, date scans | § 4 below — optional if you only use Bases + single-file wrap |
+
+> [!NOTE]
+> Google Workspace skills use **`gws` in the terminal**, not MCP. Calendar/Docs workflows are **read-only**; **`/mail-transcripts`** also **writes** meeting notes and **marks Gmail messages read** (modify scope).
+
 ## Prerequisites
 
 - [Cursor](https://cursor.com) IDE or [CLI](https://docs.cursor.com/cli) (or any agent that supports MCP — see [Compatible agents](#compatible-agents))
-- [Node.js](https://nodejs.org/) v20+
-- [Obsidian](https://obsidian.md/) (see [Obsidian plugins](#obsidian-plugins) below)
-- [**Google Workspace CLI**](https://github.com/googleworkspace/cli) (`gws`) — optional; required for `/meeting` (Calendar), `/cache-notes` / `/fill-participants` (Docs/Drive), and `/recap` (Gmail/Calendar). Install per **§ 3** in [Setup](#setup) below.
+- [Node.js](https://nodejs.org/) **v24+** (matches CI; v20 may work but is untested)
+- [Python 3](https://www.python.org/) — for `/mail-transcripts` batch script
+- [Obsidian](https://obsidian.md/) with **Bases** enabled — required for the meeting wrap pipeline
+- **[Obsidian CLI](https://help.obsidian.md/cli)** — required for Bases queries and frontmatter mutations in batch skills
+- [**Google Workspace CLI**](https://github.com/googleworkspace/cli) (`gws`) — optional for Calendar/Docs-only workflows; **required for `/mail-transcripts`**
+- **[QMD](https://github.com/tobi/qmd)** — optional; recommended for `/recap` and `/organize-meetings` similarity search
 
 ## Setup
 
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/youruser/obsos_work.git
-cd obsos_work
+git clone https://github.com/benoror/obsidianos_work.git
+cd obsidianos_work
 npm install
 ```
 
@@ -92,9 +136,9 @@ npm install
 
 Edit [`USER.md`](USER.md) with your name, email, timezone, and aliases. This is the single source of truth that all skills reference — no other file needs your personal info.
 
-### 3. Google Workspace CLI (optional)
+### 3. Google Workspace CLI (optional / required for Gmail automation)
 
-Required for **`/meeting`** (list today’s Calendar events), **`/cache-notes`** / **`/fill-participants`** (read Gemini Google Docs), and **`/recap`** (Gmail + Calendar). All of these workflows are **read-only**; use OAuth scopes limited to what you need (e.g. Drive/Docs/Calendar/Gmail readonly).
+Required for **`/meeting`** (list today’s Calendar events), **`/cache-notes`** / **`/fill-participants`** (read Gemini Google Docs), **`/recap`** (Gmail + Calendar), and **`/mail-transcripts`** (Gmail → vault sync).
 
 1. Install **`gws`** — pick one:
    - [GitHub Releases](https://github.com/googleworkspace/cli/releases) (pre-built binary)
@@ -106,12 +150,23 @@ Required for **`/meeting`** (list today’s Calendar events), **`/cache-notes`**
 gws auth login
 ```
 
-Use a scope preset or `--scopes` that includes **readonly** access for the APIs you use. Credentials are stored under `~/.config/gws/` by default. Optional env vars: see [.env.example](.env.example) and the upstream [README](https://github.com/googleworkspace/cli/blob/main/README.md).
+Use **readonly** scopes for Calendar/Docs/Drive if you only read transcripts manually. For **`/mail-transcripts`**, include **Gmail modify** so the script can mark processed messages read (`users.messages.modify`).
 
 3. Command examples for agents are in [.agents/skills/_shared/google-workspace-cli.md](.agents/skills/_shared/google-workspace-cli.md).
 
+#### Gmail transcript automation (`/mail-transcripts`)
+
+Optional but recommended if Gemini emails you Google Doc links after meetings:
+
+1. **Create a Gmail label** named exactly `🤖-ai-transcripts` (includes the robot emoji).
+2. **Filter** Gemini “Notes: …” or “Document shared with you: … Notes by Gemini” messages into that label and keep them in **Inbox** (the script query is `label:🤖-ai-transcripts in:inbox`).
+3. **Customize routing** in [`.scripts/gmail_ai_transcripts_to_meetings.py`](.scripts/gmail_ai_transcripts_to_meetings.py) — edit `resolve_path()` to match your `Meetings/` folder layout (defaults target `Meetings/Engineering/…`).
+4. Run **`/mail-transcripts`** or let **`/meeting wrap`** call it as step 1.
+
+Full setup details: [.agents/skills/mail-transcripts/SETUP.md](.agents/skills/mail-transcripts/SETUP.md).
+
 > [!NOTE]
-> Google Workspace is **not** exposed via MCP in this vault — agents run `gws` in the **terminal**. [Cursor](https://cursor.com) still loads **QMD** from `.cursor/mcp.json` only.
+> Google Workspace is **not** exposed via MCP in this vault — agents run `gws` in the **terminal**. [Cursor](https://cursor.com) loads **QMD** from `.cursor/mcp.json` only.
 
 ### 4. QMD vault search (optional)
 
@@ -129,14 +184,19 @@ The `npx qmd mcp` server (configured in `.cursor/mcp.json`) will serve searches 
 The vault ships with these directories already in place:
 
 ```
-Meetings/          Meeting notes (create subfolders per team/project as needed)
-Meetings/_inbox/   Untriaged stubs from /mail-transcripts (drain via /organize-meetings)
-Teams/People/      Person files: @Name.md (one per colleague)
-Teams/             Team files: +TeamName.md
-Templates/         Obsidian templates
+Meetings/                      Meeting notes (subfolders per team/project)
+Meetings/_inbox/               Untriaged stubs from /mail-transcripts
+Meetings/Engineering/Scrum/    Daily standups, sprint ceremonies (example layout)
+Meetings/One-on-ones/          1:1 notes
+Meetings/Interviews/           Interview notes
+Teams/People/                  Person files: @Name.md (example: @Me, @Jane Doe)
+Teams/                         Team files: +TeamName.md
+Templates/                     Obsidian templates
+Meetings.base / People.base    Bases views (Pending, Inbox, OneOnOnes, …)
+memory/                        Optional agent memory (see feedback_meeting-routing.md.example)
 ```
 
-A default [`Teams/People/@Me.md`](Teams/People/@Me.md) is included as the vault owner's person file. Add subfolders under `Meetings/` to organise notes by team or project (e.g. `Meetings/Engineering/`, `Meetings/One-on-ones/`).
+Example people files **`@Me.md`**, **`@Jane Doe.md`**, and **`@Alex Kim.md`** ship with the template. Replace or extend them as you onboard real colleagues. Add subfolders under `Meetings/` to match your org (the defaults use `Meetings/Engineering/`).
 
 ### 6. Open in Obsidian + Cursor
 
@@ -177,15 +237,15 @@ These are not required by any skill but improve the day-to-day experience:
 | [Custom File Explorer Sorting](https://github.com/SebastianMC/obsidian-custom-sort) | `custom-sort` | Manual sorting rules for files and folders in the explorer |
 | [Cycle Through Panes](https://github.com/phibr0/cycle-through-panes) | `cycle-through-panes` | Ctrl/Cmd+Tab to cycle through open tabs like a browser |
 
-### Optional (agent skills: Obsidian CLI stack)
+### Optional (agent skills: Obsidian CLI + Bases)
 
-These line up with the bundled [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) agent skills (`obsidian-cli`, `json-canvas`, `obsidian-bases`, `obsidian-markdown`). None are extra Community plugins unless noted — turn on the features you use, and keep **Obsidian running** when an agent drives the vault via the [Obsidian CLI](https://help.obsidian.md/cli).
+**Required for the meeting wrap pipeline** — not optional if you use `/meeting wrap`, `/note-status pending`, or `/cache-notes all`:
 
 | Feature | ID / setup | Agent skill |
 |---|---|---|
 | [Obsidian CLI](https://help.obsidian.md/cli) | Install/update from the [Obsidian download](https://obsidian.md/download) page; enable CLI support per help | `obsidian-cli` |
+| [Bases](https://help.obsidian.md/bases) | Core — open `Meetings.base` once to index | `obsidian-bases` |
 | [Canvas](https://help.obsidian.md/canvas) | Core | `json-canvas` |
-| [Bases](https://help.obsidian.md/bases) | Core | `obsidian-bases` |
 | [Obsidian Flavored Markdown](https://help.obsidian.md/syntax) | Core | `obsidian-markdown` |
 
 The `defuddle` skill uses the [Defuddle](https://www.npmjs.com/package/defuddle) CLI (`npm install -g defuddle`), not an Obsidian plugin.
