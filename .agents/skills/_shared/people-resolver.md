@@ -75,8 +75,8 @@ When multiple sources mention people, resolve in this order:
 1. **Google Docs / Gemini notes** — names participants explicitly.
 2. **Google Calendar attendees** — email → match against People files.
 3. **File content** — existing `[[@Name]]` references in the body.
-4. **Filename** — `X x Y` patterns (e.g. "Chris x Ben 2026-02-10.md").
-5. **Folder conventions** — e.g. `Meetings/PAM/Scrum/` → `[[+PAM]]`.
+4. **Filename** — `X x Y` patterns (e.g. "Alex x Me 2026-02-10.md").
+5. **Folder conventions** — e.g. `Meetings/Engineering/Scrum/` → `[[+Engineering]]`.
 6. **Similar meetings** — recurring meeting with same name, different date.
 7. **Tracker.md** — `[[@Name]]` wikilinks associated with Jira tickets mentioned in context.
 

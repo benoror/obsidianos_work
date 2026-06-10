@@ -88,9 +88,9 @@ Display results as a table, sorted oldest-first by date:
 ```
 | # | File | Notes | Cached | Participants | Todos | Date |
 |---|------|-------|--------|--------------|-------|------|
-| 1 | Meetings/PAM/Some Meeting - 2026-02-20.md | ❌ | ⏸️ | ❌ | ❌ | 2026-02-20 |
-| 2 | Meetings/Eng/Sync - 2026-02-22.md | ✅ | ✅ | ❌ | ❌ | 2026-02-22 |
-| 3 | Meetings/PAM/Scrum/2026-02-25.md | ✅ | ❌ | ✅ | ❌ | 2026-02-25 |
+| 1 | Meetings/Engineering/Some Meeting - 2026-02-20.md | ❌ | ⏸️ | ❌ | ❌ | 2026-02-20 |
+| 2 | Meetings/Engineering/Sync - 2026-02-22.md | ✅ | ✅ | ❌ | ❌ | 2026-02-22 |
+| 3 | Meetings/Engineering/Scrum/2026-02-25.md | ✅ | ❌ | ✅ | ❌ | 2026-02-25 |
 ```
 
 - ✅ = done

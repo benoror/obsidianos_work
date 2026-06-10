@@ -34,7 +34,7 @@ See [vault-context](../_shared/vault-context.md) for vault discovery conventions
 Read the entire file. Also read `Tracker.md` to cross-reference Jira tickets and current task status — this helps:
 - **Set priority**: A ticket already marked `🔺` in the Tracker should keep that priority (as trailing emoji in the bullet text if you include one).
 - **Avoid duplicates**: If a follow-up already exists in the Tracker for the same Jira ticket, flag it in the proposal table (Step 3) rather than creating a duplicate line in the note.
-- **Add context**: If the meeting references a Jira ticket ID (e.g. `PAMENG-1456`), pull its current status and assignee from the Tracker.
+- **Add context**: If the meeting references a Jira ticket ID (e.g. `PROJ-1234`), pull its current status and assignee from the Tracker.
 
 Extract action items from **all** content sources, skipping lines that are **already captured** as follow-ups (compare meaning, not only exact text):
 
@@ -72,10 +72,10 @@ Display a numbered table:
 ```
 | # | Add? | Follow-up | Owner | Priority |
 |---|------|-----------|-------|----------|
-| 1 | ✅   | Talk with Chris about temp environments | Me | 🔼 |
-| 2 | ✅   | Offload data lake work to Rob | Me | ⏫ |
-| 3 | ⬜   | Confirm travel plans for Friday | @Zak | — |
-| 4 | ⬜   | Verify Vitor's prod hash deployed | Me | 🔼 |
+| 1 | ✅   | Talk with Alex about temp environments | Me | 🔼 |
+| 2 | ✅   | Offload data lake work to Jane | Me | ⏫ |
+| 3 | ⬜   | Confirm travel plans for Friday | [[@Sam Rivera]] | — |
+| 4 | ⬜   | Verify production deploy completed | Me | 🔼 |
 ```
 
 - Default `✅` for high-relevance items owned by the user.

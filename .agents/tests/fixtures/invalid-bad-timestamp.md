@@ -4,6 +4,6 @@ Notes:
 created: feb 20 2026
 NotesCached: not-a-date
 Participants:
-  - "[[@Zak]]"
+  - "[[@Jane Doe]]"
 TodosExtracted: also-not-a-date
 ---

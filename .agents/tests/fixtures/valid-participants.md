@@ -4,8 +4,8 @@ Notes:
 created: 2026-02-20T09:00:00-06:00
 NotesCached: 2026-02-20T15:30:00-06:00
 Participants:
-  - "[[@Zak]]"
-  - "[[@Carlos García]]"
+  - "[[@Jane Doe]]"
+  - "[[@Alex Kim]]"
 ---
 
 Some manual notes from the meeting.

@@ -35,7 +35,7 @@ Every skill gathering vault context MUST consider these sources:
 
 | Source | Path | Contains |
 |--------|------|----------|
-| Meeting notes | `Meetings/**/*` | All meeting notes, any naming format. Includes subfolders (PAM/, Scrum/, TBs/, Eng/, etc.) |
+| Meeting notes | `Meetings/**/*` | All meeting notes, any naming format. Includes subfolders (Engineering/, Scrum/, One-on-ones/, etc.) |
 | Tracker | `Tracker.md` | Sprint/week-level task tracker with Jira links, status, assignees, and progress notes |
 
 Skills MAY also pull from additional sources when relevant:
@@ -63,7 +63,7 @@ Run searches in parallel:
 
 Read `Tracker.md` via `qmd-get` (or `Read` tool). Extract the section(s) relevant to the date range — typically the current sprint/week heading and its sub-items. The Tracker contains:
 
-- Jira ticket references (`[PAMENG-XXXX](url)`)
+- Jira ticket references (`[PROJ-XXXX](url)`)
 - Task status (`- [ ]`, `- [x]`, `- [/]`, `- [-]`)
 - Assignee wikilinks (`[[@Name]]`)
 - Sub-task breakdowns and scope change notes
