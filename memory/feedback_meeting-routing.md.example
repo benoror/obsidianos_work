@@ -1,0 +1,20 @@
+---
+name: meeting-routing-conventions
+description: Learned routing rules for /organize-meetings — overrides qmd similarity
+metadata:
+  type: feedback
+---
+
+When triaging Meetings/_inbox/ via /organize-meetings:
+
+- Titles containing both "Jane" and "Alex" → `Meetings/Tech Syncs/`.
+  **Why:** Recurring peer sync, not a standard 1:1 in One-on-ones/.
+  **How to apply:** Apply before qmd similarity. Filename pattern: `<original> - YYYY-MM-DD.md`.
+
+- (Append more rules here as you confirm moves with the agent.)
+
+## Setup
+
+1. Copy this file to `memory/feedback_meeting-routing.md` (create the `memory/` folder if needed).
+2. The `memory/` folder is local — it is not tracked in git by default; keep your learned rules private.
+3. `/organize-meetings` reads this file before qmd similarity so your conventions always win.
