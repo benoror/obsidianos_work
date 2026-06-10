@@ -2,7 +2,7 @@
 name: cache-notes
 description: "Fetch & embed AI transcripts as Obsidian callouts. Args: <path>, all, refresh <path>. Prompts for URLs if empty."
 license: MIT
-compatibility: Requires qmd (CLI or MCP) and gws CLI for Google Docs/Drive (read-only). See [google-workspace-cli](../_shared/google-workspace-cli.md).
+compatibility: Requires Obsidian CLI (property:read/set, outline, base:query) with Obsidian running, gws CLI for Google Docs/Drive (read-only), and Meetings.base (CachePending view). QMD optional fallback. See [google-workspace-cli](../_shared/google-workspace-cli.md).
 ---
 
 # Cache Notes
@@ -93,8 +93,8 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 - Keep the `-` after the callout type (e.g. `[!gemini_notes]-`) — this makes it collapsed by default in Obsidian.
 - Blank lines between callouts (no `>` prefix) to separate them.
 - If transcript tab is not available, omit the `[!gemini_transcript]` callout entirely.
-- The `## AI Transcripts` heading is created once. Provider subsections are added beneath it.
-- If the file already has user-written content between frontmatter `---` and `## AI Transcripts`, preserve it. Always append `## AI Transcripts` at the end of the file.
+- The `## 🤖 AI Notes` heading is created once. Provider subsections are added beneath it.
+- If the file already has user-written content between frontmatter `---` and `## 🤖 AI Notes`, preserve it. Always append `## 🤖 AI Notes` at the end of the file.
 
 ## Provider: Otter.ai
 
@@ -172,7 +172,7 @@ Delegate to [/note-status pending --step=cache](../note-status/SKILL.md#pending-
 ## Refresh Mode
 
 `/cache-notes refresh <path>`:
-- Delete the entire `## AI Transcripts` section and everything below it.
+- Delete the entire `## 🤖 AI Notes` section and everything below it.
 - Re-fetch all providers and re-build the section.
 - Update `NotesCached:` timestamp.
 
