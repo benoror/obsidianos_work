@@ -10,7 +10,7 @@ compatibility: Requires qmd (CLI or MCP) and gws CLI when resolving names from G
 ## Usage
 
 - `/fill-participants all` — Scan all meetings, find those missing Participants, resolve and fill them.
-- `/fill-participants <path>` — Fill participants for a specific meeting note (relative to workspace root, e.g. `Meetings/PAM/Some Meeting.md`).
+- `/fill-participants <path>` — Fill participants for a specific meeting note (relative to workspace root, e.g. `Meetings/Engineering/Some Meeting.md`).
 
 ## Frontmatter Conventions
 
@@ -20,15 +20,15 @@ Participants live in YAML frontmatter as either:
 
 ```yaml
 # Single participant
-Participants: "[[@Zak]]"
+Participants: "[[@Jane Doe]]"
 
 # Multiple participants
 Participants:
-  - "[[@Zak]]"
-  - "[[@Carlos García]]"
+  - "[[@Jane Doe]]"
+  - "[[@Alex Kim]]"
 
 # Team-wide meetings
-Participants: "[[+PAM]]"
+Participants: "[[+Engineering]]"
 ```
 
 ## Workflow
@@ -52,7 +52,7 @@ For each meeting missing Participants, determine attendees using the resolution 
    - **Otter.ai**: When an Otter transcript fetch workflow is available, use it; until then skip per [cache-notes](../cache-notes/SKILL.md) Otter policy.
 2. **File name** — `X x Y` patterns.
 3. **File content** — Existing `[[@Name]]` references.
-4. **Folder conventions** — e.g. `Meetings/PAM/Scrum/` → `[[+PAM]]`.
+4. **Folder conventions** — e.g. `Meetings/Engineering/Scrum/` → `[[+Engineering]]`.
 5. **Similar meetings** — Recurring meeting with same name, different date.
 6. **Tracker.md** — Jira ticket assignees for disambiguation.
 
@@ -92,7 +92,7 @@ Display a numbered table of proposed replacements:
 | # | Replace? | Found text | → Link | Context (surrounding text) |
 |---|----------|------------|--------|---------------------------|
 | 1 | ✅ | Rob Klock | [[@Rob]] | "...assigned Rob Klock a bug ticket..." |
-| 2 | ✅ | @Zach | [[@Zak]] | "...recent changes made by @Zach..." |
+| 2 | ✅ | @Jane | [[@Jane Doe]] | "...recent changes made by @Jane..." |
 | 3 | ⬜ | Victor | [[@Victor]] | "...Victor confirmed they have been..." |
 | 4 | ⬜ | Alex | — (skip, it's the user) | "...Alex Smith and Alex agreed..." |
 ```

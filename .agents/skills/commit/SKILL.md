@@ -33,7 +33,7 @@ Examples:
 | Input | Scope | Intent | Amend |
 | --- | --- | --- | --- |
 | *(empty)* | — | — | no |
-| `Meetings/PAM/` | `Meetings/PAM/` | — | no |
+| `Meetings/Engineering/` | `Meetings/Engineering/` | — | no |
 | `.gitignore` | `.gitignore` | — | no |
 | `my awesome refactor` | — | `my awesome refactor` | no |
 | `Meetings/ wrap up notes` | `Meetings/` | `wrap up notes` | no |
@@ -115,7 +115,7 @@ How to detect: the calling workflow explicitly states it is running sub-skills i
 
 When committing on behalf of a sequence:
 
-- **Message**: `update: /{workflow-name} {argument}` (e.g. `update: /meeting wrap Meetings/PAM/Some Meeting.md`).
+- **Message**: `update: /{workflow-name} {argument}` (e.g. `update: /meeting wrap Meetings/Engineering/Some Meeting.md`).
 - **Stage only** files modified by the current skill invocation (or full sequence). Use explicit paths.
 - Present and confirm before committing.
 

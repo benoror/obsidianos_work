@@ -91,7 +91,7 @@ Shared rules live in `.agents/rules/` and are the single source of truth. Agent-
 ## Vault Layout
 
 ```
-Meetings/              Meeting notes by subfolder (PAM/, TBs/, Eng/, etc.)
+Meetings/              Meeting notes by subfolder (Engineering/, One-on-ones/, Interviews/, etc.)
 Templates/             Obsidian templates
 Teams/People/          Person files: @Name.md
 Teams/                 Team files: +TeamName.md

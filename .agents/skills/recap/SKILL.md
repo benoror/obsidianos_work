@@ -119,7 +119,7 @@ and a source attribution in italics.
 
 For busy weeks, group highlights under `### Project/Topic` sub-headings:
 
-### PAM Platform
+### Example Project
 - Accomplished X...
 - Decided Y...
 

@@ -130,12 +130,13 @@ The vault ships with these directories already in place:
 
 ```
 Meetings/          Meeting notes (create subfolders per team/project as needed)
+Meetings/_inbox/   Untriaged stubs from /mail-transcripts (drain via /organize-meetings)
 Teams/People/      Person files: @Name.md (one per colleague)
 Teams/             Team files: +TeamName.md
 Templates/         Obsidian templates
 ```
 
-A default [`Teams/People/@Me.md`](Teams/People/@Me.md) is included as the vault owner's person file. Add subfolders under `Meetings/` to organise notes by team or project (e.g. `Meetings/Eng/`, `Meetings/TBs/`).
+A default [`Teams/People/@Me.md`](Teams/People/@Me.md) is included as the vault owner's person file. Add subfolders under `Meetings/` to organise notes by team or project (e.g. `Meetings/Engineering/`, `Meetings/One-on-ones/`).
 
 ### 6. Open in Obsidian + Cursor
 
