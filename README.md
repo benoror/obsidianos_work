@@ -281,6 +281,7 @@ Personal paths are protected during merges via `.gitattributes` — your `USER.m
 .opencode/skills/     Symlink → .agents/skills (OpenCode)
 skills/               Symlink → .agents/skills (OpenClaw workspace skills)
 AGENTS.md             Agent reference: skills, conventions, vault layout
+CONTRIBUTING.md       How to add skills, run tests, and avoid personal data
 CLAUDE.md             Claude Code instructions + MCP setup
 OpenCode.md           OpenCode / Crush instructions + MCP setup
 USER.md               Vault owner identity (fill in after cloning)

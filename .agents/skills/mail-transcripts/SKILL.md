@@ -7,6 +7,8 @@ compatibility: Requires [Google Workspace CLI](https://github.com/googleworkspac
 
 # Mail Transcripts
 
+> **Setup**: [SETUP.md](SETUP.md) — Gmail label, OAuth scopes, and `resolve_path()` customization.
+
 ## Usage
 
 - **`/mail-transcripts`** — Run the Gmail → vault sync **once** (no arguments).
