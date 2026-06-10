@@ -38,7 +38,7 @@ Read the entire file. Also read `Tracker.md` to cross-reference Jira tickets and
 
 Extract action items from **all** content sources, skipping lines that are **already captured** as follow-ups (compare meaning, not only exact text):
 
-1. **Manual notes** (between frontmatter `---` and `## 🤖 AI Notes` / `## AI Transcripts`): Free-text action items (e.g. "- Talk to Chris about X"). Skip lines that are **checkbox** tasks (`- [*]` — any single character between brackets) when **deduplicating**, but note the vault may still contain legacy `- [ ]` lines from older runs.
+1. **Manual notes** (between frontmatter `---` and `## 🤖 AI Notes`): Free-text action items (e.g. "- Talk to Alex about X"). Skip lines that are **checkbox** tasks (`- [*]` — any single character between brackets) when **deduplicating**, but note the vault may still contain legacy `- [ ]` lines from older runs.
 2. **`[!gemini_todos]` callout**: Gemini's "Suggested Next Steps" — explicit action items.
 3. **`[!gemini_notes]` callout**: Summary & Details — scan for implicit commitments ("will do X", "agreed to Y", "plans to Z").
 4. **Other provider callouts** (`[!otter_todos]`, etc.): Same treatment as Gemini.
@@ -114,7 +114,7 @@ Insert at the **end of the "Today" section**, just before the `Blockers` line. U
 
 #### Other meeting notes
 
-Prefer a dedicated section heading if missing, e.g. `## Follow-ups`, placed after the title / any manual notes and **before** `## 🤖 AI Notes` (or `## AI Transcripts`). If a `## Follow-ups` (or equivalent) section already exists, **append** there. If neither heading exists, append after the frontmatter closing `---` and add `## Follow-ups` first.
+Prefer a dedicated section heading if missing, e.g. `## Follow-ups`, placed after the title / any manual notes and **before** `## 🤖 AI Notes`. If a `## Follow-ups` (or equivalent) section already exists, **append** there. If neither heading exists, append after the frontmatter closing `---` and add `## Follow-ups` first.
 
 #### General rules
 

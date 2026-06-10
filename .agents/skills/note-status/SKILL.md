@@ -2,7 +2,7 @@
 name: note-status
 description: "Verify meeting notes are fully processed. Args: <path>, [dates], all, pending [dates] [--step=X]. Shows which wrap steps are complete or missing."
 license: MIT
-compatibility: Requires qmd MCP (for batch and date-filtered modes)
+compatibility: Requires Obsidian CLI (base:query, property:read/properties) with Obsidian running and Meetings.base (Pending view). QMD optional for date-filtered scans when Bases unavailable.
 ---
 
 # Note Status

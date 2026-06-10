@@ -69,7 +69,7 @@ Reference these for patterns and to avoid duplication:
 | `/meeting` | Create meeting notes (manual / Google Calendar), wrap up with `/meeting wrap`, or batch-wrap pending with `/meeting wrap pending [dates]` |
 | `/cache-notes` | Fetch & embed AI transcripts as Obsidian callouts (prompts for URLs if empty) |
 | `/fill-participants` | Resolve and fill Participants frontmatter |
-| `/followup-todos` | Extract action items as Obsidian Tasks checkboxes |
+| `/followup-todos` | Extract action items as plain markdown bullets (with confirmation) |
 | `/recap` | Produce a weekly/date-range recap from emails, Slack, Jira/Confluence, and vault notes |
 | `/note-status` | Verify meeting notes are fully processed — shows which wrap steps are complete or missing |
 | `/sync-upstream-obsidianos` | Pull structural updates from upstream ObsidianOS into the local vault |

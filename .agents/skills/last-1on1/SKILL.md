@@ -2,6 +2,7 @@
 name: last-1on1
 description: "Show when you last had a 1:1 with each direct report / peer, sorted by recency. Flags people who haven't had one in N weeks. Powered by the OneOnOnes view on Meetings.base."
 license: MIT
+compatibility: Requires Obsidian CLI (base:query) with Obsidian running and Meetings.base (OneOnOnes view).
 ---
 
 # Last 1:1

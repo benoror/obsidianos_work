@@ -2,7 +2,7 @@
 name: organize-meetings
 description: Triage Meetings/_inbox/ — move each file to the correct subfolder by finding adjacent/similar notes via qmd, applying learned routing conventions from memory, and confirming with the user.
 license: MIT
-compatibility: Requires qmd (CLI or MCP) for similarity search. Optional integration with the Gemini archiver script (`.scripts/gmail_ai_transcripts_to_meetings.py`).
+compatibility: Requires Obsidian CLI (base:query) with Obsidian running, Meetings.base (Inbox view), and qmd (CLI or MCP) for similarity search. Optional integration with `.scripts/gmail_ai_transcripts_to_meetings.py`.
 ---
 
 # Organize Meetings

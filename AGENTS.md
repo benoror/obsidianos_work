@@ -11,7 +11,7 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [meeting](.agents/skills/meeting/SKILL.md)                     | Create a meeting note                                      |                                                             |
 | ├ `/meeting`                                                   | Pick from today's Google Calendar events                   |                                                             |
 | ├ `/meeting {title}`                                           | Manual creation with today's date                          | `folder={subfolder}`                                        |
-| ├ `/meeting wrap <path>`                                       | Wrap up: cache → participants → todos → commit             |                                                             |
+| ├ `/meeting wrap <path>`                                       | Wrap up: mail-transcripts → cache → participants → todos → commit |                                                      |
 | └ `/meeting wrap pending [dates]`                              | Find & wrap all pending meetings                           | `today`, `yesterday`, `last week`, `2026-01-01..2026-02-03` |
 | [cache-notes](.agents/skills/cache-notes/SKILL.md)             | Fetch & embed AI transcripts as Obsidian callouts          |                                                             |
 | ├ `/cache-notes <path>`                                        | Cache a specific meeting file (prompts for URLs if empty)  |                                                             |
