@@ -12,7 +12,7 @@ compatibility: Requires qmd (CLI or MCP) and gws CLI for Calendar (read-only) in
 - `/meeting {title}` — Create a meeting note with the given title and today's date.
 - `/meeting {title} folder={subfolder}` — Create in a specific subfolder under `Meetings/`.
 - `/meeting` (no args) — List today's Google Calendar events and let the user pick one. *(Requires `gws` + Calendar — see [SETUP.md](SETUP.md) and [google-workspace-cli](../_shared/google-workspace-cli.md).)*
-- `/meeting wrap <path>` — Wrap up an existing meeting by running `/cache-notes`, `/fill-participants`, and `/followup-todos` in sequence, with a single commit at the end.
+- `/meeting wrap <path>` — Wrap up an existing meeting by running `/mail-transcripts`, `/cache-notes`, `/fill-participants`, and `/followup-todos` in sequence, with a single commit at the end.
 - `/meeting wrap pending [<dates>]` — Find meetings missing any wrap step and wrap them in sequence. Optional date filter (see Mode D).
 
 ## File Naming
@@ -20,11 +20,11 @@ compatibility: Requires qmd (CLI or MCP) and gws CLI for Calendar (read-only) in
 Format: `{Title} - YYYY-MM-DD.md`
 
 Examples:
-- `PAM - Weekly check-in - 2026-02-18.md`
-- `Ben x Zak Sync - 2026-02-23.md`
+- `Engineering - Weekly check-in - 2026-02-18.md`
+- `Jane x Alex Sync - 2026-02-23.md`
 - `Alert System Brainstorm and Requirement Gathering - 2026-02-06.md`
 
-Exception — Scrum dailies in `Meetings/PAM/Scrum/` use just `YYYY-MM-DD.md`.
+Exception — Scrum dailies in `Meetings/Engineering/Scrum/` use just `YYYY-MM-DD.md`.
 
 ## Frontmatter
 
@@ -33,7 +33,7 @@ Every meeting note starts with YAML frontmatter:
 ```yaml
 ---
 Notes:
-created: YYYY-MM-DDTHH:MM:SS-06:00
+created: YYYY-MM-DDTHH:MM:SS±HH:MM
 ---
 ```
 
@@ -61,15 +61,14 @@ Accept common abbreviations when provided inline:
 
 | Shorthand | Resolves to |
 |-----------|------------|
-| `pam` | `PAM` |
-| `scrum` | `PAM/Scrum` |
+| `eng` | `Engineering` |
+| `scrum` | `Engineering/Scrum` |
 | `1on1`, `1:1` | `One-on-ones` |
-| `eng` | `Eng` |
+| `syncs` | `Tech Syncs` |
 | `qa` | `QA` |
-| `tb`, `tbs` | `TBs` |
-| `hire`, `hiring` | `HiRing` |
+| `hire`, `hiring` | `Interviews` |
 | `onboard` | `Onboarding` |
-| `pe` | `PE Leadership` |
+| `inbox` | `_inbox` |
 
 Case-insensitive matching. If no shorthand matches and the folder doesn't exist, ask before creating it.
 
@@ -87,14 +86,14 @@ Case-insensitive matching. If no shorthand matches and the folder doesn't exist,
 4. **Derive the title** from the calendar event name.
 5. **Infer the subfolder** from attendees or event title:
    - If all attendees are from one team, suggest that team's folder.
-   - If it's a 1:1 (2 attendees), suggest `One-on-ones/` or `TBs/`.
+   - If it's a 1:1 (2 attendees), suggest `One-on-ones/` or `Tech Syncs/`.
    - Otherwise, ask the user.
 6. **Create the file** following the same steps as Mode A (steps 3-6).
 7. **Pre-fill Participants** from calendar attendees. See [people-resolver](../_shared/people-resolver.md) for name matching rules. Flag any unmatched attendees.
 
 ## Mode C: Wrap Up (`/meeting wrap`)
 
-**Input**: `/meeting wrap <path>` — path to an existing meeting note (e.g. `Meetings/PAM/Ben x Zak Sync - 2026-02-25.md`)
+**Input**: `/meeting wrap <path>` — path to an existing meeting note (e.g. `Meetings/One-on-ones/Jane x Alex Sync - 2026-02-25.md`)
 
 If `<path>` is omitted, list today's meeting files under `Meetings/` and let the user pick one.
 
@@ -102,12 +101,13 @@ If `<path>` is omitted, list today's meeting files under `Meetings/` and let the
 
 This is a **sequenced workflow** — sub-skills skip their individual commit steps.
 
-1. **`/cache-notes <path>`** — If `Notes:` frontmatter is empty, prompt the user to paste external resource URLs first. Then fetch and cache AI transcripts.
-2. **`/fill-participants <path>`** — Resolve and fill the `Participants:` frontmatter if missing. If already filled, skip silently.
-3. **`/followup-todos <path>`** — Extract action items and propose **plain bullet** follow-ups (no Tasks checkboxes) from the now-cached content and manual notes.
-4. **Commit** — See [/commit](../commit/SKILL.md). Stage all files modified across the three sub-skills. Commit message: `update: /meeting wrap <path>`.
+1. **`/mail-transcripts`** — Drain the Gemini transcript inbox first so `Notes:` may be populated before caching. Runs vault-wide (not scoped to `<path>`).
+2. **`/cache-notes <path>`** — If `Notes:` is still empty after mail-transcripts, prompt the user to paste external resource URLs. Then fetch and cache AI transcripts.
+3. **`/fill-participants <path>`** — Resolve and fill the `Participants:` frontmatter if missing. If already filled, skip silently.
+4. **`/followup-todos <path>`** — Extract action items and propose **plain bullet** follow-ups (no Tasks checkboxes) from the now-cached content and manual notes.
+5. **Commit** — See [/commit](../commit/SKILL.md). Stage all files modified across the sub-skills. Commit message: `update: /meeting wrap <path>`.
 
-Between each sub-skill, re-read the file to pick up changes from the previous step.
+Between each sub-skill, re-read the file (or re-check frontmatter via `obsidian property:read`) to pick up changes from the previous step.
 
 ## Mode D: Wrap Pending (`/meeting wrap pending`)
 
@@ -117,7 +117,7 @@ Finds all meetings under `Meetings/` that haven't been fully wrapped and runs th
 
 ### Pending Detection & Selection
 
-Delegate to [/note-status pending](../note-status/SKILL.md#pending-mode). This handles discovery, frontmatter checks, filtering, presentation, and user selection in one step.
+After inbox triage (steps 1–1.5 below), delegate to [/note-status pending](../note-status/SKILL.md#pending-mode). That skill handles discovery, frontmatter checks, filtering, presentation, and user selection in one step.
 
 ### Date Filtering
 
@@ -127,14 +127,16 @@ When `<dates>` is provided, pass it through to `/note-status pending`. Default (
 
 ### Workflow
 
-1. **Run `/note-status pending [<dates>]`**. This discovers meeting files, filters to notes with any missing step, presents the status table, and prompts the user to select which meetings to wrap. Returns the selected file paths.
-2. **For each selected meeting**, run the Mode C wrap sequence (`/cache-notes` → `/fill-participants` → `/followup-todos`). Pause between meetings for user input (URLs, todo confirmation, etc.).
-3. **Commit once** at the end — stage all files modified across all wrapped meetings. Commit message: `update: /meeting wrap pending — N meetings`.
+1. **`/mail-transcripts`** — Drain the Gemini transcript inbox so newly linked or auto-created notes have `Notes:` populated.
+2. **`/organize-meetings`** — Triage `Meetings/_inbox/` so auto-created stubs land in the right subfolder before the pending scan. Use `--auto` only when the user confirms high-confidence moves are acceptable.
+3. **Run `/note-status pending [<dates>]`** — Discovers meeting files, filters to notes with any missing step, presents the status table, and prompts the user to select which meetings to wrap. Returns the selected file paths.
+4. **For each selected meeting**, run the Mode C wrap sequence starting at step 2 (`/cache-notes` → `/fill-participants` → `/followup-todos`). Skip repeating `/mail-transcripts` per file. Pause between meetings for user input (URLs, todo confirmation, etc.).
+5. **Commit once** at the end — stage all files modified across all wrapped meetings (including any inbox moves from step 2). Commit message: `update: /meeting wrap pending — N meetings`.
 
 ### Batch Behavior
 
 - Process meetings **oldest first** (by date from filename).
-- Between each meeting, print a separator with the current file and progress (e.g. `[2/5] Wrapping: Meetings/PAM/...`).
+- Between each meeting, print a separator with the current file and progress (e.g. `[2/5] Wrapping: Meetings/Engineering/...`).
 - If a meeting fails mid-wrap (e.g. Google Docs API error), report the error, skip it, and continue with the next.
 
 ## Offer to Commit
@@ -145,5 +147,5 @@ See [/commit](../commit/SKILL.md). Applies to Mode A and Mode B only — Modes C
 
 - Always use the Write tool to create new files — never shell commands.
 - Use today's date from the system (do not hardcode).
-- The timezone offset is `-06:00` (CST). Adjust if the user specifies otherwise.
+- Use the user's local timezone offset in `created:` (see [USER.md](../../../USER.md) if configured).
 - If the user provides a full date in the title (e.g., "Sync 2026-03-01"), use that date instead of today's.
