@@ -18,8 +18,10 @@ Slash commands that run inside your vault, powered by any AI agent:
 /fill-participants        → Resolve names to [[@Person]] wikilinks
 /followup-todos           → Extract action items as plain markdown bullets
 /note-status              → Verify notes are fully processed
+/recap                    → Weekly summary from email, Slack, Jira & vault
 /vault-health             → Audit unresolved links and orphans
 /commit                   → Stage & commit with inferred intent
+/sync-upstream-obsidianos → Pull updates from upstream ObsidianOS
 ```
 
 Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [OpenCode](https://github.com/opencode-ai/opencode), or any MCP-compatible client. Clone it, fill in `USER.md`, and go.
