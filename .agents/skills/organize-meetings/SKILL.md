@@ -32,6 +32,8 @@ Files in `_inbox/` are normal meeting notes with `Notes:` and `created:` frontma
 
 ## Workflow
 
+**Preflight:** Run `.scripts/check-obsidian-cli.sh`. Abort if it fails.
+
 ### Step 1: Discover candidates
 
 See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
