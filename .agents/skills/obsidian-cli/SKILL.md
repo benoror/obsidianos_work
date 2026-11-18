@@ -12,6 +12,10 @@ Use when the user wants vault operations via the terminal against a **running** 
 
 Use the `obsidian` CLI to interact with a running Obsidian instance. Requires Obsidian to be open.
 
+## Auth gate (O1–O9)
+
+Before any `obsidian` command, run `.scripts/check-obsidian-cli.sh` from the vault root. **Abort** if it fails — see [.agents/rules/external-auth.md](../../rules/external-auth.md) § B.
+
 ## Command reference
 
 Run `obsidian help` to see all available commands. This is always up to date. Full docs: https://help.obsidian.md/cli

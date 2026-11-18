@@ -15,7 +15,11 @@ See [frontmatter-mutations](../_shared/frontmatter-mutations.md) for how to set/
 
 ## Core Rule
 
-**Use the `obsidian` CLI for frontmatter mutations** — never hand-roll `StrReplace` against frontmatter anchors. Obsidian CLI:
+**Use the `obsidian` CLI for frontmatter mutations** — never hand-roll `StrReplace` against frontmatter anchors.
+
+**Auth gate (O1):** Run `.scripts/check-obsidian-cli.sh` before any `obsidian property:*` command. If it fails, **abort the skill** — see [.agents/rules/external-auth.md](../../rules/external-auth.md) § B.
+
+Obsidian CLI:
 
 - Survives Obsidian-side rewrites (sync conflicts, modified-timestamp updates)
 - Handles property types (text, list, number, checkbox, date, datetime) automatically
@@ -43,7 +47,7 @@ Property types: `text` (default), `list`, `number`, `checkbox`, `date`, `datetim
 # Check, then set only if absent. Obsidian's property:set will overwrite an existing
 # value, so guard with property:read if you need true idempotence.
 existing=$(obsidian property:read name=NotesCached path="$file" 2>/dev/null)
-[ -z "$existing" ] && obsidian property:set name=NotesCached value="$(date -u +%FT%T%z)" type=datetime path="$file"
+[ -z "$existing" ] && obsidian property:set name=NotesCached value="$(date +%FT%T)" type=datetime path="$file"
 ```
 
 ### Wikilink-typed values (Participants, Team)
@@ -60,13 +64,19 @@ obsidian property:set name=Participants value='["[[@Jane Doe]]","[[@John Smith]]
 
 ### Timestamp properties (NotesCached, TodosExtracted)
 
-Always use `type=datetime` and ISO 8601 with timezone offset:
+Always use `type=datetime` and a **local** ISO 8601 timestamp with **no** timezone offset:
 
 ```bash
-obsidian property:set name=NotesCached value="$(date +%FT%T%z)" type=datetime path="$file"
+obsidian property:set name=NotesCached value="$(date +%FT%T)" type=datetime path="$file"
 ```
 
-Skip the manual offset formatting — `date +%FT%T%z` produces `2026-06-01T10:30:00-0600` which Obsidian parses correctly.
+The CLI validator accepts only `YYYY-MM-DDTHH:mm` or `YYYY-MM-DDTHH:mm:ss`. Do **not** append an offset — `date +%FT%T%z` produces `2026-06-01T10:30:00-0600` and the command fails with:
+
+```text
+Error: Invalid datetime format. Use YYYY-MM-DDTHH:mm or YYYY-MM-DDTHH:mm:ss
+```
+
+Older notes in the vault still carry offsets (e.g. `2026-05-19T09:00:00-06:00`) because they were written before this validation existed. Obsidian reads those fine — only new writes through the CLI must omit the offset.
 
 ### Appending to a list property
 

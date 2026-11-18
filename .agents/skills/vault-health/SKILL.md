@@ -2,6 +2,7 @@
 name: vault-health
 description: "Audit the vault for structural issues: unresolved wikilinks, orphan notes, dead-end notes, and Obsidian sync conflicts. Optional --fix flags create stubs or surface fixable issues."
 license: MIT
+compatibility: Requires Obsidian CLI (O5). See [external-auth](../../rules/external-auth.md).
 ---
 
 # Vault Health
@@ -25,6 +26,8 @@ The vault grows over time and accumulates structural debt:
 This skill surfaces all of that in one pass.
 
 ## Workflow
+
+**Preflight (O5):** Run `.scripts/check-obsidian-cli.sh`. **Abort** if it fails.
 
 ### Step 1: Run all checks (or the subset requested)
 
