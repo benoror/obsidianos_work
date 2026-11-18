@@ -42,7 +42,7 @@ Some steps have prerequisites. A note is **actionable** for a step only when the
 | Step | Actionable when |
 |------|-----------------|
 | `notes` | `Notes:` absent/empty — always actionable |
-| `cache` | `NotesCached:` absent **and** `Notes:` contains at least one supported provider URL (e.g. `docs.google.com`). Notes with only unsupported URLs (e.g. Otter-only) are not actionable for caching. |
+| `cache` | `NotesCached:` absent **and** `Notes:` contains at least one Google Doc URL (`docs.google.com`). Other URLs are not actionable for caching. |
 | `participants` | `Participants:` absent — always actionable |
 | `todos` | `TodosExtracted:` absent — always actionable |
 

@@ -18,9 +18,6 @@ const KNOWN_CALLOUT_TYPES = new Set([
   "gemini_notes",
   "gemini_todos",
   "gemini_transcript",
-  "otter_notes",
-  "otter_todos",
-  "otter_transcript",
 ]);
 
 // ---------------------------------------------------------------------------

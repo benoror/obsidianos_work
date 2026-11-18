@@ -37,7 +37,7 @@ created: YYYY-MM-DDTHH:MM:SS±HH:MM
 ---
 ```
 
-- `Notes:` is left empty (populated later with Google Docs / Otter links).
+- `Notes:` is left empty (populated later with a Google Doc link).
 - `created:` uses the current local timestamp in ISO 8601 with timezone offset.
 - `Participants:` is intentionally omitted at creation time (filled later by `/fill-participants`).
 - `modified:` is managed by Obsidian automatically — do NOT set it.

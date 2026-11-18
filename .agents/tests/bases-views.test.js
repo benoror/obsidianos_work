@@ -1,27 +1,9 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { ROOT, readFile } from "./helpers/parse.js";
-
-const FIXTURE = join(import.meta.dirname, "fixtures/otter-speech-minimal.json");
-const PARSER = join(ROOT, ".agents/skills/otter-fetch/parse_otter.js");
-
-describe("parse_otter.js", () => {
-  it("emits AI Notes callouts from minimal Otter JSON", () => {
-    const input = readFileSync(FIXTURE, "utf-8");
-    const r = spawnSync("node", [PARSER], { input, encoding: "utf-8" });
-    assert.equal(r.status, 0, r.stderr || r.stdout);
-    assert.match(r.stdout, /^## 🤖 AI Notes/m);
-    assert.match(r.stdout, /\[!otter_notes\]-/);
-    assert.match(r.stdout, /\[!otter_todos\]-/);
-    assert.match(r.stdout, /\[!otter_transcript\]-/);
-    assert.match(r.stdout, /Jane Doe:/);
-    assert.match(r.stdout, /roadmap/i);
-  });
-});
 
 /** View names referenced by skills via `Meetings.base view=X` or `People.base view=X`. */
 function collectSkillViewRefs() {

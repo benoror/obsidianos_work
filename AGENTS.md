@@ -47,7 +47,6 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [obsidian-markdown](.agents/skills/obsidian-markdown/SKILL.md) | Obsidian Flavored Markdown — wikilinks, embeds, callouts, properties | |
 | [mail-transcripts](.agents/skills/mail-transcripts/SKILL.md)   | Drain Gmail AI-transcript notifications into meeting `Notes:` (gws) | |
 | [organize-meetings](.agents/skills/organize-meetings/SKILL.md) | Triage `Meetings/_inbox/` into the right subfolder via qmd + memory | `<path>`, `--auto` |
-| [otter-fetch](.agents/skills/otter-fetch/SKILL.md)             | Otter.ai transcript sub-skill (invoked by cache-notes / fill-participants) | |
 | [people-stubs](.agents/skills/people-stubs/SKILL.md)           | Batch-create `Teams/People/@Name.md` stubs from unresolved `[[@*]]` links | `--auto` |
 | [onboard-person](.agents/skills/onboard-person/SKILL.md)       | Create/enrich a `@Name.md` from external sources (ATS / profile) | `<Name>`, `--candidate` |
 | [last-1on1](.agents/skills/last-1on1/SKILL.md)                 | Flag overdue 1:1s by recency (Meetings.base OneOnOnes view) | `<weeks>`, `@Name` |

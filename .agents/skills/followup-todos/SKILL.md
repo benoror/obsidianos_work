@@ -41,7 +41,7 @@ Extract action items from **all** content sources, skipping lines that are **alr
 1. **Manual notes** (between frontmatter `---` and `## 🤖 AI Notes`): Free-text action items (e.g. "- Talk to Alex about X"). Skip lines that are **checkbox** tasks (`- [*]` — any single character between brackets) when **deduplicating**, but note the vault may still contain legacy `- [ ]` lines from older runs.
 2. **`[!gemini_todos]` callout**: Gemini's "Suggested Next Steps" — explicit action items.
 3. **`[!gemini_notes]` callout**: Summary & Details — scan for implicit commitments ("will do X", "agreed to Y", "plans to Z").
-4. **Other provider callouts** (`[!otter_todos]`, etc.): Same treatment as Gemini.
+4. **Other provider callouts**, if a vault still has them: same treatment as Gemini.
 
 Also extract:
 - Existing **plain** bullets and **checkbox** lines in the follow-up section to avoid duplicates

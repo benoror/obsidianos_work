@@ -13,11 +13,11 @@ compatibility: Requires Obsidian CLI (property:read/set, outline, base:query) wi
 - `/cache-notes <path>` — Cache notes for a specific meeting file.
 - `/cache-notes refresh <path>` — Re-fetch and overwrite existing cached content for a file.
 
-If the target file has an **empty `Notes:` property** (no URLs yet), run **`/mail-transcripts`** first when doing a full wrap (see [meeting](../meeting/SKILL.md) Mode C) — it may populate `Notes:` from the Gemini inbox mail. If still empty, prompt the user to paste the external resource URLs (Google Docs, Otter.ai, etc.). Add them to the `Notes:` frontmatter, then proceed with fetching and caching as normal.
+If the target file has an **empty `Notes:` property** (no URLs yet), run **`/mail-transcripts`** first when doing a full wrap (see [meeting](../meeting/SKILL.md) Mode C) — it may populate `Notes:` from the Gemini inbox mail. If still empty, prompt the user to paste the Google Doc URL. Add it to the `Notes:` frontmatter, then proceed with fetching and caching as normal.
 
 ## How It Works
 
-Supported **external transcript providers** are **Google Docs** (Gemini notes) and **Otter.ai**. When a URL from either provider appears in frontmatter `Notes:`, the agent fetches the transcript using that provider's instructions and embeds it as **collapsible Obsidian callouts** in the meeting note. A `NotesCached:` frontmatter timestamp marks the file as cached.
+The supported **external transcript provider** is **Google Docs** (Gemini notes). When a Doc URL appears in frontmatter `Notes:`, the agent fetches the transcript and embeds it as **collapsible Obsidian callouts** in the meeting note. A `NotesCached:` frontmatter timestamp marks the file as cached.
 
 ## Frontmatter Convention
 
@@ -26,7 +26,6 @@ Before caching:
 ```yaml
 Notes:
   - https://docs.google.com/document/d/{id}/edit?tab=t.{tab}
-  - https://otter.ai/u/{id}
 ```
 
 After caching:
@@ -34,7 +33,6 @@ After caching:
 ```yaml
 Notes:
   - https://docs.google.com/document/d/{id}/edit?tab=t.{tab}
-  - https://otter.ai/u/{id}
 NotesCached: 2026-02-25T15:00:00+00:00
 ```
 
@@ -80,11 +78,6 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 
 > [!gemini_transcript]- Transcript
 > {transcript content, if available}
-
-### Otter
-
-> [!otter_notes]- Summary & Details
-> ...
 ```
 
 **Formatting rules for callout content:**
@@ -96,16 +89,6 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 - The `## 🤖 AI Notes` heading is created once. Provider subsections are added beneath it.
 - If the file already has user-written content between frontmatter `---` and `## 🤖 AI Notes`, preserve it. Always append `## 🤖 AI Notes` at the end of the file.
 
-## Provider: Otter.ai
-
-Otter.ai is a supported **external transcript provider** (same as Google Docs). Whenever an Otter.ai URL is present in `Notes:`, follow this provider's instructions to fetch the transcript and embed it. The cached output uses the same structure as other providers: a **subsection** under `## 🤖 AI Notes` with collapsible callouts. Expected callout types:
-
-- `[!otter_notes]-` — Summary and details
-- `[!otter_todos]-` — Suggested next steps / key topics
-- `[!otter_transcript]-` — Full transcript (if available)
-
-**Implementation**: Use the [otter-fetch](../otter-fetch/SKILL.md) skill — ask the user to paste the JSON from `GET .../speech?otid=...`, then run `parse_otter.js` (or parse inline) to produce the callouts above and append them.
-
 ## Workflow
 
 ### Mode: Specific file (`/cache-notes <path>`)
@@ -116,7 +99,6 @@ Otter.ai is a supported **external transcript provider** (same as Google Docs). 
 4. **Verify each URL** before caching (see URL Verification below).
 5. **For each URL in `Notes:`**, fetch and parse by provider:
    - **Google Docs**: Extract document ID, fetch via **`gws`** (see [google-workspace-cli](../_shared/google-workspace-cli.md)), parse into sections per [Provider: Gemini](#provider-gemini-google-docs).
-   - **Otter.ai**: Use [otter-fetch](../otter-fetch/SKILL.md) (user pastes JSON from `GET .../speech?otid=...`; run `otter-fetch/parse_otter.js` or parse inline), then append the resulting callout block.
 6. Build the callout blocks from all fetched content.
 7. If the file already has callout blocks (refresh mode), replace them. Otherwise append under `## 🤖 AI Notes` after frontmatter `---` (see [Output Format](#output-format)).
 8. Set `NotesCached:` timestamp: `obsidian property:set name=NotesCached value="$(date +%FT%T%z)" type=datetime path="<file>"`. See [frontmatter-mutations](../_shared/frontmatter-mutations.md).
@@ -163,7 +145,7 @@ See [date-filter](../_shared/date-filter.md) § "Date Parsing" for the full list
 
 Verification is skipped for:
 - `refresh` mode (the URL was already verified on first cache)
-- Non-Google Docs URLs (Otter.ai, etc.)
+- Non-Google Docs URLs
 
 ## Detecting Uncached Files
 

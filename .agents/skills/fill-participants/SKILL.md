@@ -49,7 +49,6 @@ For each meeting missing Participants, determine attendees using the resolution 
 
 1. **External transcript sources** — Use the source linked in `Notes:` frontmatter:
    - **Google Docs**: Extract document ID from `Notes:`, fetch content with **`gws`** (`gws docs documents get` or `gws drive files export` to plain text — see [google-workspace-cli](../_shared/google-workspace-cli.md)); Gemini summaries name participants explicitly.
-   - **Otter.ai**: Use [otter-fetch](../otter-fetch/SKILL.md) when an Otter URL is in `Notes:` (user pastes JSON; run `parse_otter.js` or parse inline).
 2. **File name** — `X x Y` patterns.
 3. **File content** — Existing `[[@Name]]` references.
 4. **Folder conventions** — e.g. `Meetings/Engineering/Scrum/` → `[[+Engineering]]`.
@@ -58,14 +57,14 @@ For each meeting missing Participants, determine attendees using the resolution 
 
 ### Step 3: Match names to People files
 
-Build a name dictionary per [people-resolver](../_shared/people-resolver.md). Match names from the transcript source (Google Docs, Otter when enabled, etc.) against the dictionary. Flag any unmatched names for user confirmation.
+Build a name dictionary per [people-resolver](../_shared/people-resolver.md). Match names from the Google Doc against the dictionary. Flag any unmatched names for user confirmation.
 
 ### Step 4: Present findings and ask for confirmation
 
 Present results grouped into:
 
 1. **Confident matches** — Table of meeting → proposed Participants. Apply without asking.
-2. **Needs confirmation** — Ambiguous matches, unknown people, or meetings with only Otter.ai links (no Google Doc). Ask the user.
+2. **Needs confirmation** — Ambiguous matches, unknown people, or meetings with no Google Doc. Ask the user.
 3. **New people** — Names not in People files. See [people-resolver](../_shared/people-resolver.md) § "Creating New People".
 
 Also flag if any existing `@Person.md` files are missing key properties (FullName, Team) that were discovered from Google Docs.

@@ -81,7 +81,6 @@ Reference these for patterns and to avoid duplication:
 | `obsidian-markdown` | Obsidian Flavored Markdown (wikilinks, embeds, callouts, properties) |
 | `/mail-transcripts` | Drain Gmail AI-transcript notifications into meeting `Notes:` (gws + `.scripts/gmail_ai_transcripts_to_meetings.py`) |
 | `/organize-meetings` | Triage `Meetings/_inbox/` into the right subfolder via qmd similarity + memory-backed routing conventions |
-| `otter-fetch` | Otter.ai transcript sub-skill (no slash command; invoked by cache-notes / fill-participants) |
 | `/people-stubs` | Batch-create `Teams/People/@Name.md` stubs from unresolved `[[@*]]` links |
 | `/onboard-person` | Create or enrich a `@Name.md` from external sources (ATS / profile MCPs, manual fallback) |
 | `/last-1on1` | Flag overdue 1:1s by recency (Meetings.base OneOnOnes view) |
