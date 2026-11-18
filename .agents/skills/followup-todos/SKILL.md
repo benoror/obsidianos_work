@@ -1,6 +1,6 @@
 ---
 name: followup-todos
-description: "Extract action items as plain markdown bullets (with confirmation). Args: <path>. No args = run [/note-status pending --step=todos](../note-status/SKILL.md#pending-mode)."
+description: "Extract action items (with confirmation). Inserts plain bullets on most notes; Daily Standup/scrum notes skip body inserts and only set TodosExtracted. Args: <path>. No args = run [/note-status pending --step=todos](../note-status/SKILL.md#pending-mode)."
 license: MIT
 ---
 
@@ -13,9 +13,13 @@ license: MIT
 
 ## Output format (mandatory)
 
+When writing follow-ups into a note body (non-scrum only):
+
 - **Never** insert Obsidian **Tasks** / checkbox lines: no `- [ ]`, `- [x]`, `- [-]`, or any `- [?]` pattern.
 - **Never** append **Tasks-plugin** inline metadata on inserted lines: no `📅`, `🛫`, `⏳`, or other parsed task tokens. (Optional **priority emoji** at the very end as plain text — e.g. `🔼` — is fine if it reads naturally in prose.)
 - **Always** insert **plain list items**: `- Description…` Wikilinks (`[[@Name]]`, `[[+Team]]`) and **bold** are allowed.
+
+**Daily Standup / scrum exception:** `Meetings/*/Scrum/YYYY-MM-DD.md` never gets follow-ups in the note body. Still extract, present for review, and set `TodosExtracted:`.
 
 ## Prerequisites
 
