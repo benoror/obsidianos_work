@@ -19,10 +19,11 @@ Shortcut to run [`.scripts/sync-upstream.sh`](../../../.scripts/sync-upstream.sh
 
 ### 1. Check prerequisites
 
-- Verify `upstream` remote exists: `git remote get-url upstream`. If missing, tell the user to add it:
+- Verify the `obsidianos_work` remote exists: `git remote get-url obsidianos_work`. That is the script's default (`--remote` overrides it). If missing, tell the user to add it and do not create it:
   ```
-  git remote add upstream <url-to-upstream-repo>
+  git remote add obsidianos_work <url-or-path-to-obsidianos_work>
   ```
+  A local checkout works the same as a GitHub URL. The path itself lives in git config, not in this skill.
 - Verify working tree is clean (`git status --short`). If dirty, ask the user to commit or stash first.
 
 ### 2. Preview
@@ -57,4 +58,4 @@ If the merge had conflicts, relay the conflict list and instruct the user to res
 - The script protects personal files (Meetings, Teams, Templates, etc.) via `.gitattributes` merge=ours rules.
 - Files matching patterns in `.sync-exclude` are auto-removed from the merge (e.g. upstream example files).
 - This skill never pushes — the user decides when to push.
-- If the `upstream` remote doesn't exist, do not create it automatically — prompt the user for the URL.
+- If the `obsidianos_work` remote doesn't exist, do not create it automatically — prompt the user for the URL or local path.

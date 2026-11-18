@@ -261,8 +261,8 @@ Root [`Tracker.md`](Tracker.md) is an **optional** weekly/sprint board. Keep and
 If you forked or cloned this repo into a private vault, you can pull structural updates (skills, rules, shared conventions) without overwriting your personal data.
 
 ```bash
-# First time — add the upstream remote
-git remote add upstream <url-to-this-repo>
+# First time — add the upstream remote (the script's default name)
+git remote add obsidianos_work <url-or-path-to-obsidianos_work>
 
 # Pull updates (auto-configures merge driver on first run)
 ./.scripts/sync-upstream.sh
