@@ -252,6 +252,10 @@ These are not required by any skill but improve the day-to-day experience:
 
 The `defuddle` skill uses the [Defuddle](https://www.npmjs.com/package/defuddle) CLI (`npm install -g defuddle`), not an Obsidian plugin.
 
+## Optional Tracker
+
+Root [`Tracker.md`](Tracker.md) is an **optional** weekly/sprint board. Keep and customize it for a vault-local kanban, or omit/archive it when Jira (or another system) is your source of record — agent skills treat Tracker as optional.
+
 ## Updates
 
 If you forked or cloned this repo into a private vault, you can pull structural updates (skills, rules, shared conventions) without overwriting your personal data.
@@ -269,7 +273,7 @@ git remote add upstream <url-to-this-repo>
 
 You can also run `/sync-upstream-obsidianos` from any supported agent — it wraps the same script with an interactive preview and merge flow.
 
-Personal paths are protected during merges via `.gitattributes` — your `USER.md`, `Tracker.md`, `.env`, `.cursor/mcp.json`, `Meetings/`, `Teams/`, `Templates/`, and `Recaps/` are always kept as-is. Edit `.gitattributes` to add or remove protected paths.
+Personal paths are protected during merges via `.gitattributes` — your `USER.md`, optional `Tracker.md`, `.env`, `.cursor/mcp.json`, `Meetings/`, `Teams/`, `Templates/`, and `Recaps/` are always kept as-is. Edit `.gitattributes` to add or remove protected paths.
 
 ## Project structure
 

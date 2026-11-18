@@ -96,7 +96,7 @@ Templates/             Obsidian templates
 Teams/People/          Person files: @Name.md
 Teams/                 Team files: +TeamName.md
 ToDo's.md              Aggregated Tasks plugin view
-Tracker.md             Project tracker
+Tracker.md             Optional project tracker (omit if using Jira/etc.)
 ```
 
 ## Conventions

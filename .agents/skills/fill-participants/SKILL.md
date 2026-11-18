@@ -54,7 +54,7 @@ For each meeting missing Participants, determine attendees using the resolution 
 3. **File content** — Existing `[[@Name]]` references.
 4. **Folder conventions** — e.g. `Meetings/Engineering/Scrum/` → `[[+Engineering]]`.
 5. **Similar meetings** — Recurring meeting with same name, different date.
-6. **Tracker.md** — Jira ticket assignees for disambiguation.
+6. **Ticket assignees** (Jira when configured; optionally a live Tracker) — disambiguation.
 
 ### Step 3: Match names to People files
 

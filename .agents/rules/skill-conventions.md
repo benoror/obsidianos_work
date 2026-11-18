@@ -7,7 +7,7 @@ Skills that share common patterns MUST reference the shared convention instead o
 | Convention | Reference | When to use |
 |---|---|---|
 | Commit | `See [/commit](../skills/commit/SKILL.md).` | Every skill that modifies files — final step |
-| Vault Context | `See [vault-context](../skills/_shared/vault-context.md).` | Any skill that searches or reads vault content (meetings, tracker, notes) |
+| Vault Context | `See [vault-context](../skills/_shared/vault-context.md).` | Any skill that searches or reads vault content (meetings, optional tracker, notes) |
 | Date Filter | `See [date-filter](../skills/_shared/date-filter.md).` | Any skill that accepts `[dates]` arguments or parses dates from filenames/content |
 | Date Verification | `See [Date Verification](#date-verification) below` | Any skill/prompt involving dates, timestamps, or calendar operations |
 | Obsidian Tasks | `See [obsidian-tasks](../skills/_shared/obsidian-tasks.md).` | Any skill that creates or reads task checkboxes |

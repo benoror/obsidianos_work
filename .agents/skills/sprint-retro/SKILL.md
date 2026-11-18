@@ -58,7 +58,7 @@ See [vault-context](../_shared/vault-context.md). Gather in parallel:
 | Recaps | `Recaps/Recap *.md` whose `period:` overlaps the window | Highlights, decisions, open items, insights, cross-team notes |
 | Sprint planning | `Sprint <N> Planning <date>.md` | Committed tickets, estimates, decisions — to measure against outcomes |
 | Prior retro | `Sprint <N-1> Retro <date>.md` | Open **Action items** to carry forward and check off |
-| Tracker | `Tracker.md` | Current ticket status (Done / Blocked / Paused / WIP) |
+| Tracker (optional) | Live `Tracker.md` if present | Supplement; prefer external SoR (e.g. Jira) when configured |
 
 Prefer `qmd` over `grep` for discovery (see [qmd](../qmd/SKILL.md)). Resolve names to `[[@Name]]` via [people-resolver](../_shared/people-resolver.md).
 

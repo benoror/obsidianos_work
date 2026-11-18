@@ -16,9 +16,9 @@ license: MIT
 
 Different work modes want different layouts:
 - **interview**: Meetings.base Interviews view + the active candidate's @Name.md + a blank scratchpad pane.
-- **scrum**: Today's `Meetings/Engineering/Scrum/YYYY-MM-DD.md` + Tracker.md + Meetings.base Pending view.
+- **scrum**: Today's `Meetings/Engineering/Scrum/YYYY-MM-DD.md` + Meetings.base Pending view (+ optional live `Tracker.md`).
 - **1-on-1**: OneOnOnes view + the current person's @Name.md + their last 1:1 note.
-- **recap**: Recaps/ folder + Meetings.base ThisWeek view + Tracker.md.
+- **recap**: Recaps/ folder + Meetings.base ThisWeek view (+ optional live Tracker).
 
 Switching by hand means dragging panes around. This skill flips between saved layouts in one command.
 
@@ -40,9 +40,9 @@ These don't exist out of the box — the user creates them once in Obsidian via 
 | Workspace | Files / Views Open |
 |-----------|--------------------|
 | `interview` | `Meetings.base` (Interviews view), latest interview note, blank scratchpad |
-| `scrum` | Today's Scrum daily, `Tracker.md`, `Meetings.base` (Pending view) |
+| `scrum` | Today's Scrum daily, `Meetings.base` (Pending view); optional live `Tracker.md` |
 | `1-on-1` | `Meetings.base` (OneOnOnes view), `People.base` (Active view) |
-| `recap` | `Recaps/Recap YYYY-MM-DD.md`, `Meetings.base` (ThisWeek view), `Tracker.md` |
+| `recap` | `Recaps/Recap YYYY-MM-DD.md`, `Meetings.base` (ThisWeek view); optional live Tracker |
 | `default` | The main layout (current) |
 
 ## Important Notes

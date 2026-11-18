@@ -31,10 +31,10 @@ For **classification** (owner, urgency, dates in the proposal step), you may sti
 
 See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
 
-Read the entire file. Also read `Tracker.md` to cross-reference Jira tickets and current task status — this helps:
-- **Set priority**: A ticket already marked `🔺` in the Tracker should keep that priority (as trailing emoji in the bullet text if you include one).
-- **Avoid duplicates**: If a follow-up already exists in the Tracker for the same Jira ticket, flag it in the proposal table (Step 3) rather than creating a duplicate line in the note.
-- **Add context**: If the meeting references a Jira ticket ID (e.g. `PROJ-1234`), pull its current status and assignee from the Tracker.
+Read the entire file. Cross-reference ticket status via an external tracker when configured (e.g. Jira). Optionally consult a **live** Tracker if present (see [vault-context](../_shared/vault-context.md) § Ticket / sprint status). This helps:
+- **Set priority**: Keep known high priorities (external tracker or live Tracker `🔺`) as trailing emoji if you include one.
+- **Avoid duplicates**: If a follow-up already exists for the same ticket (note, ToDo's, or live Tracker), flag it in the proposal table (Step 3).
+- **Add context**: If the meeting references a ticket ID (e.g. `PROJ-1234`), pull current status and assignee from the external SoR when available.
 
 Extract action items from **all** content sources, skipping lines that are **already captured** as follow-ups (compare meaning, not only exact text):
 

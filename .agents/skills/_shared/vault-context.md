@@ -1,6 +1,6 @@
 ---
 name: vault-context
-description: "Shared convention for gathering vault context via QMD. Referenced by skills that need to search meeting notes, tracker, or other vault content."
+description: "Shared convention for gathering vault context via QMD. Referenced by skills that need to search meeting notes, optional tracker, or other vault content."
 license: MIT
 ---
 
@@ -36,7 +36,6 @@ Every skill gathering vault context MUST consider these sources:
 | Source | Path | Contains |
 |--------|------|----------|
 | Meeting notes | `Meetings/**/*` | All meeting notes, any naming format. Includes subfolders (Engineering/, Scrum/, One-on-ones/, etc.) |
-| Tracker | `Tracker.md` | Sprint/week-level task tracker with Jira links, status, assignees, and progress notes |
 
 Skills MAY also pull from additional sources when relevant:
 
@@ -46,6 +45,19 @@ Skills MAY also pull from additional sources when relevant:
 | Teams | `Teams/+TeamName.md` | Team membership |
 | Recaps | `Recaps/*.md` | Previous recap summaries (avoid circular reference — only read, don't re-summarize) |
 | ToDo's | `ToDo's.md` | Aggregated Tasks plugin view |
+| Tracker (optional) | `Tracker.md` and/or `Trackers/*.md` | Optional vault-local sprint board — see [Ticket / sprint status](#ticket--sprint-status) |
+
+## Ticket / sprint status
+
+`Tracker.md` is an **optional** ObsidianOS feature. Use it when you want a vault-local board; omit or archive it when an external system (e.g. Jira) is the source of record.
+
+| Priority | Source | When |
+|----------|--------|------|
+| 1 | External issue tracker (e.g. Jira via Atlassian MCP) | When configured — authoritative for ticket status |
+| 2 | **Live Tracker** | If `Tracker.md` / `Trackers/*.md` exists and is not deprecated/archived |
+| 3 | Meeting notes / recaps | Narrative context only |
+
+Skip archived/stub trackers. Skills must not require Tracker to exist.
 
 ## Gathering by Date Range
 
@@ -59,14 +71,11 @@ Run searches in parallel:
 2. **Semantic search** (`qmd-vector_search`): Search for the topic or purpose if applicable (e.g. "sprint planning", "data lake migration").
 3. **Batch retrieve** (`qmd-multi_get`): Glob `Meetings/**/*` files and filter by date in content or filename.
 
-### Step 2: Always include Tracker.md
+### Step 2: Ticket status (optional Tracker)
 
-Read `Tracker.md` via `qmd-get` (or `Read` tool). Extract the section(s) relevant to the date range — typically the current sprint/week heading and its sub-items. The Tracker contains:
-
-- Jira ticket references (`[PROJ-XXXX](url)`)
-- Task status (`- [ ]`, `- [x]`, `- [/]`, `- [-]`)
-- Assignee wikilinks (`[[@Name]]`)
-- Sub-task breakdowns and scope change notes
+1. Prefer an external tracker (e.g. Jira) when configured.
+2. If a **live** `Tracker.md` / `Trackers/*.md` exists, include it — weeks/sprints, priorities, pause notes.
+3. If neither is available, continue from meeting notes alone.
 
 ### Step 3: Read matched files
 
@@ -89,11 +98,11 @@ When a skill needs vault content by topic (not date-bound):
 1. **Semantic search** (`qmd-vector_search`): Describe what you're looking for in natural language.
 2. **Keyword search** (`qmd-search`): Use specific terms, project names, Jira ticket IDs, or people names.
 3. **Deep search** (`qmd-deep_search`): For broad or ambiguous topics where vocabulary is unknown.
-4. **Always check Tracker.md**: Scan for mentions of the topic — it often has the authoritative status of ongoing work items.
+4. **Optional Tracker**: If a live Tracker exists, scan it for the topic; do not fail if missing.
 
 ## What NOT to Do
 
 - Do NOT use `Glob` or `grep` to find meeting notes by filename pattern — QMD indexes content and metadata, making it the better discovery tool.
-- Do NOT skip `Tracker.md` — it provides sprint-level context that meeting notes alone don't capture.
+- Do NOT require `Tracker.md` — it is optional; prefer an external SoR when configured.
 - Do NOT read every file in `Meetings/` sequentially — use QMD to narrow down, then read only the relevant files.
 - Do NOT assume a specific filename format for meetings — they vary (`YYYY-MM-DD.md`, `Title - YYYY-MM-DD.md`, free-form names).

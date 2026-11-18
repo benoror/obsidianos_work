@@ -47,7 +47,7 @@ Run the following in parallel where possible:
 
 See [vault-context](../_shared/vault-context.md) for the full convention.
 
-Gather vault context for the date range: meeting notes from `Meetings/**/*` (any naming format) and `Tracker.md` (sprint/task status). Use QMD for discovery, always include the Tracker, and extract titles, participants, discussion points, existing todos, and AI summaries from each matched file.
+Gather vault context for the date range from `Meetings/**/*`. Use QMD for discovery; extract titles, participants, discussion points, existing todos, and AI summaries. Prefer external ticket status (e.g. Jira) when configured. Optionally include a **live** `Tracker.md` / `Trackers/*.md` if present (see vault-context § Ticket / sprint status) — do not require Tracker.
 
 #### 2b. Gmail
 
