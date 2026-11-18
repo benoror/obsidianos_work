@@ -67,6 +67,7 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | `/onboard-person` | Create/enrich a `@Name.md` from external sources (ATS / profile) |
 | `/last-1on1` | Flag overdue 1:1s by recency |
 | `/vault-health` | Audit unresolved links, orphans, dead-ends, and sync conflicts |
+| `termy-obsidian-context` | Read the current Obsidian note from a Termy session |
 | `/migrate-tags` | Migrate body `#hashtags` to frontmatter `tags:` lists |
 | `/workspace-mode` | Switch between named Obsidian Workspace layouts |
 | `/sprint-retro` | Synthesize a Sprint Retro draft from vault sources |

@@ -54,6 +54,7 @@ Custom skills live in `.agents/skills/`. Each has a `SKILL.md` with usage, workf
 | [migrate-tags](.agents/skills/migrate-tags/SKILL.md)           | Migrate body `#hashtags` to frontmatter `tags:` lists | `<path>`, `--dry-run`, `--strip-body` |
 | [workspace-mode](.agents/skills/workspace-mode/SKILL.md)       | Switch named Obsidian Workspace layouts | `<name>`, `save <name>` |
 | [sprint-retro](.agents/skills/sprint-retro/SKILL.md)           | Synthesize a Sprint Retro draft from vault sources | `<N>`, `<dates>` |
+| [termy-obsidian-context](.agents/skills/termy-obsidian-context/SKILL.md) | Read the live Obsidian note from a Termy session | |
 
 ### Skill proxies (symlinks to `.agents/skills/`)
 

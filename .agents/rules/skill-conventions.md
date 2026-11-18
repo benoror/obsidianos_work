@@ -86,5 +86,6 @@ Reference these for patterns and to avoid duplication:
 | `/last-1on1` | Flag overdue 1:1s by recency (Meetings.base OneOnOnes view) |
 | `/vault-health` | Audit unresolved links, orphans, dead-ends, and sync conflicts |
 | `/migrate-tags` | Migrate body `#hashtags` to frontmatter `tags:` lists so Bases can filter |
+| `termy-obsidian-context` | Read the live Obsidian note, selection, and vault root from a Termy session |
 | `/workspace-mode` | Switch between named Obsidian Workspace layouts |
 | `/sprint-retro` | Synthesize a Sprint Retro draft from scrum dailies, recaps, planning, and the prior retro |
