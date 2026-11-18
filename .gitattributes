@@ -1,6 +1,6 @@
 # Merge strategy: always keep local version for these paths when merging
-# from the upstream public repo. These files contain personal data,
-# vault-specific content, or local overrides.
+# from obsidianos_work (the public generic upstream). These files contain
+# personal data, vault-specific content, or local overrides.
 #
 # Requires the "ours" merge driver:
 #   git config merge.ours.driver true
@@ -17,9 +17,11 @@ Tracker.md merge=ours
 Meetings/** merge=ours
 Teams/** merge=ours
 Recaps/** merge=ours
+ObsAI/** merge=ours
+Misc/** merge=ours
+Archive/** merge=ours
+Trackers/** merge=ours
+ToDo's.md merge=ours
 
-# Templates (upstream has generic examples, keep local customizations)
+# Templates (upstream has generic versions, keep local customizations)
 Templates/** merge=ours
-
-# Add your own protected paths below:
-# MyFolder/** merge=ours

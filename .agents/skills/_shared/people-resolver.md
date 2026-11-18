@@ -53,7 +53,7 @@ Read aliases at dictionary-build time via `obsidian aliases file="@Jane Doe" for
 1. **Full name match** (e.g. "Jane Doe" → `[[@Jane Doe]]`) — high confidence.
 2. **Filename match** (e.g. "Jane Doe" → `[[@Jane Doe]]`) — high confidence if unambiguous.
 3. **First name only** (e.g. "Jane" for `@Jane Doe`) — low confidence, requires confirmation.
-4. **Gemini anonymization** (e.g. "someone in [location]") — cross-reference with meeting Participants and Tracker.md assignees to resolve.
+4. **Gemini anonymization** (e.g. "someone in [location]") — cross-reference with meeting Participants and (when available) Jira assignees or a live Tracker to resolve.
 
 ### Word Boundary Matching
 
@@ -78,7 +78,7 @@ When multiple sources mention people, resolve in this order:
 4. **Filename** — `X x Y` patterns (e.g. "Alex x Me 2026-02-10.md").
 5. **Folder conventions** — e.g. `Meetings/Engineering/Scrum/` → `[[+Engineering]]`.
 6. **Similar meetings** — recurring meeting with same name, different date.
-7. **Tracker.md** — `[[@Name]]` wikilinks associated with Jira tickets mentioned in context.
+7. **Jira assignees** (when Atlassian MCP is configured) for ticket keys in context; optionally a **live** Tracker (`Tracker.md` / `Trackers/*.md`) if present — skip archived/stub trackers.
 
 ## Creating New People
 

@@ -1,6 +1,6 @@
 ---
 name: followup-todos
-description: "Extract action items as plain markdown bullets (with confirmation). Args: <path>. No args = run [/note-status pending --step=todos](../note-status/SKILL.md#pending-mode)."
+description: "Extract action items (with confirmation). Inserts plain bullets on most notes; Daily Standup/scrum notes skip body inserts and only set TodosExtracted. Args: <path>. No args = run [/note-status pending --step=todos](../note-status/SKILL.md#pending-mode)."
 license: MIT
 ---
 
@@ -13,9 +13,13 @@ license: MIT
 
 ## Output format (mandatory)
 
+When writing follow-ups into a note body (non-scrum only):
+
 - **Never** insert Obsidian **Tasks** / checkbox lines: no `- [ ]`, `- [x]`, `- [-]`, or any `- [?]` pattern.
 - **Never** append **Tasks-plugin** inline metadata on inserted lines: no `📅`, `🛫`, `⏳`, or other parsed task tokens. (Optional **priority emoji** at the very end as plain text — e.g. `🔼` — is fine if it reads naturally in prose.)
 - **Always** insert **plain list items**: `- Description…` Wikilinks (`[[@Name]]`, `[[+Team]]`) and **bold** are allowed.
+
+**Daily Standup / scrum exception:** `Meetings/*/Scrum/YYYY-MM-DD.md` never gets follow-ups in the note body. Still extract, present for review, and set `TodosExtracted:`.
 
 ## Prerequisites
 
@@ -31,17 +35,17 @@ For **classification** (owner, urgency, dates in the proposal step), you may sti
 
 See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
 
-Read the entire file. Also read `Tracker.md` to cross-reference Jira tickets and current task status — this helps:
-- **Set priority**: A ticket already marked `🔺` in the Tracker should keep that priority (as trailing emoji in the bullet text if you include one).
-- **Avoid duplicates**: If a follow-up already exists in the Tracker for the same Jira ticket, flag it in the proposal table (Step 3) rather than creating a duplicate line in the note.
-- **Add context**: If the meeting references a Jira ticket ID (e.g. `PROJ-1234`), pull its current status and assignee from the Tracker.
+Read the entire file. Cross-reference ticket status via an external tracker when configured (e.g. Jira). Optionally consult a **live** Tracker if present (see [vault-context](../_shared/vault-context.md) § Ticket / sprint status). This helps:
+- **Set priority**: Keep known high priorities (external tracker or live Tracker `🔺`) as trailing emoji if you include one.
+- **Avoid duplicates**: If a follow-up already exists for the same ticket (note, ToDo's, or live Tracker), flag it in the proposal table (Step 3).
+- **Add context**: If the meeting references a ticket ID (e.g. `PROJ-1234`), pull current status and assignee from the external SoR when available.
 
 Extract action items from **all** content sources, skipping lines that are **already captured** as follow-ups (compare meaning, not only exact text):
 
 1. **Manual notes** (between frontmatter `---` and `## 🤖 AI Notes`): Free-text action items (e.g. "- Talk to Alex about X"). Skip lines that are **checkbox** tasks (`- [*]` — any single character between brackets) when **deduplicating**, but note the vault may still contain legacy `- [ ]` lines from older runs.
 2. **`[!gemini_todos]` callout**: Gemini's "Suggested Next Steps" — explicit action items.
 3. **`[!gemini_notes]` callout**: Summary & Details — scan for implicit commitments ("will do X", "agreed to Y", "plans to Z").
-4. **Other provider callouts** (`[!otter_todos]`, etc.): Same treatment as Gemini.
+4. **Other provider callouts**, if a vault still has them: same treatment as Gemini.
 
 Also extract:
 - Existing **plain** bullets and **checkbox** lines in the follow-up section to avoid duplicates

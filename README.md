@@ -63,11 +63,11 @@ Agent-agnostic — works with [Cursor](https://cursor.com), [Claude Code](https:
 | `obsidian-markdown` | Obsidian Flavored Markdown conventions |
 | `/mail-transcripts` | Drain Gmail AI-transcript notifications into meeting `Notes:` |
 | `/organize-meetings` | Triage `Meetings/_inbox/` into the right subfolder (qmd + memory) |
-| `otter-fetch` | Otter.ai transcript sub-skill (used by cache-notes / fill-participants) |
 | `/people-stubs` | Batch-create `@Name.md` stubs from unresolved `[[@*]]` links |
 | `/onboard-person` | Create/enrich a `@Name.md` from external sources (ATS / profile) |
 | `/last-1on1` | Flag overdue 1:1s by recency |
 | `/vault-health` | Audit unresolved links, orphans, dead-ends, and sync conflicts |
+| `termy-obsidian-context` | Read the current Obsidian note from a Termy session |
 | `/migrate-tags` | Migrate body `#hashtags` to frontmatter `tags:` lists |
 | `/workspace-mode` | Switch between named Obsidian Workspace layouts |
 | `/sprint-retro` | Synthesize a Sprint Retro draft from vault sources |
@@ -78,10 +78,10 @@ Each skill supports multiple sub-commands and arguments — see [AGENTS.md](AGEN
 
 | Tier | Skills | When you need them |
 |------|--------|-------------------|
-| **Core — meeting wrap** | `/meeting`, `/mail-transcripts`, `/organize-meetings`, `/cache-notes`, `/fill-participants`, `/followup-todos`, `/note-status`, `/commit` | Processing Gemini (or Otter) meeting transcripts end-to-end |
+| **Core — meeting wrap** | `/meeting`, `/mail-transcripts`, `/organize-meetings`, `/cache-notes`, `/fill-participants`, `/followup-todos`, `/note-status`, `/commit` | Processing Gemini meeting transcripts end-to-end |
 | **Vault maintenance** | `/people-stubs`, `/vault-health`, `/migrate-tags` | Growing vault hygiene |
 | **People & teams** | `/onboard-person`, `/last-1on1` | HR-style people files and 1:1 tracking |
-| **Integrations** | `/recap`, `otter-fetch` | Weekly recaps; Otter.ai (manual JSON workflow) |
+| **Integrations** | `/recap` | Weekly recaps from mail, calendar, and vault notes |
 | **Workflow modules** | `/sprint-retro`, `/workspace-mode` | Scrum teams; saved Obsidian Workspace layouts |
 | **Authoring / tools** | `defuddle`, `json-canvas`, `obsidian-bases`, `obsidian-cli`, `obsidian-markdown` | Building notes, canvases, and bases |
 | **Upstream sync** | `/sync-upstream-obsidianos` | Pulling template updates into a fork |
@@ -94,7 +94,7 @@ The main workflow chains skills in sequence. **`/meeting wrap pending`** runs th
 /mail-transcripts          → link Gemini Docs from Gmail into Notes:
 /organize-meetings         → move _inbox/ stubs to the right Meetings/ subfolder
 /note-status pending       → discover notes missing a wrap step (Meetings.base Pending view)
-/cache-notes               → fetch Docs/Otter → embed ## 🤖 AI Notes callouts
+/cache-notes               → fetch Docs → embed ## 🤖 AI Notes callouts
 /fill-participants         → resolve Participants: frontmatter
 /followup-todos            → propose plain-bullet follow-ups (user confirms)
 /commit                    → one commit for the batch
@@ -252,13 +252,17 @@ These are not required by any skill but improve the day-to-day experience:
 
 The `defuddle` skill uses the [Defuddle](https://www.npmjs.com/package/defuddle) CLI (`npm install -g defuddle`), not an Obsidian plugin.
 
+## Optional Tracker
+
+Root [`Tracker.md`](Tracker.md) is an **optional** weekly/sprint board. Keep and customize it for a vault-local kanban, or omit/archive it when Jira (or another system) is your source of record — agent skills treat Tracker as optional.
+
 ## Updates
 
 If you forked or cloned this repo into a private vault, you can pull structural updates (skills, rules, shared conventions) without overwriting your personal data.
 
 ```bash
-# First time — add the upstream remote
-git remote add upstream <url-to-this-repo>
+# First time — add the upstream remote (the script's default name)
+git remote add obsidianos_work <url-or-path-to-obsidianos_work>
 
 # Pull updates (auto-configures merge driver on first run)
 ./.scripts/sync-upstream.sh
@@ -269,7 +273,7 @@ git remote add upstream <url-to-this-repo>
 
 You can also run `/sync-upstream-obsidianos` from any supported agent — it wraps the same script with an interactive preview and merge flow.
 
-Personal paths are protected during merges via `.gitattributes` — your `USER.md`, `Tracker.md`, `.env`, `.cursor/mcp.json`, `Meetings/`, `Teams/`, `Templates/`, and `Recaps/` are always kept as-is. Edit `.gitattributes` to add or remove protected paths.
+Personal paths are protected during merges via `.gitattributes` — your `USER.md`, optional `Tracker.md`, `.env`, `.cursor/mcp.json`, `Meetings/`, `Teams/`, `Templates/`, and `Recaps/` are always kept as-is. Edit `.gitattributes` to add or remove protected paths.
 
 ## Project structure
 

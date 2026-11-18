@@ -7,7 +7,7 @@ Skills that share common patterns MUST reference the shared convention instead o
 | Convention | Reference | When to use |
 |---|---|---|
 | Commit | `See [/commit](../skills/commit/SKILL.md).` | Every skill that modifies files — final step |
-| Vault Context | `See [vault-context](../skills/_shared/vault-context.md).` | Any skill that searches or reads vault content (meetings, tracker, notes) |
+| Vault Context | `See [vault-context](../skills/_shared/vault-context.md).` | Any skill that searches or reads vault content (meetings, optional tracker, notes) |
 | Date Filter | `See [date-filter](../skills/_shared/date-filter.md).` | Any skill that accepts `[dates]` arguments or parses dates from filenames/content |
 | Date Verification | `See [Date Verification](#date-verification) below` | Any skill/prompt involving dates, timestamps, or calendar operations |
 | Obsidian Tasks | `See [obsidian-tasks](../skills/_shared/obsidian-tasks.md).` | Any skill that creates or reads task checkboxes |
@@ -81,11 +81,11 @@ Reference these for patterns and to avoid duplication:
 | `obsidian-markdown` | Obsidian Flavored Markdown (wikilinks, embeds, callouts, properties) |
 | `/mail-transcripts` | Drain Gmail AI-transcript notifications into meeting `Notes:` (gws + `.scripts/gmail_ai_transcripts_to_meetings.py`) |
 | `/organize-meetings` | Triage `Meetings/_inbox/` into the right subfolder via qmd similarity + memory-backed routing conventions |
-| `otter-fetch` | Otter.ai transcript sub-skill (no slash command; invoked by cache-notes / fill-participants) |
 | `/people-stubs` | Batch-create `Teams/People/@Name.md` stubs from unresolved `[[@*]]` links |
 | `/onboard-person` | Create or enrich a `@Name.md` from external sources (ATS / profile MCPs, manual fallback) |
 | `/last-1on1` | Flag overdue 1:1s by recency (Meetings.base OneOnOnes view) |
 | `/vault-health` | Audit unresolved links, orphans, dead-ends, and sync conflicts |
 | `/migrate-tags` | Migrate body `#hashtags` to frontmatter `tags:` lists so Bases can filter |
+| `termy-obsidian-context` | Read the live Obsidian note, selection, and vault root from a Termy session |
 | `/workspace-mode` | Switch between named Obsidian Workspace layouts |
 | `/sprint-retro` | Synthesize a Sprint Retro draft from scrum dailies, recaps, planning, and the prior retro |

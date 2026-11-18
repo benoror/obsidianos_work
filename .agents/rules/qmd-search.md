@@ -1,6 +1,8 @@
 # Vault Search — Prefer QMD
 
-When the user asks to search, find, or look up content in the vault, **use QMD** instead of grep/ripgrep/Grep.
+When the user asks to search, find, or look up content in the vault, **prefer QMD** over grep/ripgrep/Grep.
+
+**When QMD is unavailable** (MCP down, index missing, `qmd` not on PATH): **do not abort**. Fall back to `Glob`, `Read`, workspace `Grep`, or `rg`/`grep`/`sed` on known paths.
 
 ## When to use QMD
 

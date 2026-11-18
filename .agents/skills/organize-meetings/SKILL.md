@@ -32,6 +32,8 @@ Files in `_inbox/` are normal meeting notes with `Notes:` and `created:` frontma
 
 ## Workflow
 
+**Preflight:** Run `.scripts/check-obsidian-cli.sh`. Abort if it fails.
+
 ### Step 1: Discover candidates
 
 See [vault-context](../_shared/vault-context.md) for vault discovery conventions.
@@ -46,7 +48,7 @@ Check `memory/feedback_meeting-routing.md` (if present). It contains routing hin
 
 > Titles with both "<name-a>" and "<name-b>" → `Meetings/Tech Syncs/` (not One-on-ones/), filename `<Name A> x <Name B> Sync - YYYY-MM-DD.md`.
 
-Apply these **before** qmd similarity so they always win.
+Apply these **before** qmd similarity so they always win. Team folders are `Meetings/<Team>/`. This repo ships one team, `Engineering`. Add more by creating `Meetings/<Team>/` (optional `Scrum/` and `One-on-ones/` inside it). The roster in [USER.md](../../../USER.md) overrides stale memory rows. Do not hardcode team names in this skill.
 
 ### Step 3: For each candidate, propose a destination
 

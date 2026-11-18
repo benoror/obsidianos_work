@@ -2,6 +2,7 @@
 name: migrate-tags
 description: "Migrate body-level #hashtags to frontmatter `tags:` lists so Bases can filter on them. Idempotent — leaves files that already have frontmatter tags alone."
 license: MIT
+compatibility: Requires Obsidian CLI (O8). See [external-auth](../../rules/external-auth.md).
 ---
 
 # Migrate Tags
@@ -24,6 +25,8 @@ Bases can filter on the frontmatter style (`file.hasTag("frontend")`) but **not*
 This skill is a one-shot migration utility plus an ongoing cleanup tool for new notes.
 
 ## Workflow
+
+**Preflight (O8):** Run `.scripts/check-obsidian-cli.sh`. **Abort** if it fails.
 
 ### Step 1: Discover candidates
 

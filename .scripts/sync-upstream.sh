@@ -11,7 +11,7 @@
 #
 set -euo pipefail
 
-REMOTE="upstream"
+REMOTE="obsidianos_work"
 BRANCH="main"
 PREVIEW_ONLY=false
 
@@ -25,7 +25,7 @@ while [[ $# -gt 0 ]]; do
       echo ""
       echo "Options:"
       echo "  --preview   Show new commits and changed files without merging"
-      echo "  --remote    Remote name (default: upstream)"
+      echo "  --remote    Remote name (default: obsidianos_work)"
       echo "  --branch    Branch to sync from (default: main)"
       exit 0 ;;
     *) echo "Unknown option: $1"; exit 1 ;;
@@ -46,7 +46,7 @@ if ! git remote get-url "$REMOTE" &>/dev/null; then
   echo "  git remote add $REMOTE <url-to-upstream-repo>"
   echo ""
   echo "Example:"
-  echo "  git remote add $REMOTE https://github.com/benoror/obsos_work.git"
+  echo "  git remote add $REMOTE https://github.com/benoror/obsidianos_work.git"
   exit 1
 fi
 
