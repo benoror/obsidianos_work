@@ -265,8 +265,12 @@ if ! $YES; then
 fi
 
 for path in "${COPY[@]}"; do
+  mode=$(git -C "$VAULT" ls-tree -r HEAD -- "$path" | awk '{print $1; exit}')
   mkdir -p "$(dirname "$ROOT/$path")"
   git -C "$VAULT" show "HEAD:$path" > "$ROOT/$path"
+  if [[ "$mode" == "100755" ]]; then
+    chmod +x "$ROOT/$path"
+  fi
   git add -- "$path"
   echo "  Copied: $path"
 done
