@@ -5,21 +5,31 @@
 # Nothing is pushed. Run this from the public repo, not from the vault.
 #
 # Usage:
-#   ./.scripts/publish-from-vault.sh --vault <path>              # list candidates
-#   ./.scripts/publish-from-vault.sh --vault <path> -- path...   # copy those paths
+#   ./.scripts/publish-from-vault.sh --vault <path>                         # list candidates
+#   ./.scripts/publish-from-vault.sh --vault <path> --yes --message "..." -- path...
+#
+# One run copies one improvement and makes one commit. Pass --scope when
+# that improvement spans directories. Nothing is pushed.
 #
 set -euo pipefail
 
 VAULT=""
 PREVIEW_ONLY=false
+YES=false
+MESSAGE=""
+SCOPE=""
 PATHS=()
 
 usage() {
-  echo "Usage: ./.scripts/publish-from-vault.sh --vault <path> [--preview] [-- path...]"
+  echo "Usage: ./.scripts/publish-from-vault.sh --vault <path> [--preview]"
+  echo "       ./.scripts/publish-from-vault.sh --vault <path> --yes --message \"type(scope): why\" [--scope name] -- path..."
   echo ""
   echo "Options:"
   echo "  --vault     Private vault checkout to read (required). Reads HEAD, not uncommitted files."
   echo "  --preview   List candidates and stop. This is also the default when no paths are given."
+  echo "  --message   Commit message for this one improvement. Required to copy."
+  echo "  --scope     Name the improvement when paths live in more than one directory."
+  echo "  --yes       Copy and commit without prompting."
   echo "  --          File paths to copy. Copy never runs unless you name paths."
   echo ""
   echo "Protected paths come from .gitattributes (merge=ours) in both repos, plus Meetings, Teams,"
@@ -31,6 +41,9 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --vault)   VAULT="$2"; shift 2 ;;
     --preview) PREVIEW_ONLY=true; shift ;;
+    --yes)     YES=true; shift ;;
+    --message) MESSAGE="$2"; shift 2 ;;
+    --scope)   SCOPE="$2"; shift 2 ;;
     --)        shift; PATHS+=("$@"); break ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1"; usage; exit 1 ;;
@@ -200,17 +213,55 @@ if [[ ${#COPY[@]} -eq 0 ]]; then
   exit 0
 fi
 
+if [[ -z "$MESSAGE" ]]; then
+  echo "Error: --message is required. One run commits one improvement."
+  exit 1
+fi
+
+scope_of() {
+  local path="$1"
+  case "$path" in
+    .scripts/check-gws-auth.sh|.scripts/ensure-gws-auth.sh) echo "gws-auth" ;;
+    .agents/skills/_shared/*) echo "shared:$(basename "$path")" ;;
+    .agents/skills/*/*) echo "skill:$(printf '%s' "$path" | awk -F/ '{print $3}')" ;;
+    .agents/rules/*) echo "rule:$(basename "$path")" ;;
+    .agents/tests/*) echo "tests" ;;
+    .scripts/*) echo "script:$(basename "$path")" ;;
+    *) echo "file:$path" ;;
+  esac
+}
+
+if [[ -z "$SCOPE" ]]; then
+  scopes=""
+  for path in "${COPY[@]}"; do
+    s=$(scope_of "$path")
+    case " $scopes " in
+      *" $s "*) ;;
+      *) scopes="$scopes $s" ;;
+    esac
+  done
+  # shellcheck disable=SC2086
+  set -- $scopes
+  if [[ $# -gt 1 ]]; then
+    echo "Error: these paths are more than one improvement. Split them, or pass --scope if they belong together."
+    printf '  %s\n' "$@"
+    exit 1
+  fi
+fi
+
 if ! git diff --quiet || ! git diff --staged --quiet; then
   echo "This checkout has uncommitted changes. Commit or stash them before copying."
   git status --short
   exit 1
 fi
 
-read -p "Copy ${#COPY[@]} file(s) into this checkout? [y/N] " -n 1 -r
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-  echo "Aborted."
-  exit 0
+if ! $YES; then
+  read -p "Commit ${#COPY[@]} file(s)? [y/N] " -n 1 -r
+  echo ""
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborted."
+    exit 0
+  fi
 fi
 
 for path in "${COPY[@]}"; do
@@ -221,14 +272,7 @@ for path in "${COPY[@]}"; do
 done
 
 echo ""
-read -p "Commit these files here? [y/N] " -n 1 -r
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-  echo "Staged, not committed. Nothing was pushed."
-  exit 0
-fi
-
-git commit -m "sync: publish structural updates from private vault"
+git commit -m "$MESSAGE"
 echo ""
 echo "Committed. Nothing was pushed."
 git log -1 --oneline
