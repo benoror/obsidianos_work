@@ -2,6 +2,8 @@
 
 Read [AGENTS.md](AGENTS.md) for the full skill reference, conventions, and vault layout.
 
+This file stays a pointer. Plug CLIs, MCPs, and APIs in through `.agents/skills/` and `.scripts/`.
+
 ## Skills
 
 [`.opencode/skills`](.opencode/skills) symlinks to [`.agents/skills/`](.agents/skills/) (same tree as Cursor / Claude). OpenCode may also load `.agents/skills/` directly depending on version — keep canonical content in `.agents/skills/`.

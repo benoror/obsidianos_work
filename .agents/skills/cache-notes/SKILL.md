@@ -89,6 +89,18 @@ All cached content goes under a top-level `## 🤖 AI Notes` section appended af
 - The `## 🤖 AI Notes` heading is created once. Provider subsections are added beneath it.
 - If the file already has user-written content between frontmatter `---` and `## 🤖 AI Notes`, preserve it. Always append `## 🤖 AI Notes` at the end of the file.
 
+## Adding a provider
+
+Google Docs (Gemini) is the transcript provider that ships. IDE wrappers (`CLAUDE.md`, `OpenCode.md`, Cursor rules) stay pointers to [AGENTS.md](../../../AGENTS.md). Plug a CLI, MCP, or API in as a skill under `.agents/skills/`, not by copying rules into those wrappers.
+
+A provider needs three things:
+
+- a `Notes:` URL pattern
+- a fetch step
+- callout names under `## 🤖 AI Notes`: `[!<name>_notes]-`, `[!<name>_todos]-`, `[!<name>_transcript]-`
+
+Register the provider in this skill and in [fill-participants](../fill-participants/SKILL.md). Do not name a second provider until that skill exists.
+
 ## Workflow
 
 ### Mode: Specific file (`/cache-notes <path>`)
